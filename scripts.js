@@ -147,17 +147,25 @@
     viewportIndicator.style.height = `${indicatorHeight}px`;
     viewportIndicator.style.top = `${Math.max(0, scrollAmount)}px`;
 
-    // Update active section
-    let activeId = "";
-    tocData.forEach((item) => {
-      const sec = document.getElementById(item.id);
-      if (sec && scrollY >= sec.offsetTop - 200) {
-        activeId = item.id;
-      }
-    });
+    // Update active section - highlight if any part of section is in viewport
+    const viewportTop = scrollY;
+    const viewportBottom = scrollY + viewportHeight;
 
     document.querySelectorAll(".minimap-item").forEach((row) => {
-      row.classList.toggle("active", row.dataset.section === activeId);
+      const sectionId = row.dataset.section;
+      const sec = document.getElementById(sectionId);
+      if (!sec) {
+        row.classList.remove("active");
+        return;
+      }
+
+      const sectionTop = sec.offsetTop;
+      const sectionBottom = sectionTop + sec.offsetHeight;
+
+      // Section is in viewport if its top is above viewport bottom AND its bottom is below viewport top
+      const isInViewport =
+        sectionTop < viewportBottom && sectionBottom > viewportTop;
+      row.classList.toggle("active", isInViewport);
     });
   }
 

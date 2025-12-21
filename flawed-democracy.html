@@ -22,7 +22,7 @@
             }
 
             .hero::before {
-                content: —;
+                content: "";
                 position: absolute;
                 top: 0;
                 left: 0;
@@ -247,8 +247,18 @@
 
         <!-- Return to Reading Button -->
         <a href="#" class="return-to-reading" id="returnToReading">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="2"
+                stroke="currentColor"
+            >
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+                />
             </svg>
             Return to reading
         </a>
@@ -264,10 +274,14 @@
                 <span class="series-label">Democratic Health Series:</span>
                 <div class="series-links">
                     <a href="flawed-democracy.html" class="series-link active"
-                        >Part I: July 2025 Baseline</a
+                        ><span class="full-text"
+                            >Part I: July 2025 Baseline</span
+                        ><span class="short-text">Part I</span></a
                     >
                     <a href="index.html" class="series-link"
-                        >Part II: December 2025 Update</a
+                        ><span class="full-text"
+                            >Part II: December 2025 Update</span
+                        ><span class="short-text">Part II</span></a
                     >
                 </div>
             </div>
@@ -282,7 +296,10 @@
                 </div>
                 <div class="minimap-track-container">
                     <div class="minimap-track">
-                        <div class="minimap-viewport-indicator" id="viewportIndicator"></div>
+                        <div
+                            class="minimap-viewport-indicator"
+                            id="viewportIndicator"
+                        ></div>
                     </div>
                     <div class="minimap-items" id="minimapItems">
                         <!-- Dynamically populated -->
@@ -524,7 +541,7 @@
                                     >
                                 </td>
                                 <td>
-                                    <span class="trend-stable">"" Stable</span>
+                                    <span class="trend-stable">— Stable</span>
                                 </td>
                             </tr>
                             <tr>
@@ -549,7 +566,7 @@
                                     >
                                 </td>
                                 <td>
-                                    <span class="trend-stable">"" Stable</span>
+                                    <span class="trend-stable">— Stable</span>
                                 </td>
                             </tr>
                             <tr class="pillar-row">
@@ -818,10 +835,10 @@
                 </div>
             </section>
 
-            <!-- Pillar I -->
+            <!-- Pillar A -->
             <section class="section" id="pillar-1">
                 <span class="section-number">Section 03</span>
-                <h2>Part II: Foundational Institutions and the Rule of Law</h2>
+                <h2>Pillar A: Foundational Institutions and the Rule of Law</h2>
 
                 <p>
                     This pillar assesses the core architecture of the state: its
@@ -971,10 +988,10 @@
                 </div>
             </section>
 
-            <!-- Pillar II -->
+            <!-- Pillar B -->
             <section class="section" id="pillar-2">
                 <span class="section-number">Section 04</span>
-                <h2>Part II: Civil Liberties and the Public Sphere</h2>
+                <h2>Pillar B: Civil Liberties and the Public Sphere</h2>
 
                 <p>
                     This pillar examines the freedoms that allow citizens to
@@ -1025,7 +1042,7 @@
                                 >Score: 8.5/10</span
                             >
                             <span class="indicator-trend trend-stable"
-                                >"" Stable</span
+                                >— Stable</span
                             >
                         </div>
                     </div>
@@ -1081,7 +1098,7 @@
                                 >Score: 6.0/10</span
                             >
                             <span class="indicator-trend trend-stable"
-                                >"" Stable</span
+                                >— Stable</span
                             >
                         </div>
                     </div>
@@ -1100,10 +1117,10 @@
                 </div>
             </section>
 
-            <!-- Pillar III -->
+            <!-- Pillar C -->
             <section class="section" id="pillar-3">
                 <span class="section-number">Section 05</span>
-                <h2>Part II: Political Culture and Norms</h2>
+                <h2>Pillar C: Political Culture and Norms</h2>
 
                 <p>
                     This pillar assesses the informal "rules of the game—"the
