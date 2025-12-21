@@ -407,8 +407,8 @@ body {
 /* Wrapper for content + minimap layout */
 .content-wrapper {
     display: flex;
-    max-width: calc(var(--max-width) + var(--minimap-width) + 4rem);
-    margin: 0 0 0 auto;
+    max-width: calc(var(--max-width) + var(--minimap-width) + 7rem);
+    margin: 0 auto;
     padding: 0 2rem;
     gap: 3rem;
     align-items: flex-start;
@@ -929,14 +929,23 @@ footer p {
 @media (min-width: 1200px) {
     .minimap-sidebar {
         display: block;
+        grid-column: 3;
+        justify-self: end;
     }
 
     .content-wrapper {
-        display: flex;
+        display: grid;
+        grid-template-columns: 1fr var(--max-width) 1fr;
+        max-width: none;
+        margin: 0;
+        gap: 0;
+        padding: 0 1rem;
     }
 
     .content {
         padding: 4rem 0;
+        grid-column: 2;
+        width: 100%;
     }
 }
 
