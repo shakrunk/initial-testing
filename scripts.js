@@ -309,14 +309,34 @@
           // Scroll to citation
           target.scrollIntoView({ behavior: "smooth", block: "center" });
 
-          // Add highlight after scroll
-          setTimeout(() => {
-            target.classList.add("highlighted");
-            if (returnToReading) {
-              returnToReading.href = `#${lastClickedCitation}`;
-              returnToReading.classList.add("visible");
+          // Add highlight after scroll - POLL until visible
+          let attempts = 0;
+          const maxAttempts = 180; // Approx 3 seconds at 60fps
+
+          const checkScrollEnd = () => {
+            const rect = target.getBoundingClientRect();
+            // Check if target is at least partially in view
+            const isVisible = !(
+              rect.bottom < 0 || rect.top > window.innerHeight
+            );
+
+            if (isVisible) {
+              target.classList.add("highlighted");
+              if (returnToReading) {
+                returnToReading.href = `#${lastClickedCitation}`;
+                returnToReading.classList.add("visible");
+              }
+            } else {
+              attempts++;
+              if (attempts < maxAttempts) {
+                // Still scrolling? Check again.
+                requestAnimationFrame(checkScrollEnd);
+              }
             }
-          }, 400);
+          };
+
+          // Start polling
+          requestAnimationFrame(checkScrollEnd);
         }
       });
     });
