@@ -63,16 +63,54 @@ function initAudioPlayers() {
         // Insert after the original audio element
         audio.parentNode.insertBefore(controlsContainer, audio.nextSibling);
 
+        // Find the main container to make it clickable
+        const mainContainer = audio.closest('.audio-container');
+
         // --- Event Listeners ---
 
-        // Play/Pause Toggle
-        playBtn.addEventListener('click', () => {
+        // Function to toggle play/pause
+        const togglePlay = () => {
             if (audio.paused) {
                 audio.play();
             } else {
                 audio.pause();
             }
+        };
+
+        // Play/Pause Toggle on button
+        playBtn.addEventListener('click', (e) => {
+            // Stop propagation so it doesn't trigger the container click as well
+            e.stopPropagation();
+            togglePlay();
         });
+
+        // Play/Pause Toggle on container
+        if (mainContainer) {
+            mainContainer.addEventListener('click', () => {
+                togglePlay();
+            });
+        }
+
+        // Prevent container click when interacting with controls
+        controlsContainer.addEventListener('click', (e) => {
+            // We want the play button to work (handled above), but other control interactions
+            // like clicking empty space in controls shouldn't necessarily toggle play
+            // unless intended. However, the user asked for the *entire* component to be play/pause.
+            // But precision clicks (seek) should be excluded.
+        });
+
+        progressContainer.addEventListener('click', (e) => {
+             e.stopPropagation();
+        });
+
+        // Ensure inputs (seek bar) don't trigger the container toggle
+        progressInput.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Also stop mousedown/touchstart on the range input to prevent accidental toggles while dragging
+        progressInput.addEventListener('mousedown', (e) => e.stopPropagation());
+        progressInput.addEventListener('touchstart', (e) => e.stopPropagation());
 
         // Update UI on Play/Pause
         audio.addEventListener('play', () => {
