@@ -424,6 +424,44 @@
     });
   }
 
+  // ===== MOBILE METADATA TOGGLE =====
+  function setupMetaToggle() {
+    const toggle = document.querySelector(".hero-meta-toggle");
+    const meta = document.querySelector(".hero-meta");
+
+    if (toggle && meta) {
+      toggle.addEventListener("click", function () {
+        const isExpanded = meta.classList.toggle("expanded");
+        toggle.textContent = isExpanded
+          ? "Hide Report Details"
+          : "Show Report Details";
+      });
+    }
+  }
+
+  // ===== HERO SCROLL INDICATOR =====
+  function setupScrollIndicator() {
+    const indicator = document.querySelector(".scroll-indicator");
+    if (!indicator) return;
+
+    indicator.addEventListener("click", function () {
+      // Find the next significant element. Usually .toc or first .section
+      // In the HTML structure, .toc follows .hero, or .scorecard-banner
+      const hero = document.querySelector(".hero");
+      let nextSection = hero.nextElementSibling;
+
+      if (nextSection) {
+        // Adjust for fixed nav if needed, though series-nav is the only fixed one
+        // and it's small.
+        const offset = 80;
+        window.scrollTo({
+          top: nextSection.offsetTop - offset,
+          behavior: "smooth",
+        });
+      }
+    });
+  }
+
   // ===== EVENT LISTENERS =====
   function setupEventListeners() {
     window.addEventListener("scroll", function () {
@@ -443,6 +481,8 @@
     setupReturnToReading();
     setupMinimapNavigation();
     setupTocNavigation();
+    setupMetaToggle();
+    setupScrollIndicator();
     setupEventListeners();
   }
 
