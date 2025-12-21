@@ -13,7 +13,7 @@
   let hoverTimeout = null;
 
   // ===== TOC DATA =====
-  // Automatically detect sections from the DOM
+  // Automatically detect sections and subheadings from the DOM
   function buildTocData() {
     const sections = document.querySelectorAll(".section, .works-cited");
     const data = [];
@@ -30,7 +30,6 @@
         title = h2.textContent.trim();
         // Shorten long titles
         if (title.length > 30) {
-          // Try to get a shorter version
           const colonIndex = title.indexOf(":");
           if (colonIndex > 0 && colonIndex < 25) {
             title = title.substring(0, colonIndex);
@@ -42,7 +41,26 @@
         title = id.replace(/-/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
       }
 
-      data.push({ id, title, level: 1 });
+      data.push({ id, title, level: 1, element: section });
+
+      // Find h3 subheadings within this section
+      const subheadings = section.querySelectorAll("h3");
+      subheadings.forEach((h3, index) => {
+        let subId = h3.id;
+        // Generate an ID if the h3 doesn't have one
+        if (!subId) {
+          subId = `${id}-sub-${index}`;
+          h3.id = subId;
+        }
+
+        let subTitle = h3.textContent.trim();
+        // Shorten long subheading titles
+        if (subTitle.length > 35) {
+          subTitle = subTitle.substring(0, 32) + "...";
+        }
+
+        data.push({ id: subId, title: subTitle, level: 2, element: h3 });
+      });
     });
 
     return data;
@@ -56,46 +74,53 @@
     if (tocData.length === 0) return;
 
     minimapItems.innerHTML = "";
-    const sections = tocData
-      .map((item) => document.getElementById(item.id))
-      .filter(Boolean);
 
-    // Calculate the total document height and the height before first section
-    const docHeight = document.documentElement.scrollHeight;
-    const firstSection = sections[0];
-    const heroHeight = firstSection ? firstSection.offsetTop : 0;
+    // Group items by their parent section for height calculation
+    // Each item gets a flex-grow based on its element height relative to total content
+    const contentElement = document.querySelector(".content");
+    if (!contentElement) return;
 
-    // Calculate total tracked section height
-    const totalSectionHeight = sections.reduce(
-      (acc, s) => acc + s.offsetHeight,
-      0,
-    );
-
-    // Total content height including footer
-    const lastSection = sections[sections.length - 1];
-    const contentEndOffset = lastSection
-      ? lastSection.offsetTop + lastSection.offsetHeight
-      : docHeight;
-    const footerHeight = docHeight - contentEndOffset;
-
-    // Total tracked height = hero + sections + footer
-    const totalTrackedHeight = heroHeight + totalSectionHeight + footerHeight;
-
-    // Add spacer for hero section at the top
-    if (heroHeight > 0) {
-      const heroFlexGrow = (heroHeight / totalTrackedHeight) * 100;
-      const heroSpacer = document.createElement("div");
-      heroSpacer.className = "minimap-hero-spacer";
-      heroSpacer.style.flex = `${heroFlexGrow} 1 0%`;
-      minimapItems.appendChild(heroSpacer);
-    }
+    const contentHeight = contentElement.offsetHeight;
 
     tocData.forEach((item, index) => {
-      const section = document.getElementById(item.id);
-      if (!section) return;
+      const element = item.element || document.getElementById(item.id);
+      if (!element) return;
 
-      const sectionHeight = section.offsetHeight;
-      const flexGrow = (sectionHeight / totalTrackedHeight) * 100;
+      // Calculate height for this item
+      let itemHeight;
+      if (item.level === 1) {
+        // For sections, use the full section height minus subheadings
+        const subheadings = element.querySelectorAll("h3");
+        let subheadingsHeight = 0;
+        subheadings.forEach((h3) => {
+          // Estimate height for each subheading area
+          const nextH3 = h3.nextElementSibling;
+          // Simple estimation: give each subheading some vertical space
+        });
+        itemHeight = element.offsetHeight;
+      } else {
+        // For subheadings, estimate height based on content until next heading
+        const nextHeading = getNextHeading(element);
+        if (nextHeading) {
+          itemHeight = nextHeading.offsetTop - element.offsetTop;
+        } else {
+          // Last subheading - use remaining section height
+          const parentSection = element.closest(".section");
+          if (parentSection) {
+            itemHeight =
+              parentSection.offsetTop +
+              parentSection.offsetHeight -
+              element.offsetTop;
+          } else {
+            itemHeight = 100; // fallback
+          }
+        }
+      }
+
+      // Skip items with negligible height
+      if (itemHeight < 10) itemHeight = 30;
+
+      const flexGrow = Math.max((itemHeight / contentHeight) * 100, 1);
 
       const row = document.createElement("a");
       row.href = `#${item.id}`;
@@ -103,7 +128,7 @@
       row.style.flex = `${flexGrow} 1 0%`;
       row.dataset.section = item.id;
 
-      const delay = 100 + index * 20;
+      const delay = 100 + index * 15;
       row.innerHTML = `
                 <span class="minimap-item-label" style="transition-delay: ${delay}ms;">
                     ${item.title}
@@ -114,58 +139,84 @@
       minimapItems.appendChild(row);
     });
 
-    // Add spacer for footer at the bottom
-    if (footerHeight > 0) {
-      const footerFlexGrow = (footerHeight / totalTrackedHeight) * 100;
-      const footerSpacer = document.createElement("div");
-      footerSpacer.className = "minimap-footer-spacer";
-      footerSpacer.style.flex = `${footerFlexGrow} 1 0%`;
-      minimapItems.appendChild(footerSpacer);
-    }
-
     updateViewportIndicator();
+  }
+
+  // Helper function to find next h2 or h3
+  function getNextHeading(element) {
+    let sibling = element.nextElementSibling;
+    while (sibling) {
+      if (sibling.tagName === "H2" || sibling.tagName === "H3") {
+        return sibling;
+      }
+      // Check if we've moved to a new section
+      if (sibling.classList && sibling.classList.contains("section")) {
+        return sibling.querySelector("h2") || sibling.querySelector("h3");
+      }
+      sibling = sibling.nextElementSibling;
+    }
+    return null;
   }
 
   // ===== VIEWPORT INDICATOR =====
   function updateViewportIndicator() {
     if (!viewportIndicator || !minimapItems) return;
 
-    const tocData = buildTocData();
+    const contentElement = document.querySelector(".content");
+    if (!contentElement) return;
+
     const viewportHeight = window.innerHeight;
-    const docHeight = document.documentElement.scrollHeight;
+    const contentTop = contentElement.offsetTop;
+    const contentHeight = contentElement.offsetHeight;
     const scrollY = window.scrollY;
 
     const trackHeight = minimapItems.offsetHeight;
-    const viewToDocRatio = viewportHeight / docHeight;
-    const indicatorHeight = Math.max(trackHeight * viewToDocRatio, 20);
 
-    const scrollableDoc = docHeight - viewportHeight;
+    // Calculate viewport position relative to content
+    const contentScrollStart = contentTop - viewportHeight * 0.3;
+    const contentScrollEnd = contentTop + contentHeight - viewportHeight * 0.7;
+    const scrollRange = contentScrollEnd - contentScrollStart;
+
+    // Calculate indicator size and position
+    const viewToContentRatio = viewportHeight / contentHeight;
+    const indicatorHeight = Math.max(
+      Math.min(trackHeight * viewToContentRatio, trackHeight * 0.3),
+      20,
+    );
+
+    let scrollProgress = 0;
+    if (scrollRange > 0) {
+      scrollProgress = Math.max(
+        0,
+        Math.min(1, (scrollY - contentScrollStart) / scrollRange),
+      );
+    }
+
     const scrollableTrack = trackHeight - indicatorHeight;
-    const scrollRatio = scrollableDoc > 0 ? scrollY / scrollableDoc : 0;
-    const scrollAmount = scrollRatio * scrollableTrack;
+    const scrollAmount = scrollProgress * scrollableTrack;
 
     viewportIndicator.style.height = `${indicatorHeight}px`;
-    viewportIndicator.style.top = `${Math.max(0, scrollAmount)}px`;
+    viewportIndicator.style.top = `${Math.max(0, Math.min(scrollAmount, scrollableTrack))}px`;
 
-    // Update active section - highlight if any part of section is in viewport
+    // Update active items - highlight based on viewport position
     const viewportTop = scrollY;
-    const viewportBottom = scrollY + viewportHeight;
+    const viewportCenter = scrollY + viewportHeight * 0.4;
 
     document.querySelectorAll(".minimap-item").forEach((row) => {
-      const sectionId = row.dataset.section;
-      const sec = document.getElementById(sectionId);
-      if (!sec) {
+      const itemId = row.dataset.section;
+      const element = document.getElementById(itemId);
+      if (!element) {
         row.classList.remove("active");
         return;
       }
 
-      const sectionTop = sec.offsetTop;
-      const sectionBottom = sectionTop + sec.offsetHeight;
+      const elementTop = element.offsetTop;
+      const elementBottom = elementTop + element.offsetHeight;
 
-      // Section is in viewport if its top is above viewport bottom AND its bottom is below viewport top
-      const isInViewport =
-        sectionTop < viewportBottom && sectionBottom > viewportTop;
-      row.classList.toggle("active", isInViewport);
+      // Element is active if viewport center is within it
+      const isActive =
+        viewportCenter >= elementTop && viewportCenter < elementBottom;
+      row.classList.toggle("active", isActive);
     });
   }
 
