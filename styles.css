@@ -47,7 +47,7 @@ body {
     left: 0;
     right: 0;
     z-index: 100;
-    height: var(--series-nav-height);
+    min-height: var(--series-nav-height);
 }
 
 .series-nav-inner {
@@ -379,7 +379,9 @@ body {
     border-bottom: 1px solid var(--color-border);
     opacity: 0;
     transform: translateX(10px);
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition:
+        opacity 0.4s ease,
+        transform 0.4s ease;
 }
 
 .minimap-sidebar:hover .minimap-header {
@@ -428,7 +430,9 @@ body {
     width: 100%;
     background: var(--color-accent);
     border-radius: 2px;
-    transition: top 0.1s ease-out, height 0.2s ease;
+    transition:
+        top 0.1s ease-out,
+        height 0.2s ease;
     opacity: 0.8;
 }
 
@@ -439,16 +443,23 @@ body {
     padding-right: 1.5rem;
 }
 
+.minimap-hero-spacer,
+.minimap-footer-spacer {
+    /* Empty spacers to account for hero/footer height */
+    pointer-events: none;
+}
+
 .minimap-item {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-end;
     text-decoration: none;
     color: var(--color-text-muted);
     transition: color 0.2s ease;
     overflow: visible;
     padding-right: 0.75rem;
+    padding-top: 2px;
 }
 
 .minimap-item-label {
@@ -460,7 +471,9 @@ body {
     text-overflow: ellipsis;
     opacity: 0;
     transform: translateX(8px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition:
+        opacity 0.3s ease,
+        transform 0.3s ease;
     pointer-events: none;
 }
 
@@ -488,7 +501,9 @@ body {
     height: 6px;
     background: var(--color-border);
     border-radius: 50%;
-    transition: background 0.2s ease, transform 0.2s ease;
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease;
     flex-shrink: 0;
 }
 
@@ -667,7 +682,9 @@ sup:hover {
     border: 1px solid var(--color-border);
     padding: 1rem 1.25rem;
     border-radius: 8px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
+    box-shadow:
+        0 10px 40px rgba(0, 0, 0, 0.12),
+        0 2px 8px rgba(0, 0, 0, 0.08);
     max-width: 360px;
     font-size: 0.85rem;
     line-height: 1.5;
@@ -675,7 +692,9 @@ sup:hover {
     pointer-events: none;
     opacity: 0;
     transform: translateY(8px);
-    transition: opacity 0.25s ease, transform 0.25s ease;
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
 }
 
 .citation-tooltip.visible {
@@ -720,7 +739,9 @@ sup:hover {
     z-index: 1000;
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+    transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.3s ease;
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -772,7 +793,9 @@ sup:hover {
     line-height: 1.6;
     padding: 0.75rem 1rem;
     border-radius: 6px;
-    transition: background 0.3s ease, box-shadow 0.3s ease;
+    transition:
+        background 0.3s ease,
+        box-shadow 0.3s ease;
     scroll-margin-top: calc(var(--series-nav-height) + 8rem);
 }
 
@@ -832,11 +855,11 @@ footer p {
     .minimap-sidebar {
         display: block;
     }
-    
+
     .content {
         margin-right: calc(var(--minimap-width) + 4rem);
     }
-    
+
     .works-cited-inner {
         margin-right: calc(var(--minimap-width) + 4rem);
     }
@@ -858,7 +881,7 @@ footer p {
         position: relative;
         height: auto;
     }
-    
+
     .hero {
         min-height: 100vh;
         margin-top: 0;
@@ -885,17 +908,17 @@ footer p {
     h3 {
         font-size: 1.25rem;
     }
-    
+
     .series-nav-inner {
         flex-direction: column;
         gap: 0.75rem;
     }
-    
+
     .audio-container {
         flex-direction: column;
         text-align: center;
     }
-    
+
     .return-to-reading {
         bottom: 1rem;
         font-size: 0.8rem;
@@ -924,7 +947,7 @@ footer p {
         padding: 1rem;
         margin-right: 0;
     }
-    
+
     .works-cited-inner {
         margin-right: 0;
     }
