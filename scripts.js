@@ -75,52 +75,54 @@
 
     minimapItems.innerHTML = "";
 
-    // Group items by their parent section for height calculation
-    // Each item gets a flex-grow based on its element height relative to total content
     const contentElement = document.querySelector(".content");
+    const worksCitedElement = document.querySelector(".works-cited");
     if (!contentElement) return;
 
-    const contentHeight = contentElement.offsetHeight;
+    // Helper: Get Y position relative to the entire document
+    // This ensures consistency between the indicator and the items
+    const getPageY = (el) => {
+      const rect = el.getBoundingClientRect();
+      return rect.top + window.scrollY;
+    };
+
+    // Calculate total boundaries
+    const contentTop = getPageY(contentElement);
+    const contentBottom = worksCitedElement
+      ? getPageY(worksCitedElement) + worksCitedElement.offsetHeight
+      : contentTop + contentElement.offsetHeight;
+
+    const totalHeight = contentBottom - contentTop;
 
     tocData.forEach((item, index) => {
       const element = item.element || document.getElementById(item.id);
       if (!element) return;
 
-      // Calculate height for this item
-      let itemHeight;
-      if (item.level === 1) {
-        // For sections, use the full section height minus subheadings
-        const subheadings = element.querySelectorAll("h3");
-        let subheadingsHeight = 0;
-        subheadings.forEach((h3) => {
-          // Estimate height for each subheading area
-          const nextH3 = h3.nextElementSibling;
-          // Simple estimation: give each subheading some vertical space
-        });
-        itemHeight = element.offsetHeight;
+      const itemTop = getPageY(element);
+
+      // Calculate the bottom of this segment based on the START of the next segment.
+      // This ensures 100% coverage of the scrollable area, including margins.
+      let nextTop;
+      if (index < tocData.length - 1) {
+        const nextItem = tocData[index + 1];
+        const nextElement =
+          nextItem.element || document.getElementById(nextItem.id);
+        nextTop = getPageY(nextElement);
       } else {
-        // For subheadings, estimate height based on content until next heading
-        const nextHeading = getNextHeading(element);
-        if (nextHeading) {
-          itemHeight = nextHeading.offsetTop - element.offsetTop;
-        } else {
-          // Last subheading - use remaining section height
-          const parentSection = element.closest(".section");
-          if (parentSection) {
-            itemHeight =
-              parentSection.offsetTop +
-              parentSection.offsetHeight -
-              element.offsetTop;
-          } else {
-            itemHeight = 100; // fallback
-          }
-        }
+        // The last item extends to the very bottom of the content
+        nextTop = contentBottom;
       }
 
-      // Skip items with negligible height
-      if (itemHeight < 10) itemHeight = 30;
+      // Height is simply the delta
+      let itemHeight = nextTop - itemTop;
 
-      const flexGrow = Math.max((itemHeight / contentHeight) * 100, 1);
+      // Sanity check for negative heights (in case of weird DOM ordering)
+      itemHeight = Math.max(itemHeight, 0);
+
+      // Use the raw pixel height as the flex-grow factor.
+      // Flexbox will distribute the space exactly proportionally to the real document.
+      // We ensure at least 1 unit so it remains technically visible.
+      const flexGrow = Math.max(itemHeight, 1);
 
       const row = document.createElement("a");
       row.href = `#${item.id}`;
@@ -130,11 +132,11 @@
 
       const delay = 100 + index * 15;
       row.innerHTML = `
-                <span class="minimap-item-label" style="transition-delay: ${delay}ms;">
-                    ${item.title}
-                </span>
-                <div class="minimap-dot"></div>
-            `;
+                  <span class="minimap-item-label" style="transition-delay: ${delay}ms;">
+                      ${item.title}
+                  </span>
+                  <div class="minimap-dot"></div>
+              `;
 
       minimapItems.appendChild(row);
     });
@@ -163,45 +165,41 @@
     if (!viewportIndicator || !minimapItems) return;
 
     const contentElement = document.querySelector(".content");
+    const worksCited = document.querySelector(".works-cited");
     if (!contentElement) return;
 
+    // Get the exact dimensions of the viewport and content
     const viewportHeight = window.innerHeight;
     const contentTop = contentElement.offsetTop;
-    const contentHeight = contentElement.offsetHeight;
-    const scrollY = window.scrollY;
 
+    // Calculate total height covered by the minimap
+    const contentBottom = worksCited
+      ? worksCited.offsetTop + worksCited.offsetHeight
+      : contentElement.offsetTop + contentElement.offsetHeight;
+
+    const contentHeight = contentBottom - contentTop;
     const trackHeight = minimapItems.offsetHeight;
 
-    // Calculate viewport position relative to content
-    const contentScrollStart = contentTop - viewportHeight * 0.3;
-    const contentScrollEnd = contentTop + contentHeight - viewportHeight * 0.7;
-    const scrollRange = contentScrollEnd - contentScrollStart;
+    // Calculate the ratio of minimap px to content px
+    const scale = trackHeight / contentHeight;
 
-    // Calculate indicator size and position
-    const viewToContentRatio = viewportHeight / contentHeight;
-    const indicatorHeight = Math.max(
-      Math.min(trackHeight * viewToContentRatio, trackHeight * 0.3),
-      20,
-    );
+    // Use the ratio to calculate the indicator height
+    let indicatorHeight = viewportHeight * scale;
+    indicatorHeight = Math.max(indicatorHeight, 20); // minimum indicator size?
 
-    let scrollProgress = 0;
-    if (scrollRange > 0) {
-      scrollProgress = Math.max(
-        0,
-        Math.min(1, (scrollY - contentScrollStart) / scrollRange),
-      );
-    }
+    // Calculate indicator position
+    const scrollY = window.scrollY;
+    const relativeScroll = scrollY - contentTop;
+    const indicatorTop = relativeScroll * scale;
 
-    const scrollableTrack = trackHeight - indicatorHeight;
-    const scrollAmount = scrollProgress * scrollableTrack;
+    // Then apply styles with bound checking
+    const maxTop = trackHeight - indicatorHeight;
+    const clampedTop = Math.max(0, Math.min(indicatorTop, maxTop));
 
     viewportIndicator.style.height = `${indicatorHeight}px`;
-    viewportIndicator.style.top = `${Math.max(0, Math.min(scrollAmount, scrollableTrack))}px`;
+    viewportIndicator.style.top = `${clampedTop}px`;
 
-    // Update active items - highlight based on viewport position
-    const viewportTop = scrollY;
-    const viewportCenter = scrollY + viewportHeight * 0.4;
-
+    // Update active items - highlight headers that are visible in viewport
     document.querySelectorAll(".minimap-item").forEach((row) => {
       const itemId = row.dataset.section;
       const element = document.getElementById(itemId);
@@ -210,12 +208,16 @@
         return;
       }
 
-      const elementTop = element.offsetTop;
-      const elementBottom = elementTop + element.offsetHeight;
+      // Get the actual header element
+      const header =
+        element.tagName === "H2" || element.tagName === "H3"
+          ? element
+          : element.querySelector("h2") ||
+            element.querySelector("h3") ||
+            element;
 
-      // Element is active if viewport center is within it
-      const isActive =
-        viewportCenter >= elementTop && viewportCenter < elementBottom;
+      const rect = header.getBoundingClientRect();
+      const isActive = rect.top < viewportHeight && rect.bottom > 0;
       row.classList.toggle("active", isActive);
     });
   }
