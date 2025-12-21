@@ -407,8 +407,8 @@ body {
 /* Wrapper for content + minimap layout */
 .content-wrapper {
     display: flex;
-    max-width: calc(var(--max-width) + var(--minimap-width) + 4rem);
-    margin: 0 0 0 auto;
+    max-width: calc(var(--max-width) + var(--minimap-width) + 7rem);
+    margin: 0 auto;
     padding: 0 2rem;
     gap: 3rem;
     align-items: flex-start;
