@@ -1031,3 +1031,97 @@ footer p {
         padding: 1rem 0;
     }
 }
+
+/* ===== CUSTOM AUDIO PLAYER ===== */
+.custom-audio-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.custom-audio-btn {
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease;
+    flex-shrink: 0;
+    padding: 0;
+}
+
+.custom-audio-btn:hover {
+    background: var(--color-accent-light);
+    transform: scale(1.05);
+}
+
+.custom-audio-btn:active {
+    transform: scale(0.95);
+}
+
+.custom-audio-progress-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.custom-audio-progress {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: #e0e0e0; /* Fallback */
+    outline: none;
+    cursor: pointer;
+}
+
+.custom-audio-progress::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.custom-audio-progress::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+.custom-audio-progress::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border: none;
+    border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.custom-audio-progress::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
+
+.custom-audio-time {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    min-width: 65px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Ensure icons in buttons are sized correctly */
+.custom-audio-btn svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: block;
+}
