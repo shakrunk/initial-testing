@@ -1,0 +1,1534 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>
+            Democratic Health Diagnostic Framework | United States Assessment
+        </title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="styles.css" />
+        <style>
+            :root {
+                --color-accent: #1a5f7a;
+                --color-accent-light: #2980b9;
+                --citation-highlight-bg: rgba(26, 95, 122, 0.06);
+                --citation-highlight-strong: rgba(26, 95, 122, 0.15);
+            }
+
+            .hero::before {
+                content: —;
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-image:
+                    radial-gradient(
+                        circle at 20% 50%,
+                        rgba(26, 95, 122, 0.03) 0%,
+                        transparent 50%
+                    ),
+                    radial-gradient(
+                        circle at 80% 20%,
+                        rgba(26, 95, 122, 0.02) 0%,
+                        transparent 40%
+                    );
+                pointer-events: none;
+            }
+
+            .hero-badge {
+                display: inline-block;
+                font-family: var(--font-mono);
+                font-size: 0.7rem;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: var(--color-accent);
+                background: rgba(26, 95, 122, 0.08);
+                padding: 0.5rem 1.25rem;
+                border-radius: 100px;
+                margin-bottom: 2.5rem;
+                animation: fadeInUp 0.8s ease-out 0.2s both;
+            }
+
+            /* Scorecard Banner */
+            .scorecard-banner {
+                background: var(--color-bg-alt);
+                padding: 3rem 2rem;
+                border-bottom: 1px solid var(--color-border);
+            }
+
+            .scorecard-banner-inner {
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+
+            .scorecard-title {
+                font-family: var(--font-serif);
+                font-size: 1.5rem;
+                font-weight: 600;
+                text-align: center;
+                margin-bottom: 0.5rem;
+            }
+
+            .scorecard-subtitle {
+                font-size: 0.9rem;
+                color: var(--color-text-muted);
+                text-align: center;
+                margin-bottom: 2rem;
+            }
+
+            .scorecard-grid {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .scorecard-card {
+                background: white;
+                border: 1px solid var(--color-border);
+                border-radius: 12px;
+                padding: 1.25rem;
+                text-align: center;
+            }
+
+            .scorecard-value {
+                font-family: var(--font-mono);
+                font-size: 2rem;
+                font-weight: 500;
+                margin-bottom: 0.25rem;
+            }
+
+            .scorecard-value.warning {
+                color: var(--color-warning);
+            }
+            .scorecard-value.danger {
+                color: var(--color-danger);
+            }
+            .scorecard-value.info {
+                color: var(--color-accent);
+            }
+
+            .scorecard-label {
+                font-size: 0.8rem;
+                color: var(--color-text-muted);
+                line-height: 1.4;
+            }
+
+            .callout.warning {
+                background: linear-gradient(
+                    90deg,
+                    var(--color-warning) 3px,
+                    var(--color-bg-alt) 3px
+                );
+            }
+
+            .callout.danger {
+                background: linear-gradient(
+                    90deg,
+                    var(--color-danger) 3px,
+                    var(--color-bg-alt) 3px
+                );
+            }
+
+            /* Indicator Box */
+            .indicator-box {
+                background: white;
+                border: 1px solid var(--color-border);
+                border-radius: 8px;
+                padding: 1.5rem;
+                margin: 2rem 0;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            }
+
+            .indicator-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                margin-bottom: 1rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid var(--color-border);
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .indicator-name {
+                font-family: var(--font-serif);
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--color-text);
+            }
+
+            .indicator-meta {
+                display: flex;
+                gap: 1.5rem;
+                font-size: 0.85rem;
+            }
+
+            .indicator-score {
+                font-family: var(--font-mono);
+                font-weight: 600;
+            }
+
+            .indicator-score.high {
+                color: var(--color-success);
+            }
+            .indicator-score.medium {
+                color: var(--color-warning);
+            }
+            .indicator-score.low {
+                color: var(--color-danger);
+            }
+
+            .indicator-trend {
+                display: flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+            .trend-down {
+                color: var(--color-danger);
+            }
+            .trend-stable {
+                color: var(--color-text-muted);
+            }
+            .trend-up {
+                color: var(--color-success);
+            }
+
+            .indicator-assessment {
+                font-weight: 600;
+                color: var(--color-accent);
+                margin-bottom: 0.5rem;
+            }
+
+            .pillar-row td {
+                background: var(--color-bg-alt);
+                font-family: var(--font-serif);
+                font-weight: 600;
+                font-size: 1rem;
+                color: var(--color-accent);
+            }
+
+            /* Responsive */
+            @media (max-width: 768px) {
+                .indicator-header {
+                    flex-direction: column;
+                }
+
+                .scorecard-grid {
+                    grid-template-columns: repeat(2, 1fr);
+                }
+
+                .audio-container {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .series-nav-inner {
+                    flex-direction: column;
+                    gap: 0.75rem;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Citation Tooltip -->
+        <div class="citation-tooltip" id="citationTooltip">
+            <div class="citation-tooltip-header"></div>
+            <div class="citation-tooltip-text"></div>
+        </div>
+
+        <!-- Return to Reading Button -->
+        <a href="#" class="return-to-reading" id="returnToReading">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+            </svg>
+            Return to reading
+        </a>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <!-- Series Navigation -->
+        <div class="series-nav">
+            <div class="series-nav-inner">
+                <span class="series-label">Democratic Health Series:</span>
+                <div class="series-links">
+                    <a href="flawed-democracy.html" class="series-link active"
+                        >Part I: July 2025 Baseline</a
+                    >
+                    <a href="index.html" class="series-link"
+                        >Part II: December 2025 Update</a
+                    >
+                </div>
+            </div>
+        </div>
+
+        <!-- Minimap Sidebar -->
+        <aside class="minimap-sidebar" id="minimapSidebar">
+            <div class="minimap-container">
+                <div class="minimap-header">
+                    <div class="minimap-title">Democratic Health Framework</div>
+                    <div class="minimap-subtitle">July 2025</div>
+                </div>
+                <div class="minimap-track-container">
+                    <div class="minimap-track">
+                        <div class="minimap-viewport-indicator" id="viewportIndicator"></div>
+                    </div>
+                    <div class="minimap-items" id="minimapItems">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <div class="nav-title">
+                    Democratic Health Diagnostic Framework
+                </div>
+                <div class="nav-links">
+                    <a href="#executive-summary" class="nav-link">Summary</a>
+                    <a href="#framework" class="nav-link">Framework</a>
+                    <a href="#pillar-1" class="nav-link">Institutions</a>
+                    <a href="#pillar-2" class="nav-link">Civil Liberties</a>
+                    <a href="#pillar-3" class="nav-link">Culture</a>
+                    <a href="#systemic" class="nav-link">Systemic</a>
+                    <a href="#prognosis" class="nav-link">Prognosis</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero -->
+        <header class="hero">
+            <div class="hero-content">
+                <span class="hero-badge">Baseline Assessment • July 2025</span>
+                <h1 class="hero-title">
+                    A Diagnostic Assessment of Democratic Health in the United
+                    States
+                </h1>
+                <p class="hero-subtitle">
+                    A novel framework for evaluating the resilience and decay of
+                    liberal democracy, validated against historical collapse
+                </p>
+                <div class="hero-meta">
+                    <div class="hero-meta-item">
+                        <span class="hero-meta-label">Published</span>
+                        <span>July 2025</span>
+                    </div>
+                    <div class="hero-meta-item">
+                        <span class="hero-meta-label">Reading Time</span>
+                        <span>~40 minutes</span>
+                    </div>
+                    <div class="hero-meta-item">
+                        <span class="hero-meta-label">Framework</span>
+                        <span>12 indicators, 3 pillars</span>
+                    </div>
+                </div>
+
+                <!-- Audio Overview -->
+                <div class="audio-section">
+                    <div class="audio-container">
+                        <div class="audio-icon">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                            >
+                                <path
+                                    d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"
+                                />
+                            </svg>
+                        </div>
+                        <div class="audio-content">
+                            <div class="audio-label">AI Audio Overview</div>
+                            <div class="audio-title">Listen to the Summary</div>
+                            <audio
+                                class="audio-player"
+                                controls
+                                preload="metadata"
+                            >
+                                <source
+                                    src="America's _Flawed Democracy__ Unpacking the Crisis of Trust and Resilience.mp3"
+                                    type="audio/mpeg"
+                                />
+                                Your browser does not support the audio element.
+                            </audio>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="currentColor"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                    />
+                </svg>
+            </div>
+        </header>
+
+        <!-- Scorecard Banner -->
+        <section class="scorecard-banner">
+            <div class="scorecard-banner-inner">
+                <h2 class="scorecard-title">
+                    U.S. Democratic Health Scorecard (2024)
+                </h2>
+                <p class="scorecard-subtitle">
+                    Scores on a 1-10 scale. 10 of 12 indicators show declining
+                    trends.
+                </p>
+                <div class="scorecard-grid">
+                    <div class="scorecard-card">
+                        <div class="scorecard-value warning">6.3</div>
+                        <div class="scorecard-label">
+                            Pillar I Average<br /><em>Institutions</em>
+                        </div>
+                    </div>
+                    <div class="scorecard-card">
+                        <div class="scorecard-value info">7.1</div>
+                        <div class="scorecard-label">
+                            Pillar II Average<br /><em>Civil Liberties</em>
+                        </div>
+                    </div>
+                    <div class="scorecard-card">
+                        <div class="scorecard-value danger">5.0</div>
+                        <div class="scorecard-label">
+                            Pillar III Average<br /><em>Political Culture</em>
+                        </div>
+                    </div>
+                    <div class="scorecard-card">
+                        <div class="scorecard-value danger">4.0</div>
+                        <div class="scorecard-label">
+                            Lowest Score<br /><em>Public Trust</em>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Full Scorecard Table -->
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indicator</th>
+                                <th>Score</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="pillar-row">
+                                <td colspan="3">
+                                    Pillar I: Foundational Institutions and the
+                                    Rule of Law
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    1.1: Electoral Process Integrity & Pluralism
+                                </td>
+                                <td>
+                                    <span class="indicator-score medium"
+                                        >6.5</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    1.2: Judicial Independence & Adherence to
+                                    Rulings
+                                </td>
+                                <td>
+                                    <span class="indicator-score medium"
+                                        >6.0</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    1.3: Legislative & Executive Checks and
+                                    Balances
+                                </td>
+                                <td>
+                                    <span class="indicator-score medium"
+                                        >6.0</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    1.4: Non-Politicization of the Civil Service
+                                    & Security
+                                </td>
+                                <td>
+                                    <span class="indicator-score medium"
+                                        >6.5</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr class="pillar-row">
+                                <td colspan="3">
+                                    Pillar II: Civil Liberties and the Public
+                                    Sphere
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    2.1: Freedom of Expression, Press, and
+                                    Information
+                                </td>
+                                <td>
+                                    <span class="indicator-score high"
+                                        >7.5</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    2.2: Associational and Organizational Rights
+                                    (Civil Society)
+                                </td>
+                                <td>
+                                    <span class="indicator-score high"
+                                        >8.5</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-stable">"" Stable</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2.3: Academic and Cultural Freedom</td>
+                                <td>
+                                    <span class="indicator-score medium"
+                                        >6.5</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    2.4: Protection from Illegitimate State
+                                    Force & Surveillance
+                                </td>
+                                <td>
+                                    <span class="indicator-score medium"
+                                        >6.0</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-stable">"" Stable</span>
+                                </td>
+                            </tr>
+                            <tr class="pillar-row">
+                                <td colspan="3">
+                                    Pillar III: Political Culture and Norms
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    3.1: Acceptance of Legitimate Political
+                                    Opposition
+                                </td>
+                                <td>
+                                    <span class="indicator-score low">4.5</span>
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3.2: Rejection of Political Violence</td>
+                                <td>
+                                    <span class="indicator-score low">5.5</span>
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3.3: Equal Protection & Minority Rights</td>
+                                <td>
+                                    <span class="indicator-score medium"
+                                        >6.0</span
+                                    >
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    3.4: Public Trust in Democratic Processes
+                                </td>
+                                <td>
+                                    <span class="indicator-score low">4.0</span>
+                                </td>
+                                <td>
+                                    <span class="trend-down">▼ Declining</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Table of Contents -->
+        <section class="toc">
+            <div class="toc-inner">
+                <h2 class="toc-title">Contents</h2>
+                <ol class="toc-list">
+                    <li class="toc-item">
+                        <span class="toc-number">01</span>
+                        <a href="#executive-summary" class="toc-link"
+                            >Executive Summary</a
+                        >
+                    </li>
+                    <li class="toc-item">
+                        <span class="toc-number">02</span>
+                        <a href="#framework" class="toc-link"
+                            >Part I: The Diagnostic Framework</a
+                        >
+                    </li>
+                    <li class="toc-item">
+                        <span class="toc-number">03</span>
+                        <a href="#pillar-1" class="toc-link"
+                            >Part II: Foundational Institutions and the Rule of
+                            Law</a
+                        >
+                    </li>
+                    <li class="toc-item">
+                        <span class="toc-number">04</span>
+                        <a href="#pillar-2" class="toc-link"
+                            >Part II: Civil Liberties and the Public Sphere</a
+                        >
+                    </li>
+                    <li class="toc-item">
+                        <span class="toc-number">05</span>
+                        <a href="#pillar-3" class="toc-link"
+                            >Part II: Political Culture and Norms</a
+                        >
+                    </li>
+                    <li class="toc-item">
+                        <span class="toc-number">06</span>
+                        <a href="#systemic" class="toc-link"
+                            >Part III: Systemic Pressures and Institutional
+                            Resilience</a
+                        >
+                    </li>
+                    <li class="toc-item">
+                        <span class="toc-number">07</span>
+                        <a href="#prognosis" class="toc-link"
+                            >Part IV: Pathways and Prognosis</a
+                        >
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <main class="content">
+            <!-- Executive Summary -->
+            <section class="section" id="executive-summary">
+                <span class="section-number">Section 01</span>
+                <h2>Executive Summary</h2>
+
+                <p>
+                    This report introduces and applies a novel diagnostic
+                    framework for assessing the health of liberal democracies.
+                    The framework is designed to be impartial, universally
+                    applicable, and capable of capturing the nuanced processes
+                    of both democratic resilience and decay. Its efficacy is
+                    validated against the historical case of democratic collapse
+                    in Germany from 1933 to 1938, ensuring its sensitivity to
+                    early warning signs of authoritarianism. The core of this
+                    report is the exhaustive application of this framework to
+                    the current administration of the United States, providing a
+                    data-driven, indicator-by-indicator analysis of the nation's
+                    democratic condition.
+                </p>
+
+                <p>
+                    The diagnostic model is structured around three
+                    interdependent pillars:
+                    <strong
+                        >Pillar I: Foundational Institutions and the Rule of
+                        Law</strong
+                    >, which assesses the state's core architecture;
+                    <strong
+                        >Pillar II: Civil Liberties and the Public
+                        Sphere</strong
+                    >, which evaluates the space for public contestation and
+                    organization; and
+                    <strong>Pillar III: Political Culture and Norms</strong>,
+                    which measures the unwritten rules and shared values that
+                    animate the democratic system. These pillars are
+                    disaggregated into twelve specific, measurable indicators.
+                </p>
+
+                <div class="callout warning">
+                    <p>
+                        <strong>Key Finding:</strong> The assessment reveals a
+                        democratic system under significant and sustained
+                        stress. While the formal architecture of democracy—its
+                        constitutional rights, electoral processes, and legal
+                        structures—largely remains intact, the system is
+                        afflicted by a severe degradation of the political norms
+                        and institutional forbearance that are essential for its
+                        proper functioning.
+                    </p>
+                </div>
+
+                <p>
+                    Foundational institutions, particularly the judiciary and
+                    the electoral process, face acute politicization and a
+                    crisis of public trust. Civil liberties, while robustly
+                    protected by law, are challenged by a polluted information
+                    ecosystem, economic pressures on the free press, and
+                    targeted political attacks on academic freedom. Most
+                    critically, the political culture is characterized by a
+                    severe erosion of mutual toleration, the normalization of
+                    rhetoric that delegitimizes political opposition, and
+                    historically low levels of public confidence in the
+                    democratic process itself.
+                </p>
+
+                <p>
+                    The overall diagnosis is not one of imminent collapse but of
+                    a <strong>"flawed democracy"</strong> exhibiting symptoms of
+                    chronic, low-grade democratic erosion, or "backsliding." The
+                    divergence in assessments from major global indices—with
+                    some rating the U.S. "Free" based on its formal rights and
+                    others "autocratizing" based on the decay of its
+                    processes—is itself a key indicator of this condition.
+                </p>
+            </section>
+
+            <!-- Part I: Framework -->
+            <section class="section" id="framework">
+                <span class="section-number">Section 02</span>
+                <h2>
+                    Part I: A Diagnostic Framework for the Resilience and Decay
+                    of Liberal Democracy
+                </h2>
+
+                <h3>1.1 Introduction to Democratic Assessment Methodologies</h3>
+
+                <p>
+                    The measurement of democracy is a complex and contested
+                    field. Leading global indices, while invaluable, often
+                    produce divergent assessments of the same country due to
+                    differences in methodology, definitions, and the weighting
+                    of various democratic components.<sup>1</sup> For instance,
+                    Freedom House's focus on foundational political rights and
+                    civil liberties may classify a country as "Free," while the
+                    Economist Intelligence Unit (EIU), with its emphasis on
+                    political culture, may deem it a "Flawed Democracy," and the
+                    Varieties of Democracy (V-Dem) project, with its highly
+                    disaggregated data, might identify a process of
+                    "autocratization."<sup>2</sup>
+                </p>
+
+                <p>
+                    This divergence is not a failure of measurement but a
+                    crucial finding in itself. For a stable, healthy democracy,
+                    assessments from credible indices should broadly converge.
+                    <strong
+                        >Significant divergence suggests a system in a state of
+                        contradiction or stress</strong
+                    >, where certain democratic elements remain strong while
+                    others are actively eroding. In the context of the United
+                    States, this points to a persistence of
+                    <em>de jure</em> constitutional rights coexisting with a
+                    severe degradation of <em>de facto</em> institutional
+                    processes and norms.
+                </p>
+
+                <p>
+                    This new framework draws upon the structural clarity of
+                    Freedom House, the multidimensional and disaggregated
+                    approach of V-Dem, the EIU's critical focus on political
+                    culture, the citizen-centric perspective of International
+                    IDEA, and the concept of cultivating democratic values from
+                    the Council of Europe.
+                </p>
+
+                <h3>1.2 Historical Validation: The Point of No Return</h3>
+
+                <p>
+                    To validate its relevance and sensitivity to severe
+                    democratic decay, each indicator in this framework is mapped
+                    to a key event or process during the collapse of the Weimar
+                    Republic and the consolidation of Nazi power in Germany
+                    between 1933 and 1938. This "stress test" ensures the
+                    framework can identify critical warning signs of
+                    authoritarianism.
+                </p>
+
+                <div class="callout danger">
+                    <p>
+                        <strong>Critical Insight:</strong> The erosion of Pillar
+                        III (Political Culture) and Pillar II (Civil
+                        Liberties)""such as the scapegoating of minorities,
+                        attacks on the press, and encouragement of political
+                        violence—are the early, often highly visible, warning
+                        signs. However, as long as
+                        <strong>Pillar I (Foundational Institutions)</strong>
+                        remains intact, a pathway to systemic self-correction
+                        theoretically exists through elections, judicial review,
+                        or legislative action. The true "exit signal" for a
+                        citizen assessing systemic risk is the collapse of
+                        Pillar I. When the legislature is neutered, the civil
+                        service purged, and the judiciary bypassed, the system
+                        loses its capacity for recourse and self-correction.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Pillar I -->
+            <section class="section" id="pillar-1">
+                <span class="section-number">Section 03</span>
+                <h2>Part II: Foundational Institutions and the Rule of Law</h2>
+
+                <p>
+                    This pillar assesses the core architecture of the state: its
+                    electoral system, judiciary, and the checks and balances
+                    between branches of government. The health of these
+                    institutions is the ultimate guarantor of the rule of law
+                    and the primary bulwark against authoritarian consolidation.
+                </p>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >1.1: Electoral Process Integrity & Pluralism</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score medium"
+                                >Score: 6.5/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">
+                        Assessment: Under Severe Stress
+                    </p>
+                    <p>
+                        The formal machinery of U.S. elections remains
+                        functional, and the 2024 general election was conducted
+                        without evidence of widespread, outcome-altering fraud.
+                        However, the ecosystem surrounding the electoral process
+                        is deeply fractured and under severe partisan pressure.
+                        The V-Dem Institute has noted that the quality of
+                        elections is deteriorating in a significant number of
+                        countries, with the U.S. being a prominent case.<sup
+                            >4</sup
+                        >
+                    </p>
+                    <p>
+                        The legislative landscape for voting rights is highly
+                        contested and increasingly divergent at the state level.
+                        In 2024 alone, at least 10 states enacted 19 laws that
+                        make it more difficult for eligible citizens to vote,
+                        while 21 states enacted 32 laws that expand voting
+                        access.<sup>40</sup> This creates a patchwork of rules
+                        where the ease of casting a ballot depends heavily on a
+                        voter's geographic location.
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >1.2: Judicial Independence & Adherence to
+                            Rulings</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score medium"
+                                >Score: 6.0/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">Assessment: Declining</p>
+                    <p>
+                        The U.S. judiciary remains structurally independent and
+                        its rulings are, for the most part, obeyed. However, it
+                        is experiencing a severe crisis of legitimacy driven by
+                        intense and escalating politicization. A 2024 study of
+                        over 400,000 federal appellate cases found that partisan
+                        alignment significantly influences outcomes, even in
+                        non-ideological cases.<sup>47</sup>
+                    </p>
+                    <p>
+                        The Supreme Court's 2024 decision in
+                        <em>Trump v. U.S.</em>, which granted former presidents
+                        absolute immunity from criminal prosecution for "core
+                        constitutional" official acts, was seen by its
+                        dissenters as placing the presidency "above the
+                        law."<sup>17</sup> Public confidence in the judicial
+                        system has plummeted to a record low of 35%, a 24-point
+                        drop since 2020.<sup>48</sup>
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >1.3: Legislative & Executive Checks and
+                            Balances</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score medium"
+                                >Score: 6.0/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">Assessment: Weakening</p>
+                    <p>
+                        The formal system of checks and balances between the
+                        legislative and executive branches remains in place, but
+                        its effectiveness has been significantly weakened by the
+                        erosion of unwritten norms of forbearance and mutual
+                        respect. The legislature has become so crippled by
+                        gridlock that even basic functions, such as passing
+                        appropriations bills, are routinely held hostage.<sup
+                            >39</sup
+                        >
+                        Politicians are increasingly willing to exploit the
+                        letter of constitutional rules in ways that violate
+                        their spirit.<sup>21</sup>
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >1.4: Non-Politicization of the Civil Service &
+                            Security</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score medium"
+                                >Score: 6.5/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">Assessment: At Risk</p>
+                    <p>
+                        The United States has a long-standing tradition of a
+                        professional, non-partisan civil service. This norm is
+                        now under direct and sustained attack. A key tactic in
+                        the modern authoritarian playbook is to politicize
+                        independent institutions by purging officials deemed
+                        insufficiently loyal.<sup>22</sup> There are ongoing
+                        plans and proposals to dismantle civil service
+                        protections and enable mass firings of federal employees
+                        to be replaced with loyalists.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Pillar II -->
+            <section class="section" id="pillar-2">
+                <span class="section-number">Section 04</span>
+                <h2>Part II: Civil Liberties and the Public Sphere</h2>
+
+                <p>
+                    This pillar examines the freedoms that allow citizens to
+                    debate, organize, and contest power. It includes the freedom
+                    of the press, the right to form independent organizations,
+                    and freedom from undue state interference.
+                </p>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >2.1: Freedom of Expression, Press, and
+                            Information</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score high"
+                                >Score: 7.5/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">
+                        Assessment: Contradictory
+                    </p>
+                    <p>
+                        The United States continues to have strong legal
+                        protections for freedom of expression enshrined in the
+                        First Amendment.<sup>26</sup> However, the public sphere
+                        is afflicted by a severely degraded information
+                        ecosystem. The digital sphere is saturated with false,
+                        misleading, and conspiratorial content—a form of
+                        "censorship by noise" that undermines informed
+                        debate.<sup>22</sup> In 2024, at least 49 journalists
+                        were arrested and 80 were assaulted while doing their
+                        jobs.<sup>51</sup>
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >2.2: Associational and Organizational Rights</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score high"
+                                >Score: 8.5/10</span
+                            >
+                            <span class="indicator-trend trend-stable"
+                                >"" Stable</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">
+                        Assessment: Robust but Under Pressure
+                    </p>
+                    <p>
+                        American civil society is vibrant, diverse, and highly
+                        active. A dense network of NGOs, advocacy groups, and
+                        grassroots movements plays a critical role in policy
+                        debates and public mobilization.<sup>25</sup>
+                        Organizations like the ACLU and the Brennan Center are
+                        at the forefront of legal challenges to actions
+                        undermining democratic norms.<sup>53</sup> However, this
+                        pillar is operating in an increasingly hostile political
+                        environment.
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >2.3: Academic and Cultural Freedom</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score medium"
+                                >Score: 6.5/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">Assessment: Declining</p>
+                    <p>
+                        Academic freedom in the United States is facing a
+                        coordinated and politically motivated assault, primarily
+                        at the state level. Since 2021, a wave of educational
+                        "gag orders" has swept through state legislatures. PEN
+                        America estimates that these restrictions have directly
+                        affected 1.3 million public school teachers and 100,000
+                        higher education faculty.<sup>30</sup>
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >2.4: Protection from Illegitimate State Force</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score medium"
+                                >Score: 6.0/10</span
+                            >
+                            <span class="indicator-trend trend-stable"
+                                >"" Stable</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">
+                        Assessment: Mixed with Significant Concerns
+                    </p>
+                    <p>
+                        While the U.S. does not engage in widespread, systematic
+                        repression, there are chronic issues regarding
+                        surveillance and the criminal justice system. Congress
+                        reauthorized Section 702 of FISA without significant
+                        reforms.<sup>26</sup> The incarceration rate remains
+                        among the highest in the world, with stark racial
+                        disparities.<sup>2</sup>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Pillar III -->
+            <section class="section" id="pillar-3">
+                <span class="section-number">Section 05</span>
+                <h2>Part II: Political Culture and Norms</h2>
+
+                <p>
+                    This pillar assesses the informal "rules of the game—"the
+                    shared values, beliefs, and behaviors that underpin a
+                    democracy's formal institutions. The erosion of these norms
+                    is often the earliest and most telling indicator of
+                    democratic backsliding.
+                </p>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >3.1: Acceptance of Legitimate Political
+                            Opposition</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score low"
+                                >Score: 4.5/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">
+                        Assessment: Severely Degraded
+                    </p>
+                    <p>
+                        The norm of mutual toleration—the idea that political
+                        opponents are legitimate adversaries with a right to
+                        govern, not treasonous enemies—has been severely
+                        degraded. This is arguably the most critical symptom of
+                        democratic decay currently present in the country.
+                        Leaders increasingly employ language that casts
+                        opponents as corrupt, un-American, and an existential
+                        threat.<sup>18</sup>
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >3.2: Rejection of Political Violence</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score low"
+                                >Score: 5.5/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">Assessment: Declining</p>
+                    <p>
+                        The most stark example was the January 6, 2021, attack
+                        on the U.S. Capitol—an act of political violence
+                        intended to disrupt the peaceful transfer of power.<sup
+                            >2</sup
+                        >
+                        Beyond this, there has been a proliferation of threats
+                        and intimidation targeting elected officials, judges,
+                        and election administrators. The percentage of Americans
+                        who believe violence is "sometimes justified" has
+                        doubled since 2017.<sup>14</sup>
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >3.3: Equal Protection & Minority Rights</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score medium"
+                                >Score: 6.0/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">
+                        Assessment: Under Pressure
+                    </p>
+                    <p>
+                        The racial wealth gap has remained largely unchanged for
+                        50 years, with Black families holding just 24 cents for
+                        every dollar of white family wealth.<sup>60</sup>
+                        Structural inequalities are compounded by restrictive
+                        voting laws with disproportionate impact on minority
+                        communities, abusive border policies, and new threats to
+                        LGBTQ rights.<sup>2</sup>
+                    </p>
+                </div>
+
+                <div class="indicator-box">
+                    <div class="indicator-header">
+                        <span class="indicator-name"
+                            >3.4: Public Trust in Democratic Processes</span
+                        >
+                        <div class="indicator-meta">
+                            <span class="indicator-score low"
+                                >Score: 4.0/10</span
+                            >
+                            <span class="indicator-trend trend-down"
+                                >▼ Declining</span
+                            >
+                        </div>
+                    </div>
+                    <p class="indicator-assessment">
+                        Assessment: Critically Low and Declining
+                    </p>
+                    <p>
+                        Public trust in democratic institutions is at a historic
+                        nadir. A 2024 Pew poll found that 72% of Americans
+                        believe the U.S. used to be a good example of democracy
+                        but no longer is.<sup>38</sup> A record 80% believe
+                        Americans are greatly divided on the most important
+                        values.<sup>63</sup> Trust in the federal government
+                        remains near historic lows, with only 18% saying they
+                        trust it to do what is right most of the time.<sup
+                            >39</sup
+                        >
+                    </p>
+                </div>
+            </section>
+
+            <!-- Part III: Systemic Pressures -->
+            <section class="section" id="systemic">
+                <span class="section-number">Section 06</span>
+                <h2>
+                    Part III: Systemic Pressures and Institutional Resilience
+                </h2>
+
+                <p>
+                    The symptoms of democratic ill-health are driven by deep,
+                    systemic pressures that have been building for decades.
+                </p>
+
+                <h3>3.1 The Role of Money and Influence</h3>
+
+                <p>
+                    The influence of money in American politics fundamentally
+                    undermines the democratic principle of political equality.
+                    The 2024 election cycle broke all previous records:
+                    presidential candidates raised over $2 billion,
+                    congressional candidates raised $3.8 billion, and PACs
+                    raised an astronomical $15.7 billion.<sup>66</sup> The
+                    Brennan Center reports that the 2024 election saw more money
+                    than ever from wealthy megadonors, dwarfing the
+                    contributions of small donors.<sup>67</sup>
+                </p>
+
+                <h3>3.2 The Digital Sphere: Mobilization vs. Fragmentation</h3>
+
+                <p>
+                    Digital technology is a profoundly double-edged sword. A
+                    majority of Americans believe social media has been bad for
+                    democracy: 74% of Republicans and 57% of Democrats.<sup
+                        >62</sup
+                    >
+                    The advent of generative AI adds a dangerous new dimension,
+                    with campaigns using AI-generated images to attack
+                    opponents.<sup>68</sup>
+                </p>
+
+                <h3>3.3 Socio-Economic Divides</h3>
+
+                <p>
+                    Decades of rising economic inequality, wage stagnation, and
+                    eroding social mobility have created fertile ground for
+                    political discontent and polarization. The failure of
+                    democratic institutions to deliver adequate socioeconomic
+                    goods can lead voters to abandon them for populist,
+                    anti-establishment leaders.<sup>65</sup>
+                </p>
+            </section>
+
+            <!-- Part IV: Prognosis -->
+            <section class="section" id="prognosis">
+                <span class="section-number">Section 07</span>
+                <h2>Part IV: Pathways and Prognosis</h2>
+
+                <h3>4.1 Identifying Critical Vulnerabilities</h3>
+
+                <p>
+                    The most acute vulnerability is the dangerous feedback loop
+                    created by the convergence of three trends: the collapse of
+                    public trust (3.4), the rejection of the legitimacy of
+                    political opposition (3.1), and the escalating
+                    politicization of foundational institutions (Pillar I).
+                </p>
+
+                <div class="callout danger">
+                    <p>
+                        When citizens lose faith in the system, they become
+                        receptive to leaders who amplify this cynicism. These
+                        leaders then employ rhetoric casting opponents as
+                        enemies, creating a political permission structure to
+                        attack constraining institutions. Each successful attack
+                        further validates public cynicism, creating a
+                        self-reinforcing cycle of decay. This is the core
+                        dynamic of democratic backsliding observed globally.
+                    </p>
+                </div>
+
+                <h3>4.2 Sources of Resilience</h3>
+
+                <p>
+                    Despite these severe stresses, the U.S. retains significant
+                    sources of resilience:
+                </p>
+
+                <ul>
+                    <li>
+                        <strong>The Broader Judiciary:</strong> Lower courts
+                        have repeatedly ruled against executive overreach,
+                        demonstrating commitment to the rule of law over
+                        partisan loyalty.<sup>2</sup>
+                    </li>
+                    <li>
+                        <strong>Civil Society:</strong> A diverse ecosystem of
+                        legal organizations, advocacy groups, and grassroots
+                        movements actively counters democratic erosion.<sup
+                            >55</sup
+                        >
+                    </li>
+                    <li>
+                        <strong>Federalism:</strong> State governments can serve
+                        as laboratories of democracy and refuges for democratic
+                        practice.<sup>40</sup>
+                    </li>
+                    <li>
+                        <strong>Political Engagement:</strong> Voter turnout has
+                        reached historic highs, suggesting continued citizen
+                        investment.<sup>62</sup>
+                    </li>
+                </ul>
+
+                <h3>4.3 Strategic Recommendations</h3>
+
+                <ol>
+                    <li>
+                        <strong>Depoliticize Foundational Institutions:</strong>
+                        Federal legislation for national election standards; a
+                        binding Supreme Court ethics code; strengthened civil
+                        service protections.
+                    </li>
+                    <li>
+                        <strong>Combat Disinformation:</strong> Robust
+                        transparency laws for online political advertising;
+                        public support for independent journalism; media
+                        literacy education.
+                    </li>
+                    <li>
+                        <strong>Bridge Partisan Divides:</strong> Investment in
+                        civic organizations facilitating inter-group dialogue
+                        and collaboration.<sup>63</sup>
+                    </li>
+                    <li>
+                        <strong>Address Economic Discontent:</strong> Policies
+                        that reduce wealth disparities, strengthen the social
+                        safety net, and provide greater economic security.<sup
+                            >63</sup
+                        >
+                    </li>
+                </ol>
+            </section>
+        </main>
+
+        <!-- Works Cited -->
+        <section class="works-cited" id="works-cited">
+            <div class="works-cited-inner">
+                <h2>Selected Works Cited</h2>
+                <ol class="citation-list">
+                    <li class="citation-item" id="cite-1">
+                        <span class="citation-number">1.</span
+                        ><span class="citation-text"
+                            >Measuring Democracy - Library of Parliament</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-2">
+                        <span class="citation-number">2.</span
+                        ><span class="citation-text"
+                            >United States: Freedom in the World 2024 Country
+                            Report - Freedom House</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-4">
+                        <span class="citation-number">4.</span
+                        ><span class="citation-text"
+                            >Autocracies outnumber democracies for the first
+                            time in 20 years - V-Dem</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-14">
+                        <span class="citation-number">14.</span
+                        ><span class="citation-text"
+                            >Democratic backsliding in the United States -
+                            Wikipedia</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-17">
+                        <span class="citation-number">17.</span
+                        ><span class="citation-text"
+                            >Eroding Checks and Balances: The Immunity Decision
+                            - Georgetown GAI</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-18">
+                        <span class="citation-number">18.</span
+                        ><span class="citation-text"
+                            >The Authoritarian Regime Survival Guide -
+                            Verfassungsblog</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-21">
+                        <span class="citation-number">21.</span
+                        ><span class="citation-text"
+                            >The Crisis of American Democracy - AFT</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-22">
+                        <span class="citation-number">22.</span
+                        ><span class="citation-text"
+                            >The Authoritarian Playbook - Protect
+                            Democracy</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-26">
+                        <span class="citation-number">26.</span
+                        ><span class="citation-text"
+                            >United States: Freedom on the Net 2024 - Freedom
+                            House</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-30">
+                        <span class="citation-number">30.</span
+                        ><span class="citation-text"
+                            >Defending Academic Freedom - American Federation of
+                            Teachers</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-38">
+                        <span class="citation-number">38.</span
+                        ><span class="citation-text"
+                            >Democracy Research - Pew Research Center</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-39">
+                        <span class="citation-number">39.</span
+                        ><span class="citation-text"
+                            >Ten Warning Signs that Democracies Are Under Siege
+                            - Aspen Institute</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-40">
+                        <span class="citation-number">40.</span
+                        ><span class="citation-text"
+                            >State Voting Laws - Brennan Center for
+                            Justice</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-47">
+                        <span class="citation-number">47.</span
+                        ><span class="citation-text"
+                            >Study Shows Increasing Partisanship in Federal
+                            Circuit Courts - NYU</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-48">
+                        <span class="citation-number">48.</span
+                        ><span class="citation-text"
+                            >Americans Pass Judgment on Their Courts - Gallup
+                            News</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-60">
+                        <span class="citation-number">60.</span
+                        ><span class="citation-text"
+                            >World Report 2024: United States - Human Rights
+                            Watch</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-63">
+                        <span class="citation-number">63.</span
+                        ><span class="citation-text"
+                            >Why Polarization Is a Problem - Carnegie
+                            Corporation</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-65">
+                        <span class="citation-number">65.</span
+                        ><span class="citation-text"
+                            >Misunderstanding Democratic Backsliding - Journal
+                            of Democracy</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-66">
+                        <span class="citation-number">66.</span
+                        ><span class="citation-text"
+                            >Statistical Summary of 2023-2024 Election Cycle -
+                            FEC</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-67">
+                        <span class="citation-number">67.</span
+                        ><span class="citation-text"
+                            >Money in the 2024 Election - Brennan Center for
+                            Justice</span
+                        >
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                Democratic Health Diagnostic Framework • Baseline Assessment •
+                July 2025
+            </p>
+        </footer>
+
+        <script src="scripts.js"></script>
+    </body>
+</html>
