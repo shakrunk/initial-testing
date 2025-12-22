@@ -1470,3 +1470,63 @@ textarea.comment-input {
     font-style: italic;
     padding: 2rem 0;
 }
+
+/* ===== COMMENTS SECTION ADJUSTMENTS ===== */
+.comments-section {
+    background: var(--color-bg); /* Use main bg, not alt, since works cited is alt */
+    padding: 4rem 2rem;
+    border-top: 1px solid var(--color-border);
+}
+
+.comments-inner {
+    max-width: var(--max-width);
+    margin: 0 auto;
+}
+
+/* Threaded Comments */
+.comment-card {
+    position: relative;
+    /* Reset margins as needed */
+}
+
+.comment-replies {
+    margin-left: 2rem;
+    border-left: 2px solid var(--color-border);
+    padding-left: 1rem;
+    margin-top: 1rem;
+}
+
+.comment-reply-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 1rem;
+    text-decoration: underline;
+}
+
+.comment-reply-btn:hover {
+    color: var(--color-accent);
+}
+
+.reply-form-container {
+    margin-top: 1rem;
+    margin-left: 2rem;
+    padding: 1rem;
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-border);
+    border-radius: 4px;
+}
+
+@media (max-width: 600px) {
+    .comment-replies {
+        margin-left: 1rem;
+        padding-left: 0.5rem;
+    }
+
+    .reply-form-container {
+        margin-left: 0;
+    }
+}
