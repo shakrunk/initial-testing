@@ -222,6 +222,48 @@
     });
   }
 
+  // ===== HEADING LINKS =====
+  function setupHeadingLinks() {
+    const content = document.querySelector(".content");
+    if (!content) return;
+
+    // Process h2 elements (section headers)
+    content.querySelectorAll(".section").forEach((section) => {
+      const h2 = section.querySelector("h2");
+      if (h2 && section.id) {
+        // Create anchor link
+        const anchor = document.createElement("a");
+        anchor.href = `#${section.id}`;
+        anchor.className = "heading-anchor";
+        anchor.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        `;
+        anchor.ariaLabel = "Link to this section";
+        h2.appendChild(anchor);
+      }
+    });
+
+    // Process h3 elements (subheaders)
+    content.querySelectorAll("h3").forEach((h3) => {
+      if (h3.id) {
+        const anchor = document.createElement("a");
+        anchor.href = `#${h3.id}`;
+        anchor.className = "heading-anchor";
+        anchor.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+          </svg>
+        `;
+        anchor.ariaLabel = "Link to this section";
+        h3.appendChild(anchor);
+      }
+    });
+  }
+
   // ===== CITATION SYSTEM =====
   function setupCitations() {
     if (!citationTooltip) return;
@@ -566,6 +608,142 @@
     }
   }
 
+  // ===== TEXT SELECTION MENU =====
+  function setupSelectionMenu() {
+    // Create the menu element
+    const menu = document.createElement("div");
+    menu.className = "selection-menu";
+    menu.id = "selectionMenu";
+    menu.innerHTML = `
+      <button class="selection-btn" id="btnCopyText">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" fill="none" stroke="currentColor" stroke-width="2"></path></svg>
+        Copy
+      </button>
+      <div class="selection-divider"></div>
+      <button class="selection-btn" id="btnCopyLink">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        Link
+      </button>
+      <div class="selection-divider"></div>
+      <button class="selection-btn" id="btnShareTwitter">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+        Tweet
+      </button>
+    `;
+    document.body.appendChild(menu);
+
+    const btnCopyText = document.getElementById("btnCopyText");
+    const btnCopyLink = document.getElementById("btnCopyLink");
+    const btnShareTwitter = document.getElementById("btnShareTwitter");
+
+    // Action Handlers
+    btnCopyText.addEventListener("click", () => {
+      const selection = window.getSelection();
+      const text = selection.toString();
+      if (text) {
+        navigator.clipboard.writeText(text).then(() => {
+          // Visual feedback could be added here
+          menu.classList.remove("visible");
+          selection.removeAllRanges();
+        });
+      }
+    });
+
+    btnCopyLink.addEventListener("click", () => {
+      const selection = window.getSelection();
+      const text = selection.toString();
+      if (text) {
+        // Simple encoding for demo. Robust implementation would need full Text Fragment logic
+        // For now, we'll just encode the text.
+        // If text is very long, we might want to trim or use prefix/suffix, but that's complex.
+        const encodedText = encodeURIComponent(text);
+        const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
+        navigator.clipboard.writeText(url).then(() => {
+          menu.classList.remove("visible");
+          selection.removeAllRanges();
+        });
+      }
+    });
+
+    btnShareTwitter.addEventListener("click", () => {
+      const selection = window.getSelection();
+      const text = selection.toString();
+      if (text) {
+        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent('"' + text + '"')}&url=${encodeURIComponent(window.location.href)}`;
+        window.open(twitterUrl, '_blank');
+        menu.classList.remove("visible");
+        selection.removeAllRanges();
+      }
+    });
+
+    // Show/Hide Logic
+    function handleSelection() {
+      const selection = window.getSelection();
+      const text = selection.toString().trim();
+
+      if (text.length > 0) {
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+
+        // Position menu above the selection
+        // Center horizontally
+        let left = rect.left + rect.width / 2 - menu.offsetWidth / 2;
+        // Ensure it doesn't go off screen
+        left = Math.max(10, Math.min(left, window.innerWidth - menu.offsetWidth - 10));
+
+        let top = rect.top - menu.offsetHeight - 10;
+        // If too close to top, show below
+        if (top < 0) {
+            top = rect.bottom + 10;
+        }
+
+        menu.style.left = `${left + window.scrollX}px`;
+        menu.style.top = `${top + window.scrollY}px`;
+        menu.classList.add("visible");
+      } else {
+        menu.classList.remove("visible");
+      }
+    }
+
+    // Debounce selection change to avoid rapid firing
+    let debounceTimer;
+    document.addEventListener("selectionchange", () => {
+      clearTimeout(debounceTimer);
+      // Hide immediately on change, then wait to show
+      // This feels snappier than dragging with the box moving
+      if (window.getSelection().isCollapsed) {
+          menu.classList.remove("visible");
+      }
+
+      debounceTimer = setTimeout(() => {
+          // Only show if mouse is up (user finished selecting)
+          // We can't easily detect mouse state here, so we rely on mouseup too
+      }, 500);
+    });
+
+    document.addEventListener("mouseup", (e) => {
+        // Prevent clearing selection when clicking the menu itself
+        if (menu.contains(e.target)) return;
+
+        // Small timeout to let selection settle
+        setTimeout(handleSelection, 10);
+    });
+
+    document.addEventListener("keyup", (e) => {
+       if (e.key === "Shift" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
+           setTimeout(handleSelection, 10);
+       }
+    });
+
+    // Hide on scroll to prevent detached UI
+    window.addEventListener("scroll", () => {
+         if (menu.classList.contains("visible")) {
+             menu.classList.remove("visible");
+             // Optional: Deselect text? No, that's annoying.
+         }
+    }, { passive: true });
+  }
+
   // ===== EVENT LISTENERS =====
   function setupEventListeners() {
     window.addEventListener("scroll", function () {
@@ -582,6 +760,8 @@
   function init() {
     setupTheme();
     initMinimap();
+    setupHeadingLinks();
+    setupSelectionMenu();
     setupCitations();
     setupReturnToReading();
     setupMinimapNavigation();
