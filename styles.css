@@ -218,6 +218,7 @@ body {
     margin: 0 auto 1.5rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
+    animation: fadeInUp 0.8s ease-out 0.8s both;
 }
 
 .hero-meta {
@@ -227,7 +228,7 @@ body {
     flex-wrap: wrap;
     font-size: 0.85rem;
     color: var(--color-text-muted);
-    animation: fadeInUp 0.8s ease-out 0.8s both;
+    animation: fadeInUp 0.8s ease-out 1s both;
 }
 
 .hero-meta-item {
@@ -241,24 +242,36 @@ body {
     color: var(--color-text);
 }
 
-/* Audio Player */
+/* Audio Section Wrapper */
 .audio-section {
     margin-top: 3rem;
-    animation: fadeInUp 0.8s ease-out 1s both;
+    animation: fadeInUp 0.8s ease-out 1.2s both;
 }
 
+/* Main Audio Cart Container */
 .audio-container {
     background: white;
     border-radius: 16px;
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    max-width: 500px;
-    margin: 0 auto;
     border: 1px solid var(--color-border);
-    cursor: pointer;
+    max-width: 600px;
+    margin: 0 auto;
+
+    /* Layout: Vertical Stack */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ---- TOP: Header Group ---- */
+.audio-header {
+    display: flex;
+    flex-direction: row-wrap; /* Stack Icon on top of text */
+    align-items: center;
+    gap: 1rem;
+    text-align: start;
+    margin-bottom: 1rem;
 }
 
 .audio-icon {
@@ -269,22 +282,16 @@ body {
         var(--color-accent) 0%,
         var(--color-accent-light) 100%
     );
-    border-radius: 50%;
+    border-radius: 20%;
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0;
 }
 
 .audio-icon svg {
     width: 24px;
     height: 24px;
     fill: white;
-}
-
-.audio-content {
-    flex: 1;
-    min-width: 0;
 }
 
 .audio-label {
@@ -294,31 +301,114 @@ body {
     text-transform: uppercase;
     color: var(--color-accent);
     margin-bottom: 0.25rem;
+    margin-top: 0.75rem;
 }
 
 .audio-title {
     font-family: var(--font-serif);
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--color-text);
     margin-bottom: 0.75rem;
     line-height: 1.3;
 }
 
-.audio-player {
+/* --- MIDDLE: Scrubber Row --- */
+.audio-scrubber-row {
     width: 100%;
-    height: 36px;
-    border-radius: 8px;
-    filter: sepia(20%) saturate(70%) grayscale(1) contrast(99%) invert(12%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.audio-player::-webkit-media-controls-panel {
-    background: var(--color-bg-alt);
+.time-text {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #666; /* or var(--color-text-light) */
+    width: 35px; /* Fixed width prevents jitter */
+    text-align: center;
 }
 
-.audio-player::-webkit-media-controls-play-button {
-    background-color: var(--color-accent);
+/* Custom Range Slider Styling */
+.custom-range {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: #e5e7eb; /* Light gray background */
+    outline: none;
+    cursor: pointer;
+}
+
+/* Slider Thumb (The handle) */
+.custom-range::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
+    background: var(--color-accent);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.custom-range::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* --- BOTTOM: Controls Row --- */
+.audio-controls-row {
+    display: flex;
+    align-items: center;
+    gap: 2rem; /* Spacing between buttons */
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition:
+        opacity 0.2s,
+        transform 0.1s;
+}
+
+.control-btn:hover {
+    opacity: 0.8;
+}
+
+.control-btn:hover svg {
+    fill: var(--color-accent);
+}
+
+.control-btn:active {
+    transform: scale(0.95);
+}
+
+/* Specific Sizes */
+.control-btn.sm svg {
+    width: 24px;
+    height: 24px;
+    fill: #999; /* Lighter color for secondary controls */
+}
+
+.control-btn.lg {
+    width: 64px;
+    height: 64px;
+    background-color: transparent;
+    border-radius: 50%;
+    color: white;
+}
+
+.control-btn.lg svg {
+    width: 48px;
+    height: 48px;
+    fill: #999;
 }
 
 .scroll-indicator {
@@ -327,7 +417,7 @@ body {
     padding-bottom: 1rem;
     cursor: pointer;
     animation:
-        fadeInUp 0.8s ease-out 1s both,
+        fadeInUp 0.8s ease-out 1.4s both,
         bounce 2s ease-in-out 2s infinite;
 }
 
@@ -984,17 +1074,19 @@ footer p {
     }
 
     .hero {
-        min-height: 100vh;
+        min-height: calc(100vh - 6rem);
         margin-top: 0;
+        padding: 2rem 1.5rem;
     }
 
-    .hero {
-        min-height: auto;
-        padding: 6rem 1.5rem 4rem;
+    .hero-subtitle {
+        text-align: center;
+        margin-bottom: 1rem;
     }
 
     .hero-meta-toggle {
         display: block;
+        margin-bottom: 0;
     }
 
     .hero-meta {
@@ -1032,6 +1124,10 @@ footer p {
     .audio-container {
         flex-direction: column;
         text-align: center;
+    }
+
+    .audio-section {
+        margin-top: 1rem;
     }
 
     .return-to-reading {
@@ -1087,7 +1183,9 @@ footer p {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: transform 0.2s ease, background 0.2s ease;
+    transition:
+        transform 0.2s ease,
+        background 0.2s ease;
     flex-shrink: 0;
     padding: 0;
 }
@@ -1110,6 +1208,7 @@ footer p {
 .custom-audio-progress {
     width: 100%;
     -webkit-appearance: none;
+    appearance: none;
     height: 4px;
     border-radius: 2px;
     background: #e0e0e0; /* Fallback */

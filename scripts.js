@@ -462,6 +462,85 @@
     });
   }
 
+  // ===== AUDIO PLAYER =====
+  function setupAudioPlayer() {
+    const audio = document.getElementById("audio");
+    if (!audio) return;
+
+    const playBtn = document.getElementById("playBtn");
+    const playIcon = document.getElementById("playIcon");
+    const pauseIcon = document.getElementById("pauseIcon");
+    const seekSlider = document.getElementById("seekSlider");
+    const currTime = document.getElementById("currTime");
+    const durTime = document.getElementById("durTime");
+    const rwBtn = document.getElementById("rwBtn");
+    const ffBtn = document.getElementById("ffBtn");
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+    }
+
+    function updateSliderBackground(value) {
+      if (!seekSlider) return;
+      const percentage = value || 0;
+      // This creates a gradient: Accent Color up to X%, Gray after X%
+      seekSlider.style.background = `linear-gradient(to right, var(--color-accent) ${percentage}%, #e5e7eb ${percentage}%)`;
+    }
+
+    // Toggle Play/Pause
+    playBtn?.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+      } else {
+        audio.pause();
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+      }
+    });
+
+    // Update Slider & Time as audio plays
+    audio.addEventListener("timeupdate", () => {
+      const current = audio.currentTime;
+      const duration = audio.duration;
+
+      if (duration && seekSlider) {
+        const percentage = (current / duration) * 100;
+        seekSlider.value = percentage;
+        updateSliderBackground(percentage);
+      }
+
+      if (currTime) currTime.textContent = formatTime(current);
+      if (durTime && duration) {
+        durTime.textContent = "-" + formatTime(duration - current);
+      }
+    });
+
+    // Seek functionality
+    seekSlider?.addEventListener("input", () => {
+      if (audio.duration) {
+        audio.currentTime = (seekSlider.value / 100) * audio.duration;
+      }
+    });
+
+    // Rewind / Fast Forward
+    rwBtn?.addEventListener("click", () => {
+      audio.currentTime = Math.max(0, audio.currentTime - 15);
+    });
+
+    ffBtn?.addEventListener("click", () => {
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 15);
+    });
+
+    // Set initial duration
+    audio.addEventListener("loadedmetadata", () => {
+      if (durTime) durTime.textContent = "-" + formatTime(audio.duration);
+    });
+  }
+
   // ===== EVENT LISTENERS =====
   function setupEventListeners() {
     window.addEventListener("scroll", function () {
@@ -483,6 +562,7 @@
     setupTocNavigation();
     setupMetaToggle();
     setupScrollIndicator();
+    setupAudioPlayer();
     setupEventListeners();
   }
 
