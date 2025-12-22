@@ -1090,8 +1090,118 @@ footer p {
     text-align: center;
 }
 
+/* ===== MOBILE TOC BUTTON & OVERLAY ===== */
+.mobile-toc-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1001; /* Above return-to-reading (1000) */
+    cursor: pointer;
+    transition: transform var(--transition), background var(--transition);
+}
+
+.mobile-toc-btn:hover {
+    transform: scale(1.05);
+    background: var(--color-accent-light);
+}
+
+.mobile-toc-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.mobile-toc-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-bg);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 2rem;
+}
+
+.mobile-toc-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.mobile-toc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.mobile-toc-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-toc-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-toc-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+}
+
+.mobile-toc-content .toc-list {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+}
+
+.mobile-toc-content .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.mobile-toc-content .toc-link {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+    display: block;
+}
+
 /* ===== DESKTOP STYLES ===== */
 @media (min-width: 1200px) {
+    .mobile-toc-btn {
+        display: none;
+    }
+
     .minimap-sidebar {
         display: block;
         grid-column: 3;
