@@ -18,6 +18,18 @@
     --minimap-width: 200px;
 }
 
+/* Dark Mode Overrides */
+[data-theme="dark"] {
+    --color-bg: #1a1a1a;
+    --color-bg-alt: #222222;
+    --color-text: #e0e0e0;
+    --color-text-muted: #a0a0a0;
+    --color-border: #333333;
+    --color-highlight: #333300;
+    --color-nav-bg: rgba(26, 26, 26, 0.85);
+    /* Accents are handled per-page */
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -101,6 +113,40 @@ body {
 }
 
 .series-link .short-text {
+    display: none;
+}
+
+/* ===== THEME TOGGLE BUTTON ===== */
+.theme-toggle {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--transition);
+}
+
+.theme-toggle:hover {
+    color: var(--color-accent);
+}
+
+.theme-toggle .sun-icon {
+    display: none;
+}
+
+.theme-toggle .moon-icon {
+    display: block;
+}
+
+/* When dark theme is active, swap icons */
+[data-theme="dark"] .theme-toggle .sun-icon {
+    display: block;
+}
+
+[data-theme="dark"] .theme-toggle .moon-icon {
     display: none;
 }
 
