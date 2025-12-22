@@ -608,26 +608,49 @@
     }
   }
 
+  // ===== TOAST NOTIFICATION =====
+  function showToast(message) {
+    let toast = document.getElementById("toastNotification");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "toastNotification";
+      toast.className = "toast-notification";
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.classList.add("visible");
+
+    // Reset any existing timeout
+    if (toast.timeoutId) clearTimeout(toast.timeoutId);
+
+    toast.timeoutId = setTimeout(() => {
+      toast.classList.remove("visible");
+    }, 2500);
+  }
+
   // ===== TEXT SELECTION MENU =====
   function setupSelectionMenu() {
     // Create the menu element
     const menu = document.createElement("div");
     menu.className = "selection-menu";
     menu.id = "selectionMenu";
+
+    // Improved Icons (Standard Feather/Lucide)
     menu.innerHTML = `
-      <button class="selection-btn" id="btnCopyText">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" fill="none" stroke="currentColor" stroke-width="2"></path></svg>
+      <button class="selection-btn" id="btnCopyText" aria-label="Copy Text">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
         Copy
       </button>
       <div class="selection-divider"></div>
-      <button class="selection-btn" id="btnCopyLink">
+      <button class="selection-btn" id="btnCopyLink" aria-label="Copy Link to Highlight">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
         Link
       </button>
       <div class="selection-divider"></div>
-      <button class="selection-btn" id="btnShareTwitter">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
-        Tweet
+      <button class="selection-btn" id="btnShareTwitter" aria-label="Share on X">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.67l-13.8-18h-4.67z"></path><path d="M4 20l6.768-6.156 2.428 3.39 6.804 2.766"></path></svg>
+        X / Tweet
       </button>
     `;
     document.body.appendChild(menu);
@@ -642,7 +665,7 @@
       const text = selection.toString();
       if (text) {
         navigator.clipboard.writeText(text).then(() => {
-          // Visual feedback could be added here
+          showToast("Copied to clipboard!");
           menu.classList.remove("visible");
           selection.removeAllRanges();
         });
@@ -653,12 +676,13 @@
       const selection = window.getSelection();
       const text = selection.toString();
       if (text) {
-        // Simple encoding for demo. Robust implementation would need full Text Fragment logic
-        // For now, we'll just encode the text.
-        // If text is very long, we might want to trim or use prefix/suffix, but that's complex.
-        const encodedText = encodeURIComponent(text);
+        // Robust Text Fragment: encodeURIComponent handles spaces, but strict Text Fragment might need specific char handling.
+        // For general usage, this is "good enough" for short selections.
+        // A production-grade solution would minimize the text (prefix-, suffix-).
+        const encodedText = encodeURIComponent(text).replace(/-/g, "%2D"); // Hyphens must be encoded in text fragments
         const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
         navigator.clipboard.writeText(url).then(() => {
+          showToast("Link copied to clipboard!");
           menu.classList.remove("visible");
           selection.removeAllRanges();
         });
