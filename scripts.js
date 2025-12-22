@@ -131,12 +131,17 @@
       row.dataset.section = item.id;
 
       const delay = 100 + index * 15;
-      row.innerHTML = `
-                  <span class="minimap-item-label" style="transition-delay: ${delay}ms;">
-                      ${item.title}
-                  </span>
-                  <div class="minimap-dot"></div>
-              `;
+
+      const label = document.createElement("span");
+      label.className = "minimap-item-label";
+      label.style.transitionDelay = `${delay}ms`;
+      label.textContent = item.title;
+
+      const dot = document.createElement("div");
+      dot.className = "minimap-dot";
+
+      row.appendChild(label);
+      row.appendChild(dot);
 
       minimapItems.appendChild(row);
     });
