@@ -309,14 +309,34 @@
           // Scroll to citation
           target.scrollIntoView({ behavior: "smooth", block: "center" });
 
-          // Add highlight after scroll
-          setTimeout(() => {
-            target.classList.add("highlighted");
-            if (returnToReading) {
-              returnToReading.href = `#${lastClickedCitation}`;
-              returnToReading.classList.add("visible");
+          // Add highlight after scroll - POLL until visible
+          let attempts = 0;
+          const maxAttempts = 180; // Approx 3 seconds at 60fps
+
+          const checkScrollEnd = () => {
+            const rect = target.getBoundingClientRect();
+            // Check if target is at least partially in view
+            const isVisible = !(
+              rect.bottom < 0 || rect.top > window.innerHeight
+            );
+
+            if (isVisible) {
+              target.classList.add("highlighted");
+              if (returnToReading) {
+                returnToReading.href = `#${lastClickedCitation}`;
+                returnToReading.classList.add("visible");
+              }
+            } else {
+              attempts++;
+              if (attempts < maxAttempts) {
+                // Still scrolling? Check again.
+                requestAnimationFrame(checkScrollEnd);
+              }
             }
-          }, 400);
+          };
+
+          // Start polling
+          requestAnimationFrame(checkScrollEnd);
         }
       });
     });
@@ -404,6 +424,123 @@
     });
   }
 
+  // ===== MOBILE METADATA TOGGLE =====
+  function setupMetaToggle() {
+    const toggle = document.querySelector(".hero-meta-toggle");
+    const meta = document.querySelector(".hero-meta");
+
+    if (toggle && meta) {
+      toggle.addEventListener("click", function () {
+        const isExpanded = meta.classList.toggle("expanded");
+        toggle.textContent = isExpanded
+          ? "Hide Report Details"
+          : "Show Report Details";
+      });
+    }
+  }
+
+  // ===== HERO SCROLL INDICATOR =====
+  function setupScrollIndicator() {
+    const indicator = document.querySelector(".scroll-indicator");
+    if (!indicator) return;
+
+    indicator.addEventListener("click", function () {
+      // Find the next significant element. Usually .toc or first .section
+      // In the HTML structure, .toc follows .hero, or .scorecard-banner
+      const hero = document.querySelector(".hero");
+      let nextSection = hero.nextElementSibling;
+
+      if (nextSection) {
+        // Adjust for fixed nav if needed, though series-nav is the only fixed one
+        // and it's small.
+        const offset = 80;
+        window.scrollTo({
+          top: nextSection.offsetTop - offset,
+          behavior: "smooth",
+        });
+      }
+    });
+  }
+
+  // ===== AUDIO PLAYER =====
+  function setupAudioPlayer() {
+    const audio = document.getElementById("audio");
+    if (!audio) return;
+
+    const playBtn = document.getElementById("playBtn");
+    const playIcon = document.getElementById("playIcon");
+    const pauseIcon = document.getElementById("pauseIcon");
+    const seekSlider = document.getElementById("seekSlider");
+    const currTime = document.getElementById("currTime");
+    const durTime = document.getElementById("durTime");
+    const rwBtn = document.getElementById("rwBtn");
+    const ffBtn = document.getElementById("ffBtn");
+
+    function formatTime(seconds) {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+    }
+
+    function updateSliderBackground(value) {
+      if (!seekSlider) return;
+      const percentage = value || 0;
+      // This creates a gradient: Accent Color up to X%, Gray after X%
+      seekSlider.style.background = `linear-gradient(to right, var(--color-accent) ${percentage}%, #e5e7eb ${percentage}%)`;
+    }
+
+    // Toggle Play/Pause
+    playBtn?.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        playIcon.style.display = "none";
+        pauseIcon.style.display = "block";
+      } else {
+        audio.pause();
+        playIcon.style.display = "block";
+        pauseIcon.style.display = "none";
+      }
+    });
+
+    // Update Slider & Time as audio plays
+    audio.addEventListener("timeupdate", () => {
+      const current = audio.currentTime;
+      const duration = audio.duration;
+
+      if (duration && seekSlider) {
+        const percentage = (current / duration) * 100;
+        seekSlider.value = percentage;
+        updateSliderBackground(percentage);
+      }
+
+      if (currTime) currTime.textContent = formatTime(current);
+      if (durTime && duration) {
+        durTime.textContent = "-" + formatTime(duration - current);
+      }
+    });
+
+    // Seek functionality
+    seekSlider?.addEventListener("input", () => {
+      if (audio.duration) {
+        audio.currentTime = (seekSlider.value / 100) * audio.duration;
+      }
+    });
+
+    // Rewind / Fast Forward
+    rwBtn?.addEventListener("click", () => {
+      audio.currentTime = Math.max(0, audio.currentTime - 15);
+    });
+
+    ffBtn?.addEventListener("click", () => {
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 15);
+    });
+
+    // Set initial duration
+    audio.addEventListener("loadedmetadata", () => {
+      if (durTime) durTime.textContent = "-" + formatTime(audio.duration);
+    });
+  }
+
   // ===== EVENT LISTENERS =====
   function setupEventListeners() {
     window.addEventListener("scroll", function () {
@@ -423,6 +560,9 @@
     setupReturnToReading();
     setupMinimapNavigation();
     setupTocNavigation();
+    setupMetaToggle();
+    setupScrollIndicator();
+    setupAudioPlayer();
     setupEventListeners();
   }
 
