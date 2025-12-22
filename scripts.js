@@ -98,7 +98,9 @@
       const element = item.element || document.getElementById(item.id);
       if (!element) return;
 
-      const itemTop = getPageY(element);
+      // For the first item, start from the very top of the content container
+      // This includes the top padding of .content, ensuring the indicator aligns correctly
+      const itemTop = index === 0 ? contentTop : getPageY(element);
 
       // Calculate the bottom of this segment based on the START of the next segment.
       // This ensures 100% coverage of the scrollable area, including margins.

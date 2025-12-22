@@ -669,15 +669,18 @@ body {
     transition: color 0.2s ease;
     overflow: visible;
     padding-right: 0.75rem;
-    padding-top: 2px;
-    min-height: 1.2em;
+    padding-top: 0;
+    min-height: 0;
 }
 
 .minimap-item.level-2 {
-    min-height: 1em;
+    min-height: 0;
 }
 
 .minimap-item-label {
+    position: absolute;
+    right: 0.75rem;
+    top: 0;
     font-family: var(--font-sans);
     font-size: 0.7rem;
     text-align: right;
