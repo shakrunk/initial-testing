@@ -6,6 +6,9 @@
     --color-border: #d4d0c8;
     --color-highlight: #fff3cd;
     --color-nav-bg: rgba(250, 249, 247, 0.75);
+    --color-card-bg: #ffffff;
+    --color-range-track: #e5e7eb;
+    --color-icon-fill: #999999;
     --color-warning: #b8860b;
     --color-danger: #a94442;
     --color-success: #3c763d;
@@ -27,6 +30,9 @@
     --color-border: #333333;
     --color-highlight: #333300;
     --color-nav-bg: rgba(26, 26, 26, 0.85);
+    --color-card-bg: #252525;
+    --color-range-track: #404040;
+    --color-icon-fill: #b0b0b0;
     /* Accents are handled per-page */
 }
 
@@ -177,7 +183,7 @@ body {
 
 .series-link:not(.active) {
     color: var(--color-text-muted);
-    background: white;
+    background: var(--color-card-bg);
 }
 
 .series-link:not(.active):hover {
@@ -296,7 +302,7 @@ body {
 
 /* Main Audio Cart Container */
 .audio-container {
-    background: white;
+    background: var(--color-card-bg);
     border-radius: 16px;
     padding: 1rem 2rem;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
@@ -370,7 +376,7 @@ body {
 .time-text {
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: #666; /* or var(--color-text-light) */
+    color: var(--color-text-muted);
     width: 35px; /* Fixed width prevents jitter */
     text-align: center;
 }
@@ -382,7 +388,7 @@ body {
     width: 100%;
     height: 4px;
     border-radius: 2px;
-    background: #e5e7eb; /* Light gray background */
+    background: var(--color-range-track);
     outline: none;
     cursor: pointer;
 }
@@ -440,7 +446,7 @@ body {
 .control-btn.sm svg {
     width: 24px;
     height: 24px;
-    fill: #999; /* Lighter color for secondary controls */
+    fill: var(--color-icon-fill); /* Lighter color for secondary controls */
 }
 
 .control-btn.lg {
@@ -454,7 +460,7 @@ body {
 .control-btn.lg svg {
     width: 48px;
     height: 48px;
-    fill: #999;
+    fill: var(--color-icon-fill);
 }
 
 .scroll-indicator {
@@ -852,7 +858,7 @@ li::marker {
     overflow-x: auto;
     border: 1px solid var(--color-border);
     border-radius: 8px;
-    background: white;
+    background: var(--color-card-bg);
 }
 
 table {
@@ -906,7 +912,7 @@ sup:hover {
 .citation-tooltip {
     position: fixed;
     z-index: 1000;
-    background: white;
+    background: var(--color-card-bg);
     border: 1px solid var(--color-border);
     padding: 1rem 1.25rem;
     border-radius: 8px;
@@ -1070,6 +1076,12 @@ footer {
     color: var(--color-bg);
     padding: 3rem 2rem;
     text-align: center;
+}
+
+[data-theme="dark"] footer {
+    background: #111;
+    color: #888;
+    border-top: 1px solid var(--color-border);
 }
 
 footer p {
@@ -1257,7 +1269,7 @@ footer p {
     appearance: none;
     height: 4px;
     border-radius: 2px;
-    background: #e0e0e0; /* Fallback */
+    background: var(--color-range-track);
     outline: none;
     cursor: pointer;
 }
