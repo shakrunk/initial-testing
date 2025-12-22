@@ -566,6 +566,37 @@
     }
   }
 
+  // ===== MOBILE TOC =====
+  function setupMobileToc() {
+    const btn = document.getElementById("mobileTocBtn");
+    const overlay = document.getElementById("mobileTocOverlay");
+    const closeBtn = document.getElementById("closeMobileTocBtn");
+    const contentContainer = document.getElementById("mobileTocContent");
+    const originalTocList = document.querySelector(".toc-list");
+
+    if (!btn || !overlay || !closeBtn || !contentContainer || !originalTocList)
+      return;
+
+    // Clone TOC content
+    const clonedList = originalTocList.cloneNode(true);
+    contentContainer.appendChild(clonedList);
+
+    // Add click listeners to links to close overlay
+    clonedList.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        overlay.classList.remove("visible");
+      });
+    });
+
+    btn.addEventListener("click", () => {
+      overlay.classList.add("visible");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      overlay.classList.remove("visible");
+    });
+  }
+
   // ===== EVENT LISTENERS =====
   function setupEventListeners() {
     window.addEventListener("scroll", function () {
@@ -589,6 +620,7 @@
     setupMetaToggle();
     setupScrollIndicator();
     setupAudioPlayer();
+    setupMobileToc();
     setupEventListeners();
   }
 
