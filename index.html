@@ -1483,6 +1483,35 @@
                         </a>
                     </div>
                 </section>
+
+                <!-- Section 10: Comments -->
+                <section class="section" id="comments">
+                    <span class="section-number">Section 10</span>
+                    <div class="comments-header">
+                        <h2>Discussion</h2>
+                        <span id="comments-count">(0)</span>
+                    </div>
+
+                    <div class="comments-container">
+                        <div class="comment-form-container">
+                            <form id="comment-form">
+                                <div class="comment-form-group">
+                                    <label for="comment-name">Name</label>
+                                    <input type="text" id="comment-name" class="comment-input" placeholder="Your name" required>
+                                </div>
+                                <div class="comment-form-group">
+                                    <label for="comment-text">Comment</label>
+                                    <textarea id="comment-text" class="comment-input" placeholder="Share your thoughts on the report..." required></textarea>
+                                </div>
+                                <button type="submit" class="comment-submit-btn">Post Comment</button>
+                            </form>
+                        </div>
+
+                        <div id="comments-list">
+                            <!-- Comments will be loaded here -->
+                        </div>
+                    </div>
+                </section>
             </main>
 
             <!-- Minimap Sidebar -->
@@ -2059,5 +2088,6 @@
 
         <script src="scripts.js"></script>
         <script src="audio-player.js"></script>
+        <script src="comments.js"></script>
     </body>
 </html>
