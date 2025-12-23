@@ -495,10 +495,12 @@
         audio.play();
         playIcon.style.display = "none";
         pauseIcon.style.display = "block";
+        playBtn.setAttribute("aria-label", "Pause");
       } else {
         audio.pause();
         playIcon.style.display = "block";
         pauseIcon.style.display = "none";
+        playBtn.setAttribute("aria-label", "Play");
       }
     });
 
