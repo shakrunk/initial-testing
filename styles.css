@@ -55,6 +55,27 @@ body {
     font-weight: 400;
 }
 
+/* Skip to content link */
+.skip-to-content {
+    position: fixed;
+    top: -9999px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-accent);
+    color: white;
+    padding: 1rem 1.5rem;
+    z-index: 9999;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 0 0 8px 8px;
+    transition: top 0.3s ease;
+    outline: none;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
 /* Text selection highlight */
 ::selection {
     background: var(--color-accent);
