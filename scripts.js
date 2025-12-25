@@ -261,9 +261,6 @@
           if (!citationEl) return;
 
           const textEl = citationEl.querySelector(".citation-text");
-          const citationText = textEl
-            ? textEl.innerHTML
-            : citationEl.textContent;
 
           const header = citationTooltip.querySelector(
             ".citation-tooltip-header",
@@ -271,7 +268,17 @@
           const body = citationTooltip.querySelector(".citation-tooltip-text");
 
           if (header) header.textContent = `Reference ${citationNum}`;
-          if (body) body.innerHTML = citationText;
+          if (body) {
+            body.innerHTML = "";
+            if (textEl) {
+              // Clone children to preserve formatting/links without using innerHTML
+              Array.from(textEl.childNodes).forEach((node) => {
+                body.appendChild(node.cloneNode(true));
+              });
+            } else {
+              body.textContent = citationEl.textContent;
+            }
+          }
 
           const rect = link.getBoundingClientRect();
           let left = rect.left;
