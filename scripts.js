@@ -475,6 +475,7 @@
     const playBtn = document.getElementById("playBtn");
     const playIcon = document.getElementById("playIcon");
     const pauseIcon = document.getElementById("pauseIcon");
+    const loadingIcon = document.getElementById("loadingIcon");
     const seekSlider = document.getElementById("seekSlider");
     const currTime = document.getElementById("currTime");
     const durTime = document.getElementById("durTime");
@@ -494,20 +495,44 @@
       seekSlider.style.background = `linear-gradient(to right, var(--color-accent) ${percentage}%, #e5e7eb ${percentage}%)`;
     }
 
+    function updatePlayButtonState(state) {
+      if (!playBtn || !playIcon || !pauseIcon || !loadingIcon) return;
+
+      playIcon.style.display = "none";
+      pauseIcon.style.display = "none";
+      loadingIcon.style.display = "none";
+
+      switch (state) {
+        case "playing":
+          pauseIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Pause");
+          break;
+        case "loading":
+          loadingIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Loading");
+          break;
+        case "paused":
+        default:
+          playIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Play");
+          break;
+      }
+    }
+
     // Toggle Play/Pause
     playBtn?.addEventListener("click", () => {
       if (audio.paused) {
         audio.play();
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
-        playBtn.setAttribute("aria-label", "Pause");
       } else {
         audio.pause();
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
-        playBtn.setAttribute("aria-label", "Play");
       }
     });
+
+    // Audio Event Listeners for UI State
+    audio.addEventListener("waiting", () => updatePlayButtonState("loading"));
+    audio.addEventListener("playing", () => updatePlayButtonState("playing"));
+    audio.addEventListener("pause", () => updatePlayButtonState("paused"));
+    audio.addEventListener("ended", () => updatePlayButtonState("paused"));
 
     // Update Slider & Time as audio plays
     audio.addEventListener("timeupdate", () => {
