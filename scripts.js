@@ -98,7 +98,9 @@
       const element = item.element || document.getElementById(item.id);
       if (!element) return;
 
-      const itemTop = getPageY(element);
+      // For the first item, start from the very top of the content container
+      // This includes the top padding of .content, ensuring the indicator aligns correctly
+      const itemTop = index === 0 ? contentTop : getPageY(element);
 
       // Calculate the bottom of this segment based on the START of the next segment.
       // This ensures 100% coverage of the scrollable area, including margins.
@@ -131,12 +133,17 @@
       row.dataset.section = item.id;
 
       const delay = 100 + index * 15;
-      row.innerHTML = `
-                  <span class="minimap-item-label" style="transition-delay: ${delay}ms;">
-                      ${item.title}
-                  </span>
-                  <div class="minimap-dot"></div>
-              `;
+
+      const label = document.createElement("span");
+      label.className = "minimap-item-label";
+      label.style.transitionDelay = `${delay}ms`;
+      label.textContent = item.title;
+
+      const dot = document.createElement("div");
+      dot.className = "minimap-dot";
+
+      row.appendChild(label);
+      row.appendChild(dot);
 
       minimapItems.appendChild(row);
     });
@@ -222,6 +229,54 @@
     });
   }
 
+  // ===== HEADING LINKS =====
+  function setupHeadingLinks() {
+    const content = document.querySelector(".content");
+    if (!content) return;
+
+    function enhanceHeading(heading, id) {
+      if (!heading || !id) return;
+
+      // Wrap existing content in a span
+      const span = document.createElement("span");
+      span.className = "heading-text";
+
+      // Move all child nodes into the span
+      while (heading.firstChild) {
+        span.appendChild(heading.firstChild);
+      }
+      heading.appendChild(span);
+
+      // Create anchor link
+      const anchor = document.createElement("a");
+      anchor.href = `#${id}`;
+      anchor.className = "heading-anchor";
+      anchor.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      `;
+      anchor.ariaLabel = "Link to this section";
+      heading.appendChild(anchor);
+    }
+
+    // Process h2 elements (section headers)
+    content.querySelectorAll(".section").forEach((section) => {
+      const h2 = section.querySelector("h2");
+      if (h2 && section.id) {
+        enhanceHeading(h2, section.id);
+      }
+    });
+
+    // Process h3 elements (subheaders)
+    content.querySelectorAll("h3").forEach((h3) => {
+      if (h3.id) {
+        enhanceHeading(h3, h3.id);
+      }
+    });
+  }
+
   // ===== CITATION SYSTEM =====
   function setupCitations() {
     if (!citationTooltip) return;
@@ -240,7 +295,14 @@
 
         // Wrap in link if not already
         if (!sup.querySelector("a")) {
-          sup.innerHTML = `<a href="#${citationId}" data-citation="${num}" data-return="${inlineId}">${text}</a>`;
+          const a = document.createElement("a");
+          a.href = `#${citationId}`;
+          a.dataset.citation = num;
+          a.dataset.return = inlineId;
+          a.textContent = text;
+
+          sup.textContent = "";
+          sup.appendChild(a);
         }
       }
     });
@@ -256,9 +318,6 @@
           if (!citationEl) return;
 
           const textEl = citationEl.querySelector(".citation-text");
-          const citationText = textEl
-            ? textEl.innerHTML
-            : citationEl.textContent;
 
           const header = citationTooltip.querySelector(
             ".citation-tooltip-header",
@@ -266,7 +325,18 @@
           const body = citationTooltip.querySelector(".citation-tooltip-text");
 
           if (header) header.textContent = `Reference ${citationNum}`;
-          if (body) body.innerHTML = citationText;
+          if (body) {
+            body.innerHTML = ""; // Clear previous content
+            if (textEl) {
+              // Clone the child nodes to preserve formatting (e.g. italics, links)
+              // This avoids using innerHTML which re-parses the string
+              textEl.childNodes.forEach((node) => {
+                body.appendChild(node.cloneNode(true));
+              });
+            } else {
+              body.textContent = citationEl.textContent;
+            }
+          }
 
           const rect = link.getBoundingClientRect();
           let left = rect.left;
@@ -470,6 +540,7 @@
     const playBtn = document.getElementById("playBtn");
     const playIcon = document.getElementById("playIcon");
     const pauseIcon = document.getElementById("pauseIcon");
+    const loadingIcon = document.getElementById("loadingIcon");
     const seekSlider = document.getElementById("seekSlider");
     const currTime = document.getElementById("currTime");
     const durTime = document.getElementById("durTime");
@@ -489,17 +560,67 @@
       seekSlider.style.background = `linear-gradient(to right, var(--color-accent) ${percentage}%, #e5e7eb ${percentage}%)`;
     }
 
+    function updatePlayButtonState(state) {
+      if (!playBtn || !playIcon || !pauseIcon || !loadingIcon) return;
+
+      playIcon.style.display = "none";
+      pauseIcon.style.display = "none";
+      loadingIcon.style.display = "none";
+
+      switch (state) {
+        case "playing":
+          pauseIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Pause");
+          break;
+        case "loading":
+          loadingIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Loading");
+          break;
+        case "paused":
+        default:
+          playIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Play");
+          break;
+      }
+    }
+
     // Toggle Play/Pause
     playBtn?.addEventListener("click", () => {
       if (audio.paused) {
-        audio.play();
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
+        audio.play().catch((e) => console.error("Playback failed:", e));
+        // Don't swap icons yet; wait for events
       } else {
         audio.pause();
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
       }
+    });
+
+    // Loading State
+    audio.addEventListener("waiting", () => {
+      if (loadingIcon) loadingIcon.style.display = "block";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Loading audio...");
+    });
+
+    audio.addEventListener("playing", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "block";
+      playBtn?.setAttribute("aria-label", "Pause");
+    });
+
+    audio.addEventListener("pause", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
+    });
+
+    audio.addEventListener("error", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
     });
 
     // Update Slider & Time as audio plays
@@ -541,6 +662,233 @@
     });
   }
 
+  // ===== THEME TOGGLE =====
+  function setupTheme() {
+    const toggle = document.getElementById("themeToggle");
+    const storedTheme = localStorage.getItem("theme");
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
+
+    // Set initial state
+    if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    }
+
+    if (toggle) {
+      toggle.addEventListener("click", () => {
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
+        if (currentTheme === "dark") {
+          document.documentElement.removeAttribute("data-theme");
+          localStorage.setItem("theme", "light");
+        } else {
+          document.documentElement.setAttribute("data-theme", "dark");
+          localStorage.setItem("theme", "dark");
+        }
+      });
+    }
+  }
+
+  // ===== TOAST NOTIFICATION =====
+  function showToast(message) {
+    let toast = document.getElementById("toastNotification");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "toastNotification";
+      toast.className = "toast-notification";
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.classList.add("visible");
+
+    // Reset any existing timeout
+    if (toast.timeoutId) clearTimeout(toast.timeoutId);
+
+    toast.timeoutId = setTimeout(() => {
+      toast.classList.remove("visible");
+    }, 2500);
+  }
+
+  // ===== TEXT SELECTION MENU =====
+  function setupSelectionMenu() {
+    // Create the menu element
+    const menu = document.createElement("div");
+    menu.className = "selection-menu";
+    menu.id = "selectionMenu";
+
+    // Define actions to programmatically generate menu
+    const actions = [
+      {
+        id: "btnCopyText",
+        label: "Copy",
+        ariaLabel: "Copy Text",
+        icon: '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>',
+        handler: () => {
+          const selection = window.getSelection();
+          const text = selection.toString();
+          if (text) {
+            navigator.clipboard.writeText(text).then(() => {
+              showToast("Copied to clipboard!");
+              menu.classList.remove("visible");
+              selection.removeAllRanges();
+            });
+          }
+        },
+      },
+      {
+        id: "btnCopyLink",
+        label: "Link",
+        ariaLabel: "Copy Link to Highlight",
+        icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>',
+        handler: () => {
+          const selection = window.getSelection();
+          const text = selection.toString();
+          if (text) {
+            const encodedText = encodeURIComponent(text).replace(/-/g, "%2D");
+            const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
+            navigator.clipboard.writeText(url).then(() => {
+              showToast("Link copied to clipboard!");
+              menu.classList.remove("visible");
+              selection.removeAllRanges();
+            });
+          }
+        },
+      },
+    ];
+
+    // Build the menu DOM
+    actions.forEach((action, index) => {
+      const btn = document.createElement("button");
+      btn.className = "selection-btn";
+      btn.id = action.id;
+      btn.setAttribute("aria-label", action.ariaLabel);
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${action.icon}</svg> ${action.label}`;
+
+      btn.addEventListener("click", action.handler);
+      menu.appendChild(btn);
+
+      // Add divider only if it's NOT the last item
+      if (index < actions.length - 1) {
+        const divider = document.createElement("div");
+        divider.className = "selection-divider";
+        menu.appendChild(divider);
+      }
+    });
+
+    document.body.appendChild(menu);
+
+    // Show/Hide Logic
+    function handleSelection() {
+      const selection = window.getSelection();
+      const text = selection.toString().trim();
+
+      if (text.length > 0) {
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+
+        // Position menu above the selection
+        // Center horizontally
+        let left = rect.left + rect.width / 2 - menu.offsetWidth / 2;
+        // Ensure it doesn't go off screen
+        left = Math.max(
+          10,
+          Math.min(left, window.innerWidth - menu.offsetWidth - 10),
+        );
+
+        let top = rect.top - menu.offsetHeight - 10;
+        // If too close to top, show below
+        if (top < 0) {
+          top = rect.bottom + 10;
+        }
+
+        menu.style.left = `${left + window.scrollX}px`;
+        menu.style.top = `${top + window.scrollY}px`;
+        menu.classList.add("visible");
+      } else {
+        menu.classList.remove("visible");
+      }
+    }
+
+    // Debounce selection change to avoid rapid firing
+    let debounceTimer;
+    document.addEventListener("selectionchange", () => {
+      clearTimeout(debounceTimer);
+      // Hide immediately on change, then wait to show
+      // This feels snappier than dragging with the box moving
+      if (window.getSelection().isCollapsed) {
+        menu.classList.remove("visible");
+      }
+
+      debounceTimer = setTimeout(() => {
+        // Only show if mouse is up (user finished selecting)
+        // We can't easily detect mouse state here, so we rely on mouseup too
+      }, 500);
+    });
+
+    document.addEventListener("mouseup", (e) => {
+      // Prevent clearing selection when clicking the menu itself
+      if (menu.contains(e.target)) return;
+
+      // Small timeout to let selection settle
+      setTimeout(handleSelection, 10);
+    });
+
+    document.addEventListener("keyup", (e) => {
+      if (
+        e.key === "Shift" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight"
+      ) {
+        setTimeout(handleSelection, 10);
+      }
+    });
+
+    // Hide on scroll to prevent detached UI
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (menu.classList.contains("visible")) {
+          menu.classList.remove("visible");
+          // Optional: Deselect text? No, that's annoying.
+        }
+      },
+      { passive: true },
+    );
+  }
+
+  // ===== MOBILE TOC =====
+  function setupMobileToc() {
+    const btn = document.getElementById("mobileTocBtn");
+    const overlay = document.getElementById("mobileTocOverlay");
+    const closeBtn = document.getElementById("closeMobileTocBtn");
+    const contentContainer = document.getElementById("mobileTocContent");
+    const originalTocList = document.querySelector(".toc-list");
+
+    if (!btn || !overlay || !closeBtn || !contentContainer || !originalTocList)
+      return;
+
+    // Clone TOC content
+    const clonedList = originalTocList.cloneNode(true);
+    contentContainer.appendChild(clonedList);
+
+    // Add click listeners to links to close overlay
+    clonedList.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        overlay.classList.remove("visible");
+      });
+    });
+
+    btn.addEventListener("click", () => {
+      overlay.classList.add("visible");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      overlay.classList.remove("visible");
+    });
+  }
+
   // ===== EVENT LISTENERS =====
   function setupEventListeners() {
     window.addEventListener("scroll", function () {
@@ -555,7 +903,10 @@
 
   // ===== INITIALIZATION =====
   function init() {
+    setupTheme();
     initMinimap();
+    setupHeadingLinks();
+    setupSelectionMenu();
     setupCitations();
     setupReturnToReading();
     setupMinimapNavigation();
@@ -563,6 +914,7 @@
     setupMetaToggle();
     setupScrollIndicator();
     setupAudioPlayer();
+    setupMobileToc();
     setupEventListeners();
   }
 
