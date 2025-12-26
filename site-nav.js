@@ -49,7 +49,15 @@
         nav.appendChild(container);
 
         // Inject
-        document.body.prepend(nav);
+        // Ensure skip-link stays first if it exists
+        const skipLink = document.querySelector(".skip-to-content");
+        if (skipLink) {
+            // Insert after skip link
+            skipLink.insertAdjacentElement("afterend", nav);
+        } else {
+            // Fallback
+            document.body.prepend(nav);
+        }
     }
 
     // Run on load
