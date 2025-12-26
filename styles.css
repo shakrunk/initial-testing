@@ -18,6 +18,7 @@
     --max-width: 780px;
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --series-nav-height: 48px;
+    --global-nav-height: 40px;
     --minimap-width: 200px;
 }
 
@@ -87,13 +88,69 @@ body {
     color: white;
 }
 
+/* ===== GLOBAL NAVIGATION ===== */
+#global-nav {
+    background: var(--color-text);
+    color: var(--color-bg);
+    padding: 0.5rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    height: var(--global-nav-height);
+    display: flex;
+    align-items: center;
+}
+
+.global-nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.global-nav-logo {
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1rem;
+    color: var(--color-bg);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+}
+
+.global-nav-links {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.global-nav-link {
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.global-nav-link:hover, .global-nav-link.active {
+    color: white;
+}
+
+[data-theme="dark"] #global-nav {
+    background: #000;
+    border-bottom: 1px solid var(--color-border);
+}
+
+/* Adjusting Series Nav to sit below Global Nav */
 /* ===== SERIES NAVIGATION ===== */
 .series-nav {
     background: var(--color-bg-alt);
     border-bottom: 1px solid var(--color-border);
     padding: 0.75rem 2rem;
     position: fixed;
-    top: 0;
+    top: var(--global-nav-height); /* Below Global Nav */
     left: 0;
     right: 0;
     z-index: 100;
@@ -235,8 +292,8 @@ body {
 
 /* ===== HERO SECTION ===== */
 .hero {
-    min-height: calc(100vh - var(--series-nav-height));
-    margin-top: var(--series-nav-height);
+    min-height: calc(100vh - var(--series-nav-height) - var(--global-nav-height));
+    margin-top: calc(var(--series-nav-height) + var(--global-nav-height));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -590,8 +647,8 @@ body {
 /* ===== MINIMAP SIDEBAR ===== */
 .minimap-sidebar {
     position: sticky;
-    top: calc(var(--series-nav-height) + 2rem);
-    height: calc(100vh - var(--series-nav-height) - 4rem);
+    top: calc(var(--series-nav-height) + var(--global-nav-height) + 2rem);
+    height: calc(100vh - var(--series-nav-height) - var(--global-nav-height) - 4rem);
     width: var(--minimap-width);
     z-index: 90;
     display: none; /* Show only on desktop via media query */
@@ -803,7 +860,7 @@ body {
 .section {
     margin-bottom: 4rem;
     padding-top: 2rem;
-    scroll-margin-top: calc(var(--series-nav-height) + 2rem);
+    scroll-margin-top: calc(var(--series-nav-height) + var(--global-nav-height) + 2rem);
 }
 
 .section-number {
@@ -1042,7 +1099,7 @@ sup:hover {
     padding: 4rem 2rem;
     margin-top: 4rem;
     border-top: 1px solid var(--color-border);
-    scroll-margin-top: calc(var(--series-nav-height) + 2rem);
+    scroll-margin-top: calc(var(--series-nav-height) + var(--global-nav-height) + 2rem);
 }
 
 .works-cited-inner {
