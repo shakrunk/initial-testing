@@ -229,6 +229,54 @@
     });
   }
 
+  // ===== HEADING LINKS =====
+  function setupHeadingLinks() {
+    const content = document.querySelector(".content");
+    if (!content) return;
+
+    function enhanceHeading(heading, id) {
+      if (!heading || !id) return;
+
+      // Wrap existing content in a span
+      const span = document.createElement("span");
+      span.className = "heading-text";
+
+      // Move all child nodes into the span
+      while (heading.firstChild) {
+        span.appendChild(heading.firstChild);
+      }
+      heading.appendChild(span);
+
+      // Create anchor link
+      const anchor = document.createElement("a");
+      anchor.href = `#${id}`;
+      anchor.className = "heading-anchor";
+      anchor.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      `;
+      anchor.ariaLabel = "Link to this section";
+      heading.appendChild(anchor);
+    }
+
+    // Process h2 elements (section headers)
+    content.querySelectorAll(".section").forEach((section) => {
+      const h2 = section.querySelector("h2");
+      if (h2 && section.id) {
+        enhanceHeading(h2, section.id);
+      }
+    });
+
+    // Process h3 elements (subheaders)
+    content.querySelectorAll("h3").forEach((h3) => {
+      if (h3.id) {
+        enhanceHeading(h3, h3.id);
+      }
+    });
+  }
+
   // ===== CITATION SYSTEM =====
   function setupCitations() {
     if (!citationTooltip) return;
@@ -639,6 +687,161 @@
     }
   }
 
+  // ===== TOAST NOTIFICATION =====
+  function showToast(message) {
+    let toast = document.getElementById("toastNotification");
+    if (!toast) {
+      toast = document.createElement("div");
+      toast.id = "toastNotification";
+      toast.className = "toast-notification";
+      document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.classList.add("visible");
+
+    // Reset any existing timeout
+    if (toast.timeoutId) clearTimeout(toast.timeoutId);
+
+    toast.timeoutId = setTimeout(() => {
+      toast.classList.remove("visible");
+    }, 2500);
+  }
+
+  // ===== TEXT SELECTION MENU =====
+  function setupSelectionMenu() {
+    // Create the menu element
+    const menu = document.createElement("div");
+    menu.className = "selection-menu";
+    menu.id = "selectionMenu";
+
+    // Define actions to programmatically generate menu
+    const actions = [
+      {
+        id: 'btnCopyText',
+        label: 'Copy',
+        ariaLabel: 'Copy Text',
+        icon: '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>',
+        handler: () => {
+          const selection = window.getSelection();
+          const text = selection.toString();
+          if (text) {
+            navigator.clipboard.writeText(text).then(() => {
+              showToast("Copied to clipboard!");
+              menu.classList.remove("visible");
+              selection.removeAllRanges();
+            });
+          }
+        }
+      },
+      {
+        id: 'btnCopyLink',
+        label: 'Link',
+        ariaLabel: 'Copy Link to Highlight',
+        icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>',
+        handler: () => {
+          const selection = window.getSelection();
+          const text = selection.toString();
+          if (text) {
+            const encodedText = encodeURIComponent(text).replace(/-/g, "%2D");
+            const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
+            navigator.clipboard.writeText(url).then(() => {
+              showToast("Link copied to clipboard!");
+              menu.classList.remove("visible");
+              selection.removeAllRanges();
+            });
+          }
+        }
+      }
+    ];
+
+    // Build the menu DOM
+    actions.forEach((action, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'selection-btn';
+        btn.id = action.id;
+        btn.setAttribute('aria-label', action.ariaLabel);
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${action.icon}</svg> ${action.label}`;
+
+        btn.addEventListener('click', action.handler);
+        menu.appendChild(btn);
+
+        // Add divider only if it's NOT the last item
+        if (index < actions.length - 1) {
+            const divider = document.createElement('div');
+            divider.className = 'selection-divider';
+            menu.appendChild(divider);
+        }
+    });
+
+    document.body.appendChild(menu);
+
+    // Show/Hide Logic
+    function handleSelection() {
+      const selection = window.getSelection();
+      const text = selection.toString().trim();
+
+      if (text.length > 0) {
+        const range = selection.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+
+        // Position menu above the selection
+        // Center horizontally
+        let left = rect.left + rect.width / 2 - menu.offsetWidth / 2;
+        // Ensure it doesn't go off screen
+        left = Math.max(10, Math.min(left, window.innerWidth - menu.offsetWidth - 10));
+
+        let top = rect.top - menu.offsetHeight - 10;
+        // If too close to top, show below
+        if (top < 0) {
+            top = rect.bottom + 10;
+        }
+
+        menu.style.left = `${left + window.scrollX}px`;
+        menu.style.top = `${top + window.scrollY}px`;
+        menu.classList.add("visible");
+      } else {
+        menu.classList.remove("visible");
+      }
+    }
+
+    // Debounce selection change to avoid rapid firing
+    let debounceTimer;
+    document.addEventListener("selectionchange", () => {
+      clearTimeout(debounceTimer);
+      // Hide immediately on change, then wait to show
+      // This feels snappier than dragging with the box moving
+      if (window.getSelection().isCollapsed) {
+          menu.classList.remove("visible");
+      }
+
+      debounceTimer = setTimeout(() => {
+          // Only show if mouse is up (user finished selecting)
+          // We can't easily detect mouse state here, so we rely on mouseup too
+      }, 500);
+    });
+
+    document.addEventListener("mouseup", (e) => {
+        // Prevent clearing selection when clicking the menu itself
+        if (menu.contains(e.target)) return;
+
+        // Small timeout to let selection settle
+        setTimeout(handleSelection, 10);
+    });
+
+    document.addEventListener("keyup", (e) => {
+       if (e.key === "Shift" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
+           setTimeout(handleSelection, 10);
+       }
+    });
+
+    // Hide on scroll to prevent detached UI
+    window.addEventListener("scroll", () => {
+         if (menu.classList.contains("visible")) {
+             menu.classList.remove("visible");
+             // Optional: Deselect text? No, that's annoying.
+         }
+    }, { passive: true });
   // ===== MOBILE TOC =====
   function setupMobileToc() {
     const btn = document.getElementById("mobileTocBtn");
@@ -686,6 +889,8 @@
   function init() {
     setupTheme();
     initMinimap();
+    setupHeadingLinks();
+    setupSelectionMenu();
     setupCitations();
     setupReturnToReading();
     setupMinimapNavigation();
