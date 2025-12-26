@@ -245,7 +245,14 @@
 
         // Wrap in link if not already
         if (!sup.querySelector("a")) {
-          sup.innerHTML = `<a href="#${citationId}" data-citation="${num}" data-return="${inlineId}">${text}</a>`;
+          const a = document.createElement("a");
+          a.href = `#${citationId}`;
+          a.dataset.citation = num;
+          a.dataset.return = inlineId;
+          a.textContent = text;
+
+          sup.textContent = "";
+          sup.appendChild(a);
         }
       }
     });
@@ -261,9 +268,6 @@
           if (!citationEl) return;
 
           const textEl = citationEl.querySelector(".citation-text");
-          const citationText = textEl
-            ? textEl.innerHTML
-            : citationEl.textContent;
 
           const header = citationTooltip.querySelector(
             ".citation-tooltip-header",
@@ -271,7 +275,18 @@
           const body = citationTooltip.querySelector(".citation-tooltip-text");
 
           if (header) header.textContent = `Reference ${citationNum}`;
-          if (body) body.innerHTML = citationText;
+          if (body) {
+            body.innerHTML = ""; // Clear previous content
+            if (textEl) {
+              // Clone the child nodes to preserve formatting (e.g. italics, links)
+              // This avoids using innerHTML which re-parses the string
+              textEl.childNodes.forEach((node) => {
+                body.appendChild(node.cloneNode(true));
+              });
+            } else {
+              body.textContent = citationEl.textContent;
+            }
+          }
 
           const rect = link.getBoundingClientRect();
           let left = rect.left;
