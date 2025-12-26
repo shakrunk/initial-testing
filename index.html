@@ -257,6 +257,7 @@
                     A Comprehensive Audit of American Democratic Resilience and
                     Institutional Decay
                 </p>
+                <button class="hero-meta-toggle">Show Report Details</button>
                 <div class="hero-meta">
                     <div class="hero-meta-item">
                         <span class="hero-meta-label">Published</span>
@@ -275,31 +276,100 @@
                 <!-- Audio Overview -->
                 <div class="audio-section">
                     <div class="audio-container">
-                        <div class="audio-icon">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"
-                                />
-                            </svg>
+                        <!-- TOP: Icon and Labels Centered -->
+                        <div class="audio-header">
+                            <div class="audio-icon">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"
+                                    />
+                                </svg>
+                            </div>
+                            <div class="audio-text-group">
+                                <div class="audio-label">AI Audio Overview</div>
+                                <div class="audio-title">
+                                    Listen to the Summary
+                                </div>
+                            </div>
                         </div>
-                        <div class="audio-content">
-                            <div class="audio-label">AI Audio Overview</div>
-                            <div class="audio-title">Listen to the Summary</div>
-                            <audio
-                                class="audio-player"
-                                controls
-                                preload="metadata"
-                            >
-                                <source
-                                    src="audio/Dismantling Democracy and the Resilience Paradox.mp3"
-                                    type="audio/mpeg"
-                                />
-                                Your browser does not support the audio element.
-                            </audio>
+
+                        <!-- MIDDLE: Scrubber Row -->
+                        <div class="audio-scrubber-row">
+                            <span id="currTime" class="time-text">0:00</span>
+                            <!-- Custom Range Slider -->
+                            <input
+                                type="range"
+                                id="seekSlider"
+                                class="custom-range"
+                                value="0"
+                                max="100"
+                            />
+                            <span id="durTime" class="time-text">0:00</span>
                         </div>
+
+                        <!-- BOTTOM: Controls Row -->
+                        <div class="audio-controls-row">
+                            <!-- Rewind 15s -->
+                            <button id="rwBtn" class="control-btn sm">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        d="M11 6l-8.5 6 8.5 6V6zm7 0l-8.5 6 8.5 6V6z"
+                                    />
+                                </svg>
+                            </button>
+
+                            <!-- Play/Pause -->
+                            <button id="playBtn" class="control-btn lg">
+                                <!-- Play Icon (Default) -->
+                                <svg
+                                    id="playIcon"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M8 5v14l11-7z" />
+                                </svg>
+                                <!-- Pause Icon (Hidden by default) -->
+                                <svg
+                                    id="pauseIcon"
+                                    style="display: none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                                </svg>
+                            </button>
+
+                            <!-- Fast Forward 15s -->
+                            <button id="ffBtn" class="control-btn sm">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                    fill="currentColor"
+                                >
+                                    <path
+                                        d="M13 6v12l8.5-6L13 6zM4 6v12l8.5-6L4 6z"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- HIDDEN AUDIO ELEMENT -->
+                        <audio id="audio" preload="metadata">
+                            <source
+                                src="audio/Dismantling Democracy and the Resilience Paradox.mp3"
+                                type="audio/mpeg"
+                            />
+                            Your browser does not support the audio element.
+                        </audio>
                     </div>
                 </div>
             </div>
@@ -1999,5 +2069,6 @@
         </footer>
 
         <script src="scripts.js"></script>
+        <script src="audio-player.js"></script>
     </body>
 </html>
