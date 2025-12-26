@@ -521,6 +521,17 @@ body {
     }
 }
 
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    transform-origin: center;
+}
+
 /* ===== INLINE TABLE OF CONTENTS (hidden on desktop, visible on mobile) ===== */
 .toc {
     background: var(--color-bg-alt);

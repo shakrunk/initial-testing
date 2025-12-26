@@ -475,6 +475,7 @@
     const playBtn = document.getElementById("playBtn");
     const playIcon = document.getElementById("playIcon");
     const pauseIcon = document.getElementById("pauseIcon");
+    const loadingIcon = document.getElementById("loadingIcon");
     const seekSlider = document.getElementById("seekSlider");
     const currTime = document.getElementById("currTime");
     const durTime = document.getElementById("durTime");
@@ -497,16 +498,40 @@
     // Toggle Play/Pause
     playBtn?.addEventListener("click", () => {
       if (audio.paused) {
-        audio.play();
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
-        playBtn.setAttribute("aria-label", "Pause");
+        audio.play().catch((e) => console.error("Playback failed:", e));
+        // Don't swap icons yet; wait for events
       } else {
         audio.pause();
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
-        playBtn.setAttribute("aria-label", "Play");
       }
+    });
+
+    // Loading State
+    audio.addEventListener("waiting", () => {
+      if (loadingIcon) loadingIcon.style.display = "block";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Loading audio...");
+    });
+
+    audio.addEventListener("playing", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "block";
+      playBtn?.setAttribute("aria-label", "Pause");
+    });
+
+    audio.addEventListener("pause", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
+    });
+
+    audio.addEventListener("error", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
     });
 
     // Update Slider & Time as audio plays
