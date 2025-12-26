@@ -245,7 +245,14 @@
 
         // Wrap in link if not already
         if (!sup.querySelector("a")) {
-          sup.innerHTML = `<a href="#${citationId}" data-citation="${num}" data-return="${inlineId}">${text}</a>`;
+          const a = document.createElement("a");
+          a.href = `#${citationId}`;
+          a.dataset.citation = num;
+          a.dataset.return = inlineId;
+          a.textContent = text;
+
+          sup.textContent = "";
+          sup.appendChild(a);
         }
       }
     });
@@ -269,10 +276,11 @@
 
           if (header) header.textContent = `Reference ${citationNum}`;
           if (body) {
-            body.innerHTML = "";
+            body.innerHTML = ""; // Clear previous content
             if (textEl) {
-              // Clone children to preserve formatting/links without using innerHTML
-              Array.from(textEl.childNodes).forEach((node) => {
+              // Clone the child nodes to preserve formatting (e.g. italics, links)
+              // This avoids using innerHTML which re-parses the string
+              textEl.childNodes.forEach((node) => {
                 body.appendChild(node.cloneNode(true));
               });
             } else {
@@ -482,6 +490,7 @@
     const playBtn = document.getElementById("playBtn");
     const playIcon = document.getElementById("playIcon");
     const pauseIcon = document.getElementById("pauseIcon");
+    const loadingIcon = document.getElementById("loadingIcon");
     const seekSlider = document.getElementById("seekSlider");
     const currTime = document.getElementById("currTime");
     const durTime = document.getElementById("durTime");
@@ -504,16 +513,40 @@
     // Toggle Play/Pause
     playBtn?.addEventListener("click", () => {
       if (audio.paused) {
-        audio.play();
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
-        playBtn.setAttribute("aria-label", "Pause");
+        audio.play().catch((e) => console.error("Playback failed:", e));
+        // Don't swap icons yet; wait for events
       } else {
         audio.pause();
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
-        playBtn.setAttribute("aria-label", "Play");
       }
+    });
+
+    // Loading State
+    audio.addEventListener("waiting", () => {
+      if (loadingIcon) loadingIcon.style.display = "block";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Loading audio...");
+    });
+
+    audio.addEventListener("playing", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "block";
+      playBtn?.setAttribute("aria-label", "Pause");
+    });
+
+    audio.addEventListener("pause", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
+    });
+
+    audio.addEventListener("error", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
     });
 
     // Update Slider & Time as audio plays
