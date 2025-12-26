@@ -673,22 +673,6 @@
             });
           }
         }
-      },
-      {
-        id: 'btnShareTwitter',
-        label: 'X / Tweet',
-        ariaLabel: 'Share on X',
-        icon: '<path d="M4 4l11.733 16h4.67l-13.8-18h-4.67z"></path><path d="M4 20l6.768-6.156 2.428 3.39 6.804 2.766"></path>',
-        handler: () => {
-          const selection = window.getSelection();
-          const text = selection.toString();
-          if (text) {
-            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent('"' + text + '"')}&url=${encodeURIComponent(window.location.href)}`;
-            window.open(twitterUrl, '_blank');
-            menu.classList.remove("visible");
-            selection.removeAllRanges();
-          }
-        }
       }
     ];
 
