@@ -530,6 +530,9 @@ body {
 .spinner {
     animation: spin 1s linear infinite;
     transform-origin: center;
+    transform-box: fill-box;
+    stroke: var(--color-accent);
+    fill: none !important;
 }
 
 /* ===== INLINE TABLE OF CONTENTS (hidden on desktop, visible on mobile) ===== */

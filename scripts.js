@@ -510,6 +510,30 @@
       seekSlider.style.background = `linear-gradient(to right, var(--color-accent) ${percentage}%, #e5e7eb ${percentage}%)`;
     }
 
+    function updatePlayButtonState(state) {
+      if (!playBtn || !playIcon || !pauseIcon || !loadingIcon) return;
+
+      playIcon.style.display = "none";
+      pauseIcon.style.display = "none";
+      loadingIcon.style.display = "none";
+
+      switch (state) {
+        case "playing":
+          pauseIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Pause");
+          break;
+        case "loading":
+          loadingIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Loading");
+          break;
+        case "paused":
+        default:
+          playIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Play");
+          break;
+      }
+    }
+
     // Toggle Play/Pause
     playBtn?.addEventListener("click", () => {
       if (audio.paused) {
