@@ -3,7 +3,8 @@ from playwright.sync_api import sync_playwright, expect
 import time
 
 def verify_audio_player(page):
-    page.goto("http://localhost:8080/flawed-democracy.html")
+    # Updated URL to reflect the new file location in articles/
+    page.goto("http://localhost:8080/articles/flawed-democracy.html")
 
     # Wait for the audio player to be initialized
     # The audio player creates a .custom-audio-controls div
@@ -27,7 +28,7 @@ def verify_audio_player(page):
          print("Error: Play icon path incorrect")
 
     # Take a screenshot of the initial state
-    page.screenshot(path="verification/audio_player_initial.png")
+    page.screenshot(path="verification/audio_player_initial_merged.png")
 
     # Click the play button
     # Note: Autoplay might be blocked, but the UI should update
@@ -44,7 +45,7 @@ def verify_audio_player(page):
     print(f"Pause icon path: {d_attr}")
 
     # Take a screenshot of the playing state
-    page.screenshot(path="verification/audio_player_playing.png")
+    page.screenshot(path="verification/audio_player_playing_merged.png")
 
 if __name__ == "__main__":
     with sync_playwright() as p:
