@@ -112,8 +112,17 @@ function initAudioPlayers() {
         progressInput.addEventListener('mousedown', (e) => e.stopPropagation());
         progressInput.addEventListener('touchstart', (e) => e.stopPropagation());
 
-        // Update UI on Play/Pause
-        audio.addEventListener('play', () => {
+        // Visual state updaters
+        const showLoading = () => {
+            playBtn.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                    <circle class="spinner" cx="12" cy="12" r="10" stroke-width="3" stroke-dasharray="30 30" style="stroke: currentColor" fill="none"></circle>
+                </svg>
+            `;
+            playBtn.setAttribute('aria-label', 'Loading');
+        };
+
+        const showPause = () => {
             playBtn.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
                     <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
@@ -121,9 +130,9 @@ function initAudioPlayers() {
             `;
             playBtn.setAttribute('aria-label', 'Pause');
             controlsContainer.classList.add('playing');
-        });
+        };
 
-        audio.addEventListener('pause', () => {
+        const showPlay = () => {
             playBtn.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
                     <path d="M8 5v14l11-7z"/>
@@ -131,7 +140,13 @@ function initAudioPlayers() {
             `;
             playBtn.setAttribute('aria-label', 'Play');
             controlsContainer.classList.remove('playing');
-        });
+        };
+
+        // Update UI on Play/Pause/Waiting
+        audio.addEventListener('play', showLoading); // Immediate feedback
+        audio.addEventListener('waiting', showLoading); // Buffering feedback
+        audio.addEventListener('playing', showPause); // Actual playback feedback
+        audio.addEventListener('pause', showPlay);
 
         // Update Progress Bar and Time
         audio.addEventListener('timeupdate', () => {
