@@ -55,6 +55,27 @@ body {
     font-weight: 400;
 }
 
+/* Skip to content link */
+.skip-to-content {
+    position: fixed;
+    top: -9999px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--color-accent);
+    color: white;
+    padding: 1rem 1.5rem;
+    z-index: 9999;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 0 0 8px 8px;
+    transition: top 0.3s ease;
+    outline: none;
+}
+
+.skip-to-content:focus {
+    top: 0;
+}
+
 /* Text selection highlight */
 ::selection {
     background: var(--color-accent);
@@ -500,6 +521,20 @@ body {
     }
 }
 
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    animation: spin 1s linear infinite;
+    transform-origin: center;
+    transform-box: fill-box;
+    stroke: var(--color-accent);
+    fill: none !important;
+}
+
 /* ===== INLINE TABLE OF CONTENTS (hidden on desktop, visible on mobile) ===== */
 .toc {
     background: var(--color-bg-alt);
@@ -669,15 +704,18 @@ body {
     transition: color 0.2s ease;
     overflow: visible;
     padding-right: 0.75rem;
-    padding-top: 2px;
-    min-height: 1.2em;
+    padding-top: 0;
+    min-height: 0;
 }
 
 .minimap-item.level-2 {
-    min-height: 1em;
+    min-height: 0;
 }
 
 .minimap-item-label {
+    position: absolute;
+    right: 0.75rem;
+    top: 0;
     font-family: var(--font-sans);
     font-size: 0.7rem;
     text-align: right;
@@ -1092,8 +1130,118 @@ footer p {
     text-align: center;
 }
 
+/* ===== MOBILE TOC BUTTON & OVERLAY ===== */
+.mobile-toc-btn {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    background: var(--color-accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 1001; /* Above return-to-reading (1000) */
+    cursor: pointer;
+    transition: transform var(--transition), background var(--transition);
+}
+
+.mobile-toc-btn:hover {
+    transform: scale(1.05);
+    background: var(--color-accent-light);
+}
+
+.mobile-toc-btn svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.mobile-toc-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--color-bg);
+    z-index: 2000;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    padding: 2rem;
+}
+
+.mobile-toc-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.mobile-toc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 1rem;
+    flex-shrink: 0;
+}
+
+.mobile-toc-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-toc-btn {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--color-text);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-toc-content {
+    flex: 1;
+    overflow-y: auto;
+    padding-bottom: 2rem;
+}
+
+.mobile-toc-content .toc-list {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+}
+
+.mobile-toc-content .toc-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.mobile-toc-content .toc-link {
+    font-size: 1.1rem;
+    padding: 0.5rem 0;
+    display: block;
+}
+
 /* ===== DESKTOP STYLES ===== */
 @media (min-width: 1200px) {
+    .mobile-toc-btn {
+        display: none;
+    }
+
     .minimap-sidebar {
         display: block;
         grid-column: 3;
@@ -1152,12 +1300,38 @@ footer p {
     .hero-meta {
         display: none;
         flex-direction: column;
-        gap: 1rem;
+        gap: 1.5rem;
+        align-items: center;
+        width: 100%;
+        background: var(--color-bg-alt);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-top: 1rem;
+        border: 1px solid var(--color-border);
     }
 
     .hero-meta.expanded {
         display: flex;
         animation: fadeInUp 0.3s ease-out;
+    }
+
+    .hero-meta-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.25rem;
+    }
+
+    .hero-meta-label {
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color: var(--color-text-muted);
+    }
+
+    .hero-meta-item span:last-child {
+        font-size: 1.1rem;
+        font-family: var(--font-serif);
+        color: var(--color-text);
     }
 
     .content-wrapper {

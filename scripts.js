@@ -98,7 +98,9 @@
       const element = item.element || document.getElementById(item.id);
       if (!element) return;
 
-      const itemTop = getPageY(element);
+      // For the first item, start from the very top of the content container
+      // This includes the top padding of .content, ensuring the indicator aligns correctly
+      const itemTop = index === 0 ? contentTop : getPageY(element);
 
       // Calculate the bottom of this segment based on the START of the next segment.
       // This ensures 100% coverage of the scrollable area, including margins.
@@ -131,12 +133,17 @@
       row.dataset.section = item.id;
 
       const delay = 100 + index * 15;
-      row.innerHTML = `
-                  <span class="minimap-item-label" style="transition-delay: ${delay}ms;">
-                      ${item.title}
-                  </span>
-                  <div class="minimap-dot"></div>
-              `;
+
+      const label = document.createElement("span");
+      label.className = "minimap-item-label";
+      label.style.transitionDelay = `${delay}ms`;
+      label.textContent = item.title;
+
+      const dot = document.createElement("div");
+      dot.className = "minimap-dot";
+
+      row.appendChild(label);
+      row.appendChild(dot);
 
       minimapItems.appendChild(row);
     });
@@ -288,7 +295,14 @@
 
         // Wrap in link if not already
         if (!sup.querySelector("a")) {
-          sup.innerHTML = `<a href="#${citationId}" data-citation="${num}" data-return="${inlineId}">${text}</a>`;
+          const a = document.createElement("a");
+          a.href = `#${citationId}`;
+          a.dataset.citation = num;
+          a.dataset.return = inlineId;
+          a.textContent = text;
+
+          sup.textContent = "";
+          sup.appendChild(a);
         }
       }
     });
@@ -304,9 +318,6 @@
           if (!citationEl) return;
 
           const textEl = citationEl.querySelector(".citation-text");
-          const citationText = textEl
-            ? textEl.innerHTML
-            : citationEl.textContent;
 
           const header = citationTooltip.querySelector(
             ".citation-tooltip-header",
@@ -314,7 +325,18 @@
           const body = citationTooltip.querySelector(".citation-tooltip-text");
 
           if (header) header.textContent = `Reference ${citationNum}`;
-          if (body) body.innerHTML = citationText;
+          if (body) {
+            body.innerHTML = ""; // Clear previous content
+            if (textEl) {
+              // Clone the child nodes to preserve formatting (e.g. italics, links)
+              // This avoids using innerHTML which re-parses the string
+              textEl.childNodes.forEach((node) => {
+                body.appendChild(node.cloneNode(true));
+              });
+            } else {
+              body.textContent = citationEl.textContent;
+            }
+          }
 
           const rect = link.getBoundingClientRect();
           let left = rect.left;
@@ -518,6 +540,7 @@
     const playBtn = document.getElementById("playBtn");
     const playIcon = document.getElementById("playIcon");
     const pauseIcon = document.getElementById("pauseIcon");
+    const loadingIcon = document.getElementById("loadingIcon");
     const seekSlider = document.getElementById("seekSlider");
     const currTime = document.getElementById("currTime");
     const durTime = document.getElementById("durTime");
@@ -537,17 +560,67 @@
       seekSlider.style.background = `linear-gradient(to right, var(--color-accent) ${percentage}%, #e5e7eb ${percentage}%)`;
     }
 
+    function updatePlayButtonState(state) {
+      if (!playBtn || !playIcon || !pauseIcon || !loadingIcon) return;
+
+      playIcon.style.display = "none";
+      pauseIcon.style.display = "none";
+      loadingIcon.style.display = "none";
+
+      switch (state) {
+        case "playing":
+          pauseIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Pause");
+          break;
+        case "loading":
+          loadingIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Loading");
+          break;
+        case "paused":
+        default:
+          playIcon.style.display = "block";
+          playBtn.setAttribute("aria-label", "Play");
+          break;
+      }
+    }
+
     // Toggle Play/Pause
     playBtn?.addEventListener("click", () => {
       if (audio.paused) {
-        audio.play();
-        playIcon.style.display = "none";
-        pauseIcon.style.display = "block";
+        audio.play().catch((e) => console.error("Playback failed:", e));
+        // Don't swap icons yet; wait for events
       } else {
         audio.pause();
-        playIcon.style.display = "block";
-        pauseIcon.style.display = "none";
       }
+    });
+
+    // Loading State
+    audio.addEventListener("waiting", () => {
+      if (loadingIcon) loadingIcon.style.display = "block";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Loading audio...");
+    });
+
+    audio.addEventListener("playing", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "none";
+      if (pauseIcon) pauseIcon.style.display = "block";
+      playBtn?.setAttribute("aria-label", "Pause");
+    });
+
+    audio.addEventListener("pause", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
+    });
+
+    audio.addEventListener("error", () => {
+      if (loadingIcon) loadingIcon.style.display = "none";
+      if (playIcon) playIcon.style.display = "block";
+      if (pauseIcon) pauseIcon.style.display = "none";
+      playBtn?.setAttribute("aria-label", "Play");
     });
 
     // Update Slider & Time as audio plays
@@ -769,6 +842,35 @@
              // Optional: Deselect text? No, that's annoying.
          }
     }, { passive: true });
+  // ===== MOBILE TOC =====
+  function setupMobileToc() {
+    const btn = document.getElementById("mobileTocBtn");
+    const overlay = document.getElementById("mobileTocOverlay");
+    const closeBtn = document.getElementById("closeMobileTocBtn");
+    const contentContainer = document.getElementById("mobileTocContent");
+    const originalTocList = document.querySelector(".toc-list");
+
+    if (!btn || !overlay || !closeBtn || !contentContainer || !originalTocList)
+      return;
+
+    // Clone TOC content
+    const clonedList = originalTocList.cloneNode(true);
+    contentContainer.appendChild(clonedList);
+
+    // Add click listeners to links to close overlay
+    clonedList.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        overlay.classList.remove("visible");
+      });
+    });
+
+    btn.addEventListener("click", () => {
+      overlay.classList.add("visible");
+    });
+
+    closeBtn.addEventListener("click", () => {
+      overlay.classList.remove("visible");
+    });
   }
 
   // ===== EVENT LISTENERS =====
@@ -796,6 +898,7 @@
     setupMetaToggle();
     setupScrollIndicator();
     setupAudioPlayer();
+    setupMobileToc();
     setupEventListeners();
   }
 
