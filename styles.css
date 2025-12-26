@@ -1164,6 +1164,68 @@ footer p {
     }
 }
 
+/* ===== DARK MODE ===== */
+[data-theme='dark'] {
+    --color-bg: #1a1a1a;
+    --color-bg-alt: #2a2a2a;
+    --color-text: #e0e0e0;
+    --color-text-muted: #a0a0a0;
+    --color-border: #444;
+    --color-nav-bg: rgba(26, 26, 26, 0.9);
+    --color-highlight: #3a3a3a;
+
+    /* Adjust citation highlights for dark mode */
+    --citation-highlight-bg: rgba(139, 37, 0, 0.2);
+    --citation-highlight-strong: rgba(139, 37, 0, 0.4);
+}
+
+[data-theme='dark'] .series-link:not(.active) {
+    background: #2a2a2a;
+    color: #a0a0a0;
+    border-color: #444;
+}
+
+[data-theme='dark'] .series-link:not(.active):hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+[data-theme='dark'] .audio-container,
+[data-theme='dark'] .table-container,
+[data-theme='dark'] .citation-tooltip,
+[data-theme='dark'] .scorecard-card,
+[data-theme='dark'] .indicator-box {
+    background: #222;
+    border-color: #444;
+}
+
+[data-theme='dark'] th {
+    background: #2a2a2a;
+    border-bottom-color: #555;
+    color: #e0e0e0;
+}
+
+[data-theme='dark'] td {
+    border-bottom-color: #444;
+}
+
+[data-theme='dark'] .audio-player {
+    filter: invert(90%) hue-rotate(180deg);
+}
+
+[data-theme='dark'] .minimap-dot {
+    background: #444;
+}
+
+[data-theme='dark'] .minimap-track {
+    background: #333;
+}
+
+[data-theme='dark'] footer {
+    background: #000;
+    color: #888;
+}
+
 /* ===== CUSTOM AUDIO PLAYER ===== */
 .custom-audio-controls {
     display: flex;

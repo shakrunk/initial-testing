@@ -578,3 +578,56 @@
     initMinimap();
   });
 })();
+
+// ===== DARK MODE TOGGLE =====
+(function () {
+  "use strict";
+
+  const toggleButton = document.getElementById("theme-toggle");
+  const STORAGE_KEY = "theme-preference";
+
+  function setDarkTheme(isDark) {
+    if (isDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+  }
+
+  function initTheme() {
+    // Check local storage first
+    const savedTheme = localStorage.getItem(STORAGE_KEY);
+    if (savedTheme) {
+      setDarkTheme(savedTheme === "dark");
+    } else {
+      // Fallback to system preference
+      const prefersDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      setDarkTheme(prefersDark);
+    }
+  }
+
+  if (toggleButton) {
+    toggleButton.addEventListener("click", function () {
+      const currentTheme = document.documentElement.getAttribute("data-theme");
+      const isDark = currentTheme === "dark";
+
+      // Toggle
+      setDarkTheme(!isDark);
+
+      // Save
+      localStorage.setItem(STORAGE_KEY, !isDark ? "dark" : "light");
+    });
+  }
+
+  // Initialize on load
+  initTheme();
+
+  // Listen for system changes if no preference is saved
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
+    if (!localStorage.getItem(STORAGE_KEY)) {
+        setDarkTheme(e.matches);
+    }
+  });
+})();
