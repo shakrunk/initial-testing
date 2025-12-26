@@ -785,6 +785,8 @@ h2 {
     margin-bottom: 1.5rem;
     color: var(--color-text);
     position: relative;
+    display: flex;
+    align-items: flex-start;
 }
 
 h3 {
@@ -796,6 +798,8 @@ h3 {
     margin-bottom: 1rem;
     color: var(--color-text);
     position: relative;
+    display: flex;
+    align-items: flex-start;
 }
 
 h4 {
@@ -1325,9 +1329,8 @@ footer p {
 .heading-anchor {
     opacity: 0;
     position: absolute;
-    left: -1.25em; /* Moved slightly more left for better spacing */
-    top: 50%;
-    transform: translateY(-50%);
+    left: -40px; /* Fixed gutter width */
+    top: 0; /* Align with top of line */
     color: var(--color-accent);
     text-decoration: none;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1335,8 +1338,9 @@ footer p {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 6px;
+    padding: 4px;
     border-radius: 6px;
+    margin-top: 0.15em; /* Optical alignment with text cap-height */
 }
 
 h2:hover .heading-anchor,
@@ -1353,35 +1357,21 @@ h3:hover .heading-anchor,
 .heading-anchor svg {
     width: 24px;
     height: 24px;
-    stroke-width: 2.5; /* Slightly bolder icon */
+    stroke-width: 2.5;
 }
 
 @media (max-width: 768px) {
     .heading-anchor {
-        position: absolute;
-        right: 0;
-        left: auto;
-        top: 50%;
-        transform: translateY(-50%);
-        opacity: 0; /* Hidden by default to reduce clutter */
-        background: var(--color-bg-alt);
-        box-shadow: -4px 0 8px var(--color-bg); /* Fade effect */
-        padding: 8px;
-    }
-
-    /* Show on active/focus state if needed, or make it appear when tapping the heading?
-       For now, let's make it always visible but subtle on the right side.
-    */
-    .heading-anchor {
+        position: static; /* In flow */
         opacity: 1;
+        margin-left: 12px;
+        margin-top: 0.2em;
+        flex-shrink: 0;
         color: var(--color-text-muted);
-        background: transparent;
-        box-shadow: none;
     }
 
-    /* Ensure text doesn't overlap the anchor */
-    h2, h3 {
-        padding-right: 1.5em;
+    .heading-text {
+        flex: 1; /* Allow text to take remaining space */
     }
 }
 

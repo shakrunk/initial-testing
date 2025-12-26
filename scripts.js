@@ -227,39 +227,45 @@
     const content = document.querySelector(".content");
     if (!content) return;
 
+    function enhanceHeading(heading, id) {
+      if (!heading || !id) return;
+
+      // Wrap existing content in a span
+      const span = document.createElement("span");
+      span.className = "heading-text";
+
+      // Move all child nodes into the span
+      while (heading.firstChild) {
+        span.appendChild(heading.firstChild);
+      }
+      heading.appendChild(span);
+
+      // Create anchor link
+      const anchor = document.createElement("a");
+      anchor.href = `#${id}`;
+      anchor.className = "heading-anchor";
+      anchor.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+        </svg>
+      `;
+      anchor.ariaLabel = "Link to this section";
+      heading.appendChild(anchor);
+    }
+
     // Process h2 elements (section headers)
     content.querySelectorAll(".section").forEach((section) => {
       const h2 = section.querySelector("h2");
       if (h2 && section.id) {
-        // Create anchor link
-        const anchor = document.createElement("a");
-        anchor.href = `#${section.id}`;
-        anchor.className = "heading-anchor";
-        anchor.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-          </svg>
-        `;
-        anchor.ariaLabel = "Link to this section";
-        h2.appendChild(anchor);
+        enhanceHeading(h2, section.id);
       }
     });
 
     // Process h3 elements (subheaders)
     content.querySelectorAll("h3").forEach((h3) => {
       if (h3.id) {
-        const anchor = document.createElement("a");
-        anchor.href = `#${h3.id}`;
-        anchor.className = "heading-anchor";
-        anchor.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-          </svg>
-        `;
-        anchor.ariaLabel = "Link to this section";
-        h3.appendChild(anchor);
+        enhanceHeading(h3, h3.id);
       }
     });
   }
