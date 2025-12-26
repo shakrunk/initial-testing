@@ -18,6 +18,7 @@
     --max-width: 780px;
     --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --series-nav-height: 48px;
+    --global-nav-height: 40px;
     --minimap-width: 200px;
 }
 
@@ -97,7 +98,7 @@ body {
     left: 0;
     right: 0;
     z-index: 200;
-    height: 40px;
+    height: var(--global-nav-height);
     display: flex;
     align-items: center;
 }
@@ -149,7 +150,7 @@ body {
     border-bottom: 1px solid var(--color-border);
     padding: 0.75rem 2rem;
     position: fixed;
-    top: 40px; /* Below Global Nav */
+    top: var(--global-nav-height); /* Below Global Nav */
     left: 0;
     right: 0;
     z-index: 100;
@@ -291,8 +292,8 @@ body {
 
 /* ===== HERO SECTION ===== */
 .hero {
-    min-height: calc(100vh - var(--series-nav-height) - 40px);
-    margin-top: calc(var(--series-nav-height) + 40px);
+    min-height: calc(100vh - var(--series-nav-height) - var(--global-nav-height));
+    margin-top: calc(var(--series-nav-height) + var(--global-nav-height));
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -646,8 +647,8 @@ body {
 /* ===== MINIMAP SIDEBAR ===== */
 .minimap-sidebar {
     position: sticky;
-    top: calc(var(--series-nav-height) + 40px + 2rem);
-    height: calc(100vh - var(--series-nav-height) - 40px - 4rem);
+    top: calc(var(--series-nav-height) + var(--global-nav-height) + 2rem);
+    height: calc(100vh - var(--series-nav-height) - var(--global-nav-height) - 4rem);
     width: var(--minimap-width);
     z-index: 90;
     display: none; /* Show only on desktop via media query */
@@ -859,7 +860,7 @@ body {
 .section {
     margin-bottom: 4rem;
     padding-top: 2rem;
-    scroll-margin-top: calc(var(--series-nav-height) + 40px + 2rem);
+    scroll-margin-top: calc(var(--series-nav-height) + var(--global-nav-height) + 2rem);
 }
 
 .section-number {
@@ -1098,7 +1099,7 @@ sup:hover {
     padding: 4rem 2rem;
     margin-top: 4rem;
     border-top: 1px solid var(--color-border);
-    scroll-margin-top: calc(var(--series-nav-height) + 40px + 2rem);
+    scroll-margin-top: calc(var(--series-nav-height) + var(--global-nav-height) + 2rem);
 }
 
 .works-cited-inner {

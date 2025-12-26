@@ -251,6 +251,9 @@
         </style>
     </head>
     <body>
+        <!-- Skip to Content -->
+        <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
         <!-- Citation Tooltip -->
         <div class="citation-tooltip" id="citationTooltip">
             <div class="citation-tooltip-header"></div>
@@ -372,74 +375,7 @@
                             </div>
                         </div>
 
-                        <!-- MIDDLE: Scrubber Row -->
-                        <div class="audio-scrubber-row">
-                            <span id="currTime" class="time-text">0:00</span>
-                            <!-- Custom Range Slider -->
-                            <input
-                                type="range"
-                                id="seekSlider"
-                                class="custom-range"
-                                value="0"
-                                max="100"
-                            />
-                            <span id="durTime" class="time-text">0:00</span>
-                        </div>
-
-                        <!-- BOTTOM: Controls Row -->
-                        <div class="audio-controls-row">
-                            <!-- Rewind 15s -->
-                            <button id="rwBtn" class="control-btn sm">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M11 6l-8.5 6 8.5 6V6zm7 0l-8.5 6 8.5 6V6z"
-                                    />
-                                </svg>
-                            </button>
-
-                            <!-- Play/Pause -->
-                            <button id="playBtn" class="control-btn lg">
-                                <!-- Play Icon (Default) -->
-                                <svg
-                                    id="playIcon"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <path d="M8 5v14l11-7z" />
-                                </svg>
-                                <!-- Pause Icon (Hidden by default) -->
-                                <svg
-                                    id="pauseIcon"
-                                    style="display: none"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
-                                </svg>
-                            </button>
-
-                            <!-- Fast Forward 15s -->
-                            <button id="ffBtn" class="control-btn sm">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 24 24"
-                                    fill="currentColor"
-                                >
-                                    <path
-                                        d="M13 6v12l8.5-6L13 6zM4 6v12l8.5-6L4 6z"
-                                    />
-                                </svg>
-                            </button>
-                        </div>
-
-                        <!-- HIDDEN AUDIO ELEMENT -->
-                        <audio id="audio" preload="metadata">
+                        <audio class="audio-player" preload="metadata">
                             <source
                                 src="audio/America's _Flawed Democracy__ Unpacking the Crisis of Trust and Resilience.mp3"
                                 type="audio/mpeg"
@@ -1687,7 +1623,7 @@
             <div class="mobile-toc-content" id="mobileTocContent"></div>
         </div>
 
-        <script src="scripts.js"></script>
+        <script type="module" src="js/main.js"></script>
         <script src="audio-player.js"></script>
     </body>
 </html>
