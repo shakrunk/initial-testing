@@ -636,69 +636,82 @@
     menu.className = "selection-menu";
     menu.id = "selectionMenu";
 
-    // Improved Icons (Standard Feather/Lucide)
-    menu.innerHTML = `
-      <button class="selection-btn" id="btnCopyText" aria-label="Copy Text">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        Copy
-      </button>
-      <div class="selection-divider"></div>
-      <button class="selection-btn" id="btnCopyLink" aria-label="Copy Link to Highlight">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
-        Link
-      </button>
-      <div class="selection-divider"></div>
-      <button class="selection-btn" id="btnShareTwitter" aria-label="Share on X">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.67l-13.8-18h-4.67z"></path><path d="M4 20l6.768-6.156 2.428 3.39 6.804 2.766"></path></svg>
-        X / Tweet
-      </button>
-    `;
+    // Define actions to programmatically generate menu
+    const actions = [
+      {
+        id: 'btnCopyText',
+        label: 'Copy',
+        ariaLabel: 'Copy Text',
+        icon: '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>',
+        handler: () => {
+          const selection = window.getSelection();
+          const text = selection.toString();
+          if (text) {
+            navigator.clipboard.writeText(text).then(() => {
+              showToast("Copied to clipboard!");
+              menu.classList.remove("visible");
+              selection.removeAllRanges();
+            });
+          }
+        }
+      },
+      {
+        id: 'btnCopyLink',
+        label: 'Link',
+        ariaLabel: 'Copy Link to Highlight',
+        icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>',
+        handler: () => {
+          const selection = window.getSelection();
+          const text = selection.toString();
+          if (text) {
+            const encodedText = encodeURIComponent(text).replace(/-/g, "%2D");
+            const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
+            navigator.clipboard.writeText(url).then(() => {
+              showToast("Link copied to clipboard!");
+              menu.classList.remove("visible");
+              selection.removeAllRanges();
+            });
+          }
+        }
+      },
+      {
+        id: 'btnShareTwitter',
+        label: 'X / Tweet',
+        ariaLabel: 'Share on X',
+        icon: '<path d="M4 4l11.733 16h4.67l-13.8-18h-4.67z"></path><path d="M4 20l6.768-6.156 2.428 3.39 6.804 2.766"></path>',
+        handler: () => {
+          const selection = window.getSelection();
+          const text = selection.toString();
+          if (text) {
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent('"' + text + '"')}&url=${encodeURIComponent(window.location.href)}`;
+            window.open(twitterUrl, '_blank');
+            menu.classList.remove("visible");
+            selection.removeAllRanges();
+          }
+        }
+      }
+    ];
+
+    // Build the menu DOM
+    actions.forEach((action, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'selection-btn';
+        btn.id = action.id;
+        btn.setAttribute('aria-label', action.ariaLabel);
+        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${action.icon}</svg> ${action.label}`;
+
+        btn.addEventListener('click', action.handler);
+        menu.appendChild(btn);
+
+        // Add divider only if it's NOT the last item
+        if (index < actions.length - 1) {
+            const divider = document.createElement('div');
+            divider.className = 'selection-divider';
+            menu.appendChild(divider);
+        }
+    });
+
     document.body.appendChild(menu);
-
-    const btnCopyText = document.getElementById("btnCopyText");
-    const btnCopyLink = document.getElementById("btnCopyLink");
-    const btnShareTwitter = document.getElementById("btnShareTwitter");
-
-    // Action Handlers
-    btnCopyText.addEventListener("click", () => {
-      const selection = window.getSelection();
-      const text = selection.toString();
-      if (text) {
-        navigator.clipboard.writeText(text).then(() => {
-          showToast("Copied to clipboard!");
-          menu.classList.remove("visible");
-          selection.removeAllRanges();
-        });
-      }
-    });
-
-    btnCopyLink.addEventListener("click", () => {
-      const selection = window.getSelection();
-      const text = selection.toString();
-      if (text) {
-        // Robust Text Fragment: encodeURIComponent handles spaces, but strict Text Fragment might need specific char handling.
-        // For general usage, this is "good enough" for short selections.
-        // A production-grade solution would minimize the text (prefix-, suffix-).
-        const encodedText = encodeURIComponent(text).replace(/-/g, "%2D"); // Hyphens must be encoded in text fragments
-        const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
-        navigator.clipboard.writeText(url).then(() => {
-          showToast("Link copied to clipboard!");
-          menu.classList.remove("visible");
-          selection.removeAllRanges();
-        });
-      }
-    });
-
-    btnShareTwitter.addEventListener("click", () => {
-      const selection = window.getSelection();
-      const text = selection.toString();
-      if (text) {
-        const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent('"' + text + '"')}&url=${encodeURIComponent(window.location.href)}`;
-        window.open(twitterUrl, '_blank');
-        menu.classList.remove("visible");
-        selection.removeAllRanges();
-      }
-    });
 
     // Show/Hide Logic
     function handleSelection() {
