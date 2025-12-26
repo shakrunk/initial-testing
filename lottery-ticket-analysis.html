@@ -137,6 +137,39 @@
                         <span>46 sources</span>
                     </div>
                 </div>
+
+                <!-- Audio Overview -->
+                <div class="audio-section">
+                    <div class="audio-container">
+                        <!-- TOP: Icon and Labels Centered -->
+                        <div class="audio-header">
+                            <div class="audio-icon">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"
+                                    />
+                                </svg>
+                            </div>
+                            <div class="audio-text-group">
+                                <div class="audio-label">AI Audio Overview</div>
+                                <div class="audio-title">
+                                    Listen to the Summary
+                                </div>
+                            </div>
+                        </div>
+
+                        <audio class="audio-player" preload="metadata">
+                            <source
+                                src="audio/Math Proves Powerball Is Not Rational.mp3"
+                                type="audio/mpeg"
+                            />
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
             </div>
             <div class="scroll-indicator">
                 <svg
@@ -399,5 +432,6 @@
         </div>
 
         <script src="scripts.js" defer></script>
+        <script src="audio-player.js" defer></script>
     </body>
 </html>
