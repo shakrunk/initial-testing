@@ -12,3 +12,8 @@
 **Vulnerability:** Transferring HTML content between elements using `innerHTML` (e.g., tooltips) creates a potential XSS vector if the source content is compromised or contains hidden malicious payloads that become active upon re-insertion.
 **Learning:** `cloneNode(true)` and `appendChild` provide a safer way to move or copy rich text content within the DOM without the serialization/parsing risks of `innerHTML`.
 **Prevention:** Replaced `innerHTML` assignment in citation tooltip logic with DOM node cloning.
+
+## 2025-12-25 - [Refactor Audio Player for Safe DOM Manipulation]
+**Vulnerability:** Usage of `innerHTML` to update SVG icons in the audio player. While the content was static, this pattern increases the attack surface and can mask accidental introduction of dynamic, untrusted content in the future.
+**Learning:** Consistent use of DOM APIs (`createElementNS`, `setAttribute`) for SVG manipulation eliminates the need for `innerHTML` entirely in UI components, enforcing a stricter security posture.
+**Prevention:** Refactored `audio-player.js` to use `createElementNS` for all SVG icon updates.

@@ -3,6 +3,45 @@ document.addEventListener('DOMContentLoaded', () => {
     initAudioPlayers();
 });
 
+// Helper to create and set SVG icon
+function setButtonIcon(button, iconType) {
+    button.textContent = '';
+
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 24 24");
+    svg.setAttribute("width", "24");
+    svg.setAttribute("height", "24");
+
+    if (iconType === 'loading') {
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("cx", "12");
+        circle.setAttribute("cy", "12");
+        circle.setAttribute("r", "10");
+        circle.setAttribute("stroke-width", "3");
+        circle.setAttribute("stroke-dasharray", "30 30");
+        circle.setAttribute("fill", "none");
+        circle.style.stroke = "currentColor";
+
+        // Add rotation animation class if needed, or rely on CSS.
+        // The previous code had class="spinner"
+        circle.setAttribute("class", "spinner");
+
+        svg.appendChild(circle);
+    } else {
+        svg.setAttribute("fill", "currentColor");
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+        if (iconType === 'play') {
+            path.setAttribute("d", "M8 5v14l11-7z");
+        } else if (iconType === 'pause') {
+            path.setAttribute("d", "M6 19h4V5H6v14zm8-14v14h4V5h-4z");
+        }
+        svg.appendChild(path);
+    }
+
+    button.appendChild(svg);
+}
+
 function initAudioPlayers() {
     const audioElements = document.querySelectorAll('audio.audio-player');
 
@@ -19,11 +58,7 @@ function initAudioPlayers() {
         const playBtn = document.createElement('button');
         playBtn.className = 'custom-audio-btn play-btn';
         playBtn.setAttribute('aria-label', 'Play');
-        playBtn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                <path d="M8 5v14l11-7z"/>
-            </svg>
-        `;
+        setButtonIcon(playBtn, 'play');
 
         // Progress Bar Container
         const progressContainer = document.createElement('div');
@@ -112,26 +147,29 @@ function initAudioPlayers() {
         progressInput.addEventListener('mousedown', (e) => e.stopPropagation());
         progressInput.addEventListener('touchstart', (e) => e.stopPropagation());
 
-        // Update UI on Play/Pause
-        audio.addEventListener('play', () => {
-            playBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                    <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-                </svg>
-            `;
+        // Visual state updaters
+        const showLoading = () => {
+            setButtonIcon(playBtn, 'loading');
+            playBtn.setAttribute('aria-label', 'Loading');
+        };
+
+        const showPause = () => {
+            setButtonIcon(playBtn, 'pause');
             playBtn.setAttribute('aria-label', 'Pause');
             controlsContainer.classList.add('playing');
-        });
+        };
 
-        audio.addEventListener('pause', () => {
-            playBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-            `;
+        const showPlay = () => {
+            setButtonIcon(playBtn, 'play');
             playBtn.setAttribute('aria-label', 'Play');
             controlsContainer.classList.remove('playing');
-        });
+        };
+
+        // Update UI on Play/Pause/Waiting
+        audio.addEventListener('play', showLoading); // Immediate feedback
+        audio.addEventListener('waiting', showLoading); // Buffering feedback
+        audio.addEventListener('playing', showPause); // Actual playback feedback
+        audio.addEventListener('pause', showPlay);
 
         // Update Progress Bar and Time
         audio.addEventListener('timeupdate', () => {
@@ -167,12 +205,7 @@ function initAudioPlayers() {
 
         // Reset on End
         audio.addEventListener('ended', () => {
-            playBtn.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
-                    <path d="M8 5v14l11-7z"/>
-                </svg>
-            `;
-            playBtn.setAttribute('aria-label', 'Play');
+            showPlay();
             progressInput.value = 0;
             updateProgressBackground(progressInput, 0);
             currentSpan.textContent = '0:00';
