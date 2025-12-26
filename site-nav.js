@@ -24,7 +24,8 @@
         // Article Links
         const links = [
             { text: "Part I: Flawed Democracy", href: "flawed-democracy.html" },
-            { text: "Part II: Grey Zone", href: "twilight-of-the-grey-zone.html" }
+            { text: "Part II: Grey Zone", href: "twilight-of-the-grey-zone.html" },
+            { text: "Lottery Analysis", href: "lottery-ticket-analysis.html" }
         ];
 
         links.forEach(link => {
