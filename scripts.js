@@ -666,7 +666,9 @@
   function setupTheme() {
     const toggle = document.getElementById("themeToggle");
     const storedTheme = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)",
+    ).matches;
 
     // Set initial state
     if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
@@ -675,7 +677,8 @@
 
     if (toggle) {
       toggle.addEventListener("click", () => {
-        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const currentTheme =
+          document.documentElement.getAttribute("data-theme");
         if (currentTheme === "dark") {
           document.documentElement.removeAttribute("data-theme");
           localStorage.setItem("theme", "light");
@@ -718,9 +721,9 @@
     // Define actions to programmatically generate menu
     const actions = [
       {
-        id: 'btnCopyText',
-        label: 'Copy',
-        ariaLabel: 'Copy Text',
+        id: "btnCopyText",
+        label: "Copy",
+        ariaLabel: "Copy Text",
         icon: '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>',
         handler: () => {
           const selection = window.getSelection();
@@ -732,12 +735,12 @@
               selection.removeAllRanges();
             });
           }
-        }
+        },
       },
       {
-        id: 'btnCopyLink',
-        label: 'Link',
-        ariaLabel: 'Copy Link to Highlight',
+        id: "btnCopyLink",
+        label: "Link",
+        ariaLabel: "Copy Link to Highlight",
         icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>',
         handler: () => {
           const selection = window.getSelection();
@@ -751,27 +754,27 @@
               selection.removeAllRanges();
             });
           }
-        }
-      }
+        },
+      },
     ];
 
     // Build the menu DOM
     actions.forEach((action, index) => {
-        const btn = document.createElement('button');
-        btn.className = 'selection-btn';
-        btn.id = action.id;
-        btn.setAttribute('aria-label', action.ariaLabel);
-        btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${action.icon}</svg> ${action.label}`;
+      const btn = document.createElement("button");
+      btn.className = "selection-btn";
+      btn.id = action.id;
+      btn.setAttribute("aria-label", action.ariaLabel);
+      btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${action.icon}</svg> ${action.label}`;
 
-        btn.addEventListener('click', action.handler);
-        menu.appendChild(btn);
+      btn.addEventListener("click", action.handler);
+      menu.appendChild(btn);
 
-        // Add divider only if it's NOT the last item
-        if (index < actions.length - 1) {
-            const divider = document.createElement('div');
-            divider.className = 'selection-divider';
-            menu.appendChild(divider);
-        }
+      // Add divider only if it's NOT the last item
+      if (index < actions.length - 1) {
+        const divider = document.createElement("div");
+        divider.className = "selection-divider";
+        menu.appendChild(divider);
+      }
     });
 
     document.body.appendChild(menu);
@@ -789,12 +792,15 @@
         // Center horizontally
         let left = rect.left + rect.width / 2 - menu.offsetWidth / 2;
         // Ensure it doesn't go off screen
-        left = Math.max(10, Math.min(left, window.innerWidth - menu.offsetWidth - 10));
+        left = Math.max(
+          10,
+          Math.min(left, window.innerWidth - menu.offsetWidth - 10),
+        );
 
         let top = rect.top - menu.offsetHeight - 10;
         // If too close to top, show below
         if (top < 0) {
-            top = rect.bottom + 10;
+          top = rect.bottom + 10;
         }
 
         menu.style.left = `${left + window.scrollX}px`;
@@ -812,36 +818,46 @@
       // Hide immediately on change, then wait to show
       // This feels snappier than dragging with the box moving
       if (window.getSelection().isCollapsed) {
-          menu.classList.remove("visible");
+        menu.classList.remove("visible");
       }
 
       debounceTimer = setTimeout(() => {
-          // Only show if mouse is up (user finished selecting)
-          // We can't easily detect mouse state here, so we rely on mouseup too
+        // Only show if mouse is up (user finished selecting)
+        // We can't easily detect mouse state here, so we rely on mouseup too
       }, 500);
     });
 
     document.addEventListener("mouseup", (e) => {
-        // Prevent clearing selection when clicking the menu itself
-        if (menu.contains(e.target)) return;
+      // Prevent clearing selection when clicking the menu itself
+      if (menu.contains(e.target)) return;
 
-        // Small timeout to let selection settle
-        setTimeout(handleSelection, 10);
+      // Small timeout to let selection settle
+      setTimeout(handleSelection, 10);
     });
 
     document.addEventListener("keyup", (e) => {
-       if (e.key === "Shift" || e.key === "ArrowLeft" || e.key === "ArrowRight") {
-           setTimeout(handleSelection, 10);
-       }
+      if (
+        e.key === "Shift" ||
+        e.key === "ArrowLeft" ||
+        e.key === "ArrowRight"
+      ) {
+        setTimeout(handleSelection, 10);
+      }
     });
 
     // Hide on scroll to prevent detached UI
-    window.addEventListener("scroll", () => {
-         if (menu.classList.contains("visible")) {
-             menu.classList.remove("visible");
-             // Optional: Deselect text? No, that's annoying.
-         }
-    }, { passive: true });
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (menu.classList.contains("visible")) {
+          menu.classList.remove("visible");
+          // Optional: Deselect text? No, that's annoying.
+        }
+      },
+      { passive: true },
+    );
+  }
+
   // ===== MOBILE TOC =====
   function setupMobileToc() {
     const btn = document.getElementById("mobileTocBtn");
