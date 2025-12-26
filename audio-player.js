@@ -53,12 +53,19 @@ function initAudioPlayers() {
         timeDisplay.appendChild(separator);
         timeDisplay.appendChild(durationSpan);
 
+        // Speed Control Button
+        const speedBtn = document.createElement('button');
+        speedBtn.className = 'custom-audio-speed-btn';
+        speedBtn.setAttribute('aria-label', 'Playback speed: 1x');
+        speedBtn.textContent = '1x';
+
         // Assemble the UI
         progressContainer.appendChild(progressInput);
 
         controlsContainer.appendChild(playBtn);
         controlsContainer.appendChild(progressContainer);
         controlsContainer.appendChild(timeDisplay);
+        controlsContainer.appendChild(speedBtn);
 
         // Insert after the original audio element
         audio.parentNode.insertBefore(controlsContainer, audio.nextSibling);
@@ -178,6 +185,22 @@ function initAudioPlayers() {
             currentSpan.textContent = '0:00';
             controlsContainer.classList.remove('playing');
         });
+
+        // Playback Speed Control
+        const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+        let currentSpeedIndex = 2; // Start at 1x
+
+        speedBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+            const newSpeed = speeds[currentSpeedIndex];
+            audio.playbackRate = newSpeed;
+            speedBtn.textContent = `${newSpeed}x`;
+            speedBtn.setAttribute('aria-label', `Playback speed: ${newSpeed}x`);
+        });
+
+        // Set initial speed
+        audio.playbackRate = speeds[currentSpeedIndex];
 
         // Helper to update range input background
         function updateProgressBackground(input, percent) {

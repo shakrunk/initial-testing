@@ -546,6 +546,7 @@
     const durTime = document.getElementById("durTime");
     const rwBtn = document.getElementById("rwBtn");
     const ffBtn = document.getElementById("ffBtn");
+    const speedBtn = document.getElementById("speedBtn");
 
     function formatTime(seconds) {
       const mins = Math.floor(seconds / 60);
@@ -655,6 +656,25 @@
     ffBtn?.addEventListener("click", () => {
       audio.currentTime = Math.min(audio.duration, audio.currentTime + 15);
     });
+
+    // Playback Speed Control
+    const speeds = [0.5, 0.75, 1, 1.25, 1.5, 2];
+    let currentSpeedIndex = 2; // Start at 1x
+
+    speedBtn?.addEventListener("click", () => {
+      currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+      const newSpeed = speeds[currentSpeedIndex];
+      audio.playbackRate = newSpeed;
+      speedBtn.textContent = `${newSpeed}x`;
+      speedBtn.setAttribute("aria-label", `Playback speed: ${newSpeed}x`);
+    });
+
+    // Set initial speed
+    if (speedBtn) {
+      audio.playbackRate = speeds[currentSpeedIndex];
+      speedBtn.textContent = `${speeds[currentSpeedIndex]}x`;
+      speedBtn.setAttribute("aria-label", `Playback speed: ${speeds[currentSpeedIndex]}x`);
+    }
 
     // Set initial duration
     audio.addEventListener("loadedmetadata", () => {
