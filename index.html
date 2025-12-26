@@ -58,7 +58,9 @@
                 border-top: 4px solid var(--card-accent, var(--color-accent));
                 border-radius: 12px;
                 padding: 2rem;
-                transition: transform 0.2s, box-shadow 0.2s;
+                transition:
+                    transform 0.2s,
+                    box-shadow 0.2s;
                 text-decoration: none;
                 color: inherit;
                 display: flex;
@@ -73,7 +75,7 @@
 
             .article-card:hover {
                 transform: translateY(-4px);
-                box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
                 /* Keep the colored top border, maybe darken the rest */
                 border-color: var(--color-border);
                 border-top-color: var(--card-accent);
@@ -115,22 +117,71 @@
 
         <!-- Theme Toggle -->
         <div class="theme-toggle-container">
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Dark Mode" style="background: var(--color-card-bg); border: 1px solid var(--color-border); border-radius: 50%; width: 40px; height: 40px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-                <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/></svg>
-                <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <button
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Toggle Dark Mode"
+                style="
+                    background: var(--color-card-bg);
+                    border: 1px solid var(--color-border);
+                    border-radius: 50%;
+                    width: 40px;
+                    height: 40px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                "
+            >
+                <svg
+                    class="sun-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <circle cx="12" cy="12" r="5" />
+                    <path
+                        d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"
+                    />
+                </svg>
+                <svg
+                    class="moon-icon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                >
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
             </button>
         </div>
 
         <div class="landing-hero" id="main-content">
             <h1 class="landing-title">The Archive</h1>
-            <p class="landing-subtitle">A collection of research, analysis, and diagnostic frameworks.</p>
+            <p class="landing-subtitle">
+                A collection of research, analysis, and diagnostic frameworks.
+            </p>
         </div>
 
         <div class="articles-grid">
             <a href="articles/flawed-democracy.html" class="article-card" style="--card-accent-light: #1a5f7a; --card-accent-dark: #4fc3f7;">
                 <div class="card-series">Democratic Health Series • Part I</div>
-                <h2 class="card-title">Democratic Health Diagnostic Framework</h2>
-                <p class="card-desc">A novel framework for evaluating the resilience and decay of liberal democracy, validated against historical collapse. Baseline assessment from July 2025.</p>
+                <h2 class="card-title">
+                    Democratic Health Diagnostic Framework
+                </h2>
+                <p class="card-desc">
+                    A novel framework for evaluating the resilience and decay of
+                    liberal democracy, validated against historical collapse.
+                    Baseline assessment from July 2025.
+                </p>
                 <div class="card-meta">
                     <span>July 2025</span>
                     <span>~40 min read</span>
@@ -140,7 +191,11 @@
             <a href="articles/twilight-of-the-grey-zone.html" class="article-card" style="--card-accent-light: #8b2500; --card-accent-dark: #ff7043;">
                 <div class="card-series">Democratic Health Series • Part II</div>
                 <h2 class="card-title">The Twilight of the Grey Zone</h2>
-                <p class="card-desc">A comprehensive audit of American democratic resilience and institutional decay. December 2025 update covering the "Department of Government Efficiency" and judicial shifts.</p>
+                <p class="card-desc">
+                    A comprehensive audit of American democratic resilience and
+                    institutional decay. December 2025 update covering the
+                    "Department of Government Efficiency" and judicial shifts.
+                </p>
                 <div class="card-meta">
                     <span>Dec 2025</span>
                     <span>~45 min read</span>
@@ -149,8 +204,15 @@
 
             <a href="articles/lottery-ticket-analysis.html" class="article-card" style="--card-accent-light: #2e7d32; --card-accent-dark: #66bb6a;">
                 <div class="card-series">Risk Analysis</div>
-                <h2 class="card-title">The Statistical Imperative Against Lottery Participation</h2>
-                <p class="card-desc">A rigorous actuarial and behavioral analysis dismantling the "Positive EV" myth of multi-state lotteries. Explores the mathematical improbability and regressive economic impact of ticket purchases.</p>
+                <h2 class="card-title">
+                    The Statistical Imperative Against Lottery Participation
+                </h2>
+                <p class="card-desc">
+                    A rigorous actuarial and behavioral analysis dismantling the
+                    "Positive EV" myth of multi-state lotteries. Explores the
+                    mathematical improbability and regressive economic impact of
+                    ticket purchases.
+                </p>
                 <div class="card-meta">
                     <span>Dec 2025</span>
                     <span>~30 min read</span>
