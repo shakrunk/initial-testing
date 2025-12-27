@@ -1372,9 +1372,15 @@ footer p {
         font-size: 16px;
     }
 
+    .global-nav-links {
+        display: none;
+    }
+
     .series-nav {
         position: relative;
         height: auto;
+        top: 0;
+        margin-top: var(--global-nav-height);
     }
 
     .hero {
