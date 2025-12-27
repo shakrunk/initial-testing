@@ -43,6 +43,8 @@ function setButtonIcon(button, iconType) {
             path.setAttribute("d", "M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z");
         } else if (iconType === 'speed') {
             path.setAttribute("d", "M20.38 8.57l-1.23 1.85a8 8 0 0 1-.22 7.58H5.07A8 8 0 0 1 15.58 6.85l1.85-1.23A10 10 0 0 0 3.35 19a2 2 0 0 0 1.72 1h13.85a2 2 0 0 0 1.74-1 10 10 0 0 0-.27-10.44zm-9.79 6.84a2 2 0 0 0 2.83 0l5.66-8.49-8.49 5.66a2 2 0 0 0 0 2.83z");
+        } else if (iconType === 'close') {
+            path.setAttribute("d", "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z");
         }
         svg.appendChild(path);
     }
@@ -67,38 +69,9 @@ function initAudioPlayers() {
         controlsContainer.setAttribute('role', 'region');
         controlsContainer.setAttribute('aria-label', 'Audio player');
 
-        // Main controls row (play, skip back, skip forward)
-        const mainControlsRow = document.createElement('div');
-        mainControlsRow.className = 'audio-main-controls';
-
-        // Skip Backward Button
-        const skipBackBtn = document.createElement('button');
-        skipBackBtn.className = 'custom-audio-btn skip-btn';
-        skipBackBtn.setAttribute('aria-label', 'Skip backward 15 seconds');
-        skipBackBtn.title = 'Skip backward 15 seconds (←)';
-        setButtonIcon(skipBackBtn, 'skip-backward');
-
-        // Play/Pause Button
-        const playBtn = document.createElement('button');
-        playBtn.className = 'custom-audio-btn play-btn';
-        playBtn.setAttribute('aria-label', 'Play');
-        playBtn.title = 'Play (Space)';
-        setButtonIcon(playBtn, 'play');
-
-        // Skip Forward Button
-        const skipForwardBtn = document.createElement('button');
-        skipForwardBtn.className = 'custom-audio-btn skip-btn';
-        skipForwardBtn.setAttribute('aria-label', 'Skip forward 15 seconds');
-        skipForwardBtn.title = 'Skip forward 15 seconds (→)';
-        setButtonIcon(skipForwardBtn, 'skip-forward');
-
-        mainControlsRow.appendChild(skipBackBtn);
-        mainControlsRow.appendChild(playBtn);
-        mainControlsRow.appendChild(skipForwardBtn);
-
-        // Progress Bar Container
+        // --- ROW 1: Progress Bar ---
         const progressContainer = document.createElement('div');
-        progressContainer.className = 'custom-audio-progress-container';
+        progressContainer.className = 'audio-progress-row';
 
         // Current Time
         const currentTime = document.createElement('span');
@@ -128,7 +101,36 @@ function initAudioPlayers() {
         progressContainer.appendChild(progressInput);
         progressContainer.appendChild(durationTime);
 
-        // Secondary controls row (volume, speed, download)
+        // --- ROW 2: Main Controls (Skips + Play) ---
+        const mainControlsRow = document.createElement('div');
+        mainControlsRow.className = 'audio-main-controls';
+
+        // Skip Backward Button
+        const skipBackBtn = document.createElement('button');
+        skipBackBtn.className = 'custom-audio-btn skip-btn';
+        skipBackBtn.setAttribute('aria-label', 'Skip backward 15 seconds');
+        skipBackBtn.title = 'Skip backward 15 seconds (←)';
+        setButtonIcon(skipBackBtn, 'skip-backward');
+
+        // Play/Pause Button
+        const playBtn = document.createElement('button');
+        playBtn.className = 'custom-audio-btn play-btn';
+        playBtn.setAttribute('aria-label', 'Play');
+        playBtn.title = 'Play (Space)';
+        setButtonIcon(playBtn, 'play');
+
+        // Skip Forward Button
+        const skipForwardBtn = document.createElement('button');
+        skipForwardBtn.className = 'custom-audio-btn skip-btn';
+        skipForwardBtn.setAttribute('aria-label', 'Skip forward 15 seconds');
+        skipForwardBtn.title = 'Skip forward 15 seconds (→)';
+        setButtonIcon(skipForwardBtn, 'skip-forward');
+
+        mainControlsRow.appendChild(skipBackBtn);
+        mainControlsRow.appendChild(playBtn);
+        mainControlsRow.appendChild(skipForwardBtn);
+
+        // --- ROW 3: Secondary Controls (Vol, Speed, DL) ---
         const secondaryControlsRow = document.createElement('div');
         secondaryControlsRow.className = 'audio-secondary-controls';
 
@@ -198,16 +200,16 @@ function initAudioPlayers() {
         secondaryControlsRow.appendChild(speedContainer);
         secondaryControlsRow.appendChild(downloadBtn);
 
-        // Assemble the UI
-        controlsContainer.appendChild(mainControlsRow);
+        // Assemble the UI: Progress Top, Main Middle, Secondary Bottom
         controlsContainer.appendChild(progressContainer);
+        controlsContainer.appendChild(mainControlsRow);
         controlsContainer.appendChild(secondaryControlsRow);
 
         // Insert after the original audio element
         audio.parentNode.insertBefore(controlsContainer, audio.nextSibling);
 
-        // Find the main container to make it clickable (but not for the enhanced player)
-        const mainContainer = audio.closest('.audio-container');
+        // --- Mini Player Logic ---
+        createMiniPlayer(audio, playBtn, controlsContainer);
 
         // --- State Management ---
         let isSeeking = false;
@@ -535,6 +537,80 @@ function initAudioPlayers() {
         // Initialize background
         updateProgressBackground(progressInput, 0);
     });
+}
+
+function createMiniPlayer(audio, mainPlayBtn, controlsContainer) {
+    const miniPlayer = document.createElement('div');
+    miniPlayer.className = 'mini-player';
+    miniPlayer.setAttribute('role', 'region');
+    miniPlayer.setAttribute('aria-label', 'Mini Audio Player');
+
+    const miniPlayBtn = document.createElement('button');
+    miniPlayBtn.className = 'mini-player-btn';
+    setButtonIcon(miniPlayBtn, 'play');
+    miniPlayBtn.onclick = (e) => {
+        e.stopPropagation();
+        if (audio.paused) {
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    };
+
+    const miniTitle = document.createElement('div');
+    miniTitle.className = 'mini-player-title';
+    // Try to find a title in the DOM nearby
+    const articleTitle = document.querySelector('h1.hero-title') || document.querySelector('.audio-title');
+    miniTitle.textContent = articleTitle ? articleTitle.textContent : 'Audio Player';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'mini-player-close';
+    setButtonIcon(closeBtn, 'close');
+    closeBtn.onclick = (e) => {
+        e.stopPropagation();
+        miniPlayer.classList.remove('visible');
+        // Optionally disable it for the session
+    };
+
+    miniPlayer.appendChild(miniPlayBtn);
+    miniPlayer.appendChild(miniTitle);
+    miniPlayer.appendChild(closeBtn);
+
+    document.body.appendChild(miniPlayer);
+
+    // Sync State
+    audio.addEventListener('play', () => {
+        setButtonIcon(miniPlayBtn, 'pause');
+        miniPlayer.classList.add('playing');
+    });
+    audio.addEventListener('pause', () => {
+        setButtonIcon(miniPlayBtn, 'play');
+        miniPlayer.classList.remove('playing');
+    });
+
+    // Interaction: Scroll to main player on click
+    miniPlayer.addEventListener('click', () => {
+        controlsContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Observer
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            // Show mini player if main player is NOT intersecting AND (playing OR has progress)
+            // But only if we have started playing at least once (currentTime > 0)
+            const shouldShow = !entry.isIntersecting && (audio.currentTime > 0);
+            if (shouldShow) {
+                miniPlayer.classList.add('visible');
+            } else {
+                miniPlayer.classList.remove('visible');
+            }
+        });
+    }, {
+        threshold: 0
+    });
+
+    // Observe the main container (or the audio controls if container is too big)
+    observer.observe(controlsContainer);
 }
 
 function formatTime(seconds) {
