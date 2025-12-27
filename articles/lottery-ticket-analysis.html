@@ -54,10 +54,38 @@
                 margin: 1.5rem 0;
                 border-left: 3px solid var(--color-accent);
                 overflow-x: auto;
+                font-size: 0.9rem;
+                line-height: 1.6;
+            }
+
+            .case-study {
+                background: var(--color-bg-alt);
+                padding: 2rem;
+                border-radius: 8px;
+                margin: 2rem 0;
+                border-left: 4px solid var(--color-accent);
+            }
+
+            .case-study h4 {
+                color: var(--color-accent);
+                margin-top: 0;
+            }
+
+            .conclusion-box {
+                background: var(--color-bg-alt);
+                border: 2px solid var(--color-accent);
+                padding: 2rem;
+                border-radius: 8px;
+                margin: 2rem 0;
+            }
+
+            .conclusion-box h3 {
+                color: var(--color-accent);
+                margin-top: 0;
             }
         </style>
     </head>
-    <body>
+    <body data-theme="light">
         <!-- Skip to Content -->
         <a href="#main-content" class="skip-to-content">Skip to main content</a>
 
@@ -149,6 +177,29 @@
             </div>
         </div>
 
+        <!-- Navigation -->
+        <nav class="nav" id="nav">
+            <div class="nav-inner">
+                <div class="nav-title">
+                    Democratic Health Diagnostic Framework
+                </div>
+                <div class="nav-links">
+                    <a href="#abstract" class="nav-link">Summary</a>
+                    <a href="#mathematics" class="nav-link">Mathematics</a>
+                    <a href="#neuroeconomics" class="nav-link"
+                        >Neuroeconomics</a
+                    >
+                    <a href="#socioeconomics" class="nav-link"
+                        >Socioeconomics</a
+                    >
+                    <a href="#modeling" class="nav-link">Modeling</a>
+                    <a href="#psychology" class="nav-link">Psychology</a>
+                    <a href="#case-studies" class="nav-link">Case Studies</a>
+                    <a href="#conclusion" class="nav-link">Conclusion</a>
+                </div>
+            </div>
+        </nav>
+
         <!-- Hero -->
         <header class="hero">
             <div class="hero-content">
@@ -169,11 +220,15 @@
                     </div>
                     <div class="hero-meta-item">
                         <span class="hero-meta-label">Analysis Type</span>
-                        <span>Actuarial & Behavioral</span>
+                        <span>Actuarial & Behavioral Economics</span>
                     </div>
                     <div class="hero-meta-item">
                         <span class="hero-meta-label">Citations</span>
-                        <span>46 sources</span>
+                        <span>46 Academic & Industry Sources</span>
+                    </div>
+                    <div class="hero-meta-item">
+                        <span class="hero-meta-label">Reading Time</span>
+                        <span>~45 minutes</span>
                     </div>
                 </div>
 
@@ -227,45 +282,12 @@
             </div>
         </header>
 
-        <!-- Table of Contents -->
-        <section class="toc">
-            <div class="toc-inner">
-                <h2 class="toc-title">Contents</h2>
-                <ol class="toc-list">
-                    <li class="toc-item">
-                        <span class="toc-number">01</span>
-                        <a href="#mathematics" class="toc-link"
-                            >The Mathematics of Improbability</a
-                        >
-                    </li>
-                    <li class="toc-item">
-                        <span class="toc-number">02</span>
-                        <a href="#economics" class="toc-link"
-                            >The Economic Fallacy of "Positive EV"</a
-                        >
-                    </li>
-                    <li class="toc-item">
-                        <span class="toc-number">03</span>
-                        <a href="#neuroeconomics" class="toc-link"
-                            >The Neuroeconomics of Gambling</a
-                        >
-                    </li>
-                    <li class="toc-item">
-                        <span class="toc-number">04</span>
-                        <a href="#socioeconomic" class="toc-link"
-                            >The Socioeconomic Reality</a
-                        >
-                    </li>
-                </ol>
-            </div>
-        </section>
-
         <!-- Main Content with Minimap -->
         <div class="content-wrapper">
             <main class="content" id="main-content">
                 <!-- Executive Abstract -->
                 <section class="section" id="abstract">
-                    <span class="section-number">Abstract</span>
+                    <span class="section-number">Executive Abstract</span>
                     <h2>Executive Abstract</h2>
                     <p>
                         The modern multi-state lottery system, exemplified by
@@ -294,12 +316,13 @@
                     </p>
                     <div class="callout">
                         <p>
-                            <strong>Conclusion:</strong> This analysis concludes
-                            that the purchase of lottery tickets constitutes a
-                            voluntary submission to a predatory financial
-                            instrument that disproportionately extracts wealth
-                            from vulnerable populations while offering a
-                            statistically negligible probability of solvency.
+                            <strong>Conclusion:</strong>
+                            This analysis concludes that the purchase of lottery
+                            tickets constitutes a voluntary submission to a
+                            predatory financial instrument that
+                            disproportionately extracts wealth from vulnerable
+                            populations while offering a statistically
+                            negligible probability of solvency.
                         </p>
                     </div>
                 </section>
@@ -346,14 +369,25 @@
                         C(n, k), which calculates the number of ways to choose k
                         items from a set of n distinct items.
                     </p>
+                    <div class="math-block">C(n, k) = n! / (k!(n-k)!)</div>
                     <p>
                         For the white balls, players must match 5 distinct
                         numbers from a pool of 69. The number of possible
-                        combinations is 11,238,513. For the red Powerball,
-                        players must match 1 number from a pool of 26.
-                        Multiplying these independent probabilities yields the
-                        total number of unique combinations: 292,201,338.
+                        combinations is:
                     </p>
+                    <div class="math-block">
+                        C(69, 5) = 69! / (5!(69-5)!) = 11,238,513
+                    </div>
+                    <p>
+                        For the red Powerball, players must match 1 number from
+                        a pool of 26.
+                    </p>
+                    <div class="math-block">C(26, 1) = 26</div>
+                    <p>
+                        Multiplying these independent probabilities yields the
+                        total number of unique combinations:
+                    </p>
+                    <div class="math-block">11,238,513 × 26 = 292,201,338</div>
                     <p>
                         The Mega Millions presents an even steeper ascent, with
                         odds of 1 in 302,575,350.<sup>2</sup> These are not
@@ -372,8 +406,13 @@
                         unlikely (shark attacks) while courting the impossible
                         (lottery wins).
                     </p>
+
                     <div class="table-container">
                         <table>
+                            <caption>
+                                Table 1: Comparative Probabilities of Rare
+                                Events vs. Lottery Success
+                            </caption>
                             <thead>
                                 <tr>
                                     <th>Event</th>
@@ -409,19 +448,46 @@
                                     <td>1 in 54,000</td>
                                     <td>~5,400x More Likely<sup>5</sup></td>
                                 </tr>
+                                <tr>
+                                    <td>Achieving Sainthood (Canonization)</td>
+                                    <td>1 in 20,000,000</td>
+                                    <td>~14x More Likely</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        Becoming President of the United States
+                                    </td>
+                                    <td>1 in 325,000,000</td>
+                                    <td>Roughly Comparable<sup>6</sup></td>
+                                </tr>
+                                <tr>
+                                    <td>Being born a billionaire</td>
+                                    <td>Extremely Low</td>
+                                    <td>
+                                        More likely than winning<sup>6</sup>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+
                     <p>
                         As the data indicates, an individual is nearly 240 times
                         more likely to be struck by lightning in a given year
-                        than to win the Powerball with a single ticket.<sup
-                            >2</sup
-                        >
-                        Even if a player were to purchase 10,000 tickets—a
-                        $20,000 investment—the odds would improve only to 1 in
-                        29,220, which remains less likely than dying in a plane
-                        crash.<sup>5</sup>
+                        than to win the Powerball with a single ticket.
+                        <sup>2</sup> Even if a player were to purchase 10,000
+                        tickets—a $20,000 investment—the odds would improve only
+                        to 1 in 29,220, which remains less likely than dying in
+                        a plane crash.<sup>5</sup>
+                    </p>
+                    <p>
+                        Another useful visualization provided by mathematician
+                        Tim Chartier compares winning the lottery to flipping a
+                        coin and getting heads 28 times in a row.<sup>7</sup>
+                        Most individuals would intuitively understand that
+                        predicting 28 consecutive coin flips is impossible, yet
+                        they routinely wager on an event of equivalent
+                        improbability.
                     </p>
 
                     <h3>1.3 The Independent Events Fallacy</h3>
@@ -469,18 +535,18 @@
                     <h3>2.1 The Deceptive Headline Number</h3>
                     <p>
                         The advertised jackpot (e.g., $1.5 billion) is an
-                        <em>annuity value</em>, paid out over 29 years.<sup
-                            >8</sup
-                        >
-                        This figure assumes the lottery commission invests the
-                        cash prize pool in government bonds and the interest
-                        accrues to the winner. However, if the winner chooses
-                        the "Cash Option"—as nearly all financial advisors
-                        recommend and winners choose—the prize is immediately
-                        reduced by approximately 40-50%.<sup>8</sup> For a $1.3
-                        billion advertised jackpot, the actual cash on hand is
-                        roughly $589 million.<sup>8</sup> This is the true
-                        starting number for any EV calculation, not the
+                        <em>annuity</em> value, paid out over 29 years.
+                        <sup>8</sup> This figure assumes the lottery commission
+                        invests the cash prize pool in government bonds and the
+                        interest accrues to the winner. However, if the winner
+                        chooses the "Cash Option"—as nearly all financial
+                        advisors recommend and winners choose—the prize is
+                        immediately reduced by approximately 40-50%.<sup>8</sup>
+                    </p>
+                    <p>
+                        For a $1.3 billion advertised jackpot, the actual cash
+                        on hand is roughly $589 million.<sup>8</sup> This is the
+                        true starting number for any EV calculation, not the
                         billion-dollar headline.
                     </p>
 
@@ -491,7 +557,35 @@
                         immediately withholds 24% of the prize, but the winner
                         is ultimately responsible for the top marginal tax
                         bracket, which is currently 37%.<sup>8</sup>
+                    </p>
+                    <p>
                         Furthermore, state taxes impose an additional burden.
+                        While some states like Florida or Texas have no state
+                        tax on winnings, others like New York or California
+                        (though California does not tax lottery winnings, other
+                        high-tax states do) can take significant cuts. In
+                        Colorado, for example, the state withholds
+                        4%<sup>10</sup>, and winners must report the income,
+                        potentially affecting their overall tax liability.
+                    </p>
+
+                    <div class="callout">
+                        <h4>
+                            Calculation of Net Proceeds on a $1.3 Billion
+                            Jackpot:
+                        </h4>
+                        <ol>
+                            <li>Advertised Jackpot: $1.3 Billion</li>
+                            <li>Cash Value: ~$589 Million</li>
+                            <li>Federal Tax (37%): -$217.9 Million</li>
+                            <li>State Tax (Est. 5% avg): -$29.4 Million</li>
+                            <li>
+                                <strong>Net Take-Home: ~$341.7 Million</strong>
+                            </li>
+                        </ol>
+                    </div>
+
+                    <p>
                         The "Billion Dollar" prize effectively shrinks by nearly
                         75% before it even reaches the winner's bank account.
                     </p>
@@ -508,13 +602,23 @@
                         As the jackpot size increases, ticket sales grow
                         exponentially, not linearly.<sup>12</sup> This
                         phenomenon, known as "lottery fever," drastically
-                        increases the probability of multiple winners. According
-                        to analysis by the Mega Millions Consortium and Business
-                        Insider, when jackpots become massive, the probability
-                        of a single winner drops to around 40%, while the
-                        probability of sharing the pot rises to 60% or
+                        increases the probability of multiple winners. We can
+                        model the number of winners using the Poisson
+                        Distribution:
+                    </p>
+                    <div class="math-block">P(X=k) = (e^(-λ) × λ^k) / k!</div>
+                    <p>
+                        Where λ (lambda) is the expected number of winners based
+                        on tickets sold.
+                    </p>
+                    <p>
+                        According to analysis by the Mega Millions Consortium
+                        and Business Insider, when jackpots become massive, the
+                        probability of a single winner drops to around 40%,
+                        while the probability of sharing the pot rises to 60% or
                         higher.<sup>2</sup> If a $1 billion pot is split two
-                        ways, the EV is instantly halved.
+                        ways, the EV is instantly halved. If split three ways,
+                        it is cut by 66%.
                     </p>
 
                     <h3>2.4 The True Expected Value Calculation</h3>
@@ -525,13 +629,16 @@
                         break-even point (pre-tax) when the jackpot exceeds $2
                         billion.<sup>8</sup> However, once the "split-pot
                         penalty" and taxes are factored in, the expected return
-                        on a $2 ticket remains consistently negative. Standard
-                        EV analysis shows that for every $2 ticket purchased,
-                        the player can expect to recoup approximately $0.32.<sup
-                            >13</sup
-                        >
-                        This represents a guaranteed loss of 84% on investment
-                        capital.
+                        on a $2 ticket remains consistently negative.
+                    </p>
+                    <p>
+                        Standard EV analysis shows that for every $2 ticket
+                        purchased, the player can expect to recoup approximately
+                        $0.32.<sup>13</sup> This represents a guaranteed loss of
+                        84% on investment capital. There is no point on the
+                        curve where buying a ticket becomes a rational financial
+                        decision; it is always a donation to the state with a
+                        microscopic chance of a rebate.
                     </p>
                 </section>
 
@@ -548,9 +655,8 @@
                         specific vulnerabilities in human neurobiology. The
                         lottery is not just a game of chance; it is a
                         psychological skinner box designed to maximize
-                        participation through "The Pathology of Hope".<sup
-                            >14</sup
-                        >
+                        participation through what Gambling researchers call
+                        "The Pathology of Hope".<sup>14</sup>
                     </p>
 
                     <h3>
@@ -560,36 +666,75 @@
                         Neurobiological research has identified the "Near-Miss
                         Effect" as a primary driver of gambling persistence. A
                         near-miss occurs when a losing outcome closely resembles
-                        a win—for example, matching 4 out of 6 numbers.<sup
-                            >15</sup
-                        >
-                        In games of skill, a near-miss provides valuable
-                        feedback. However, in independent chance games, a ticket
-                        that matches 3 numbers is no "closer" to the jackpot
-                        than one matching zero.<sup>17</sup>
+                        a win—for example, matching 4 out of 6 numbers, or
+                        having the winning numbers differ by a single digit.
+                        <sup>15</sup>
                     </p>
                     <p>
-                        Functional MRI (fMRI) studies demonstrate that
-                        near-misses activate the ventral striatum and the
-                        anterior insula—the same brain regions associated with
-                        winning.<sup>16</sup> The brain interprets the near-miss
-                        as a signal of imminent success, triggering dopamine
-                        release that mimics the sensation of winning and
-                        encourages the player to "try again".<sup>19</sup>
+                        In games of skill, such as archery or basketball, a
+                        near-miss provides valuable feedback: "I was close; I
+                        need to adjust my aim slightly." The brain rewards this
+                        with dopamine to encourage learning. However, the
+                        lottery is a game of independent chance. A ticket that
+                        matches 3 numbers is no "closer" to the jackpot than a
+                        ticket that matches zero; the probability of winning the
+                        next draw remains identical.<sup>17</sup>
                     </p>
+
+                    <div class="callout">
+                        <h4>Neural Evidence:</h4>
+                        <p>
+                            Functional MRI (fMRI) studies have demonstrated that
+                            near-misses activate the ventral striatum and the
+                            anterior insula—the exact same brain regions
+                            associated with processing monetary rewards and
+                            winning.<sup>16</sup>
+                        </p>
+                        <ul>
+                            <li>
+                                The brain interprets the near-miss not as a
+                                loss, but as a signal of imminent success.
+                            </li>
+                            <li>
+                                This triggers a release of dopamine that mimics
+                                the sensation of winning, encouraging the player
+                                to "try again" because they feel they are
+                                "getting closer".<sup>19</sup>
+                            </li>
+                            <li>
+                                Studies on rats using slot-machine analogs show
+                                that animals will press levers significantly
+                                more often after a near-miss than after a full
+                                loss, confirming the evolutionary depth of this
+                                cognitive error.<sup>19</sup>
+                            </li>
+                        </ul>
+                    </div>
 
                     <h3>3.2 The Illusion of Control</h3>
                     <p>
                         Lottery formats are specifically designed to foster an
-                        <em>Illusion of Control</em>. By allowing players to
-                        select their own numbers—birthdays, anniversaries, or
-                        "lucky" sequences—the game mimics a skill-based
-                        activity.<sup>7</sup> Research indicates that gamblers
-                        wager more money and exhibit higher confidence when they
-                        choose the numbers themselves versus receiving a "Quick
-                        Pick" ticket, even though the statistical odds are
-                        identical.<sup>19</sup>
+                        Illusion of Control. By allowing players to select their
+                        own numbers—birthdays, anniversaries, or "lucky"
+                        sequences—the game mimics a skill-based activity.
+                        <sup>7</sup>
                     </p>
+                    <ul>
+                        <li>
+                            Research indicates that gamblers wager more money
+                            and exhibit higher confidence when they choose the
+                            numbers themselves versus receiving a "Quick Pick"
+                            (computer-generated) ticket, even though the
+                            statistical odds are identical.<sup>19</sup>
+                        </li>
+                        <li>
+                            This illusion allows players to attribute losses to
+                            "bad luck" or "poor strategy" (e.g., "I should have
+                            played my daughter's birthday instead of my son's")
+                            rather than the inherent improbability of the
+                            game.<sup>20</sup>
+                        </li>
+                    </ul>
 
                     <h3>
                         3.3 The Availability Heuristic and "Jackpot Fatigue"
@@ -597,15 +742,36 @@
                     <p>
                         The media plays a crucial complicit role in the lottery
                         ecosystem. We are constantly exposed to stories of
-                        winners. This creates an Availability Heuristic, where
-                        we overestimate the probability of an event because
-                        examples are easily recalled.<sup>15</sup> We see the 1
-                        winner; we do not see the 292,201,337 losers.
+                        winners—smiling families holding oversized checks. This
+                        creates an Availability Heuristic, a cognitive bias
+                        where we overestimate the probability of an event
+                        because examples are easily recalled.<sup>15</sup>
+                    </p>
+                    <ul>
+                        <li>
+                            We see the 1 winner; we do not see the 292,201,337
+                            losers.
+                        </li>
+                        <li>
+                            If the news interviewed every loser for 30 seconds,
+                            it would take nine years of continuous broadcasting
+                            to get to the single winner of a Powerball draw.
+                        </li>
+                    </ul>
+                    <p>
+                        Furthermore, "Jackpot Fatigue" forces lotteries to
+                        engineer ever-larger prizes. A $100 million prize no
+                        longer excites the dopamine centers of the public; it
+                        takes $1 billion to generate the "fever" required to
+                        drive sales.<sup>2</sup> This requires altering the odds
+                        to make winning harder, creating a vicious cycle where
+                        the game becomes objectively worse for the player in
+                        order to maintain its psychological appeal.
                     </p>
                 </section>
 
                 <!-- Section 4 -->
-                <section class="section" id="socioeconomic">
+                <section class="section" id="socioeconomics">
                     <span class="section-number">Section 04</span>
                     <h2>
                         The Socioeconomic Reality: A Regressive Tax on the
@@ -617,9 +783,8 @@
                         predatory mechanism of wealth extraction. Sociologists
                         and economists widely classify the lottery as a
                         regressive tax—a levy that takes a larger percentage of
-                        income from low-earners than from high-earners.<sup
-                            >20</sup
-                        >
+                        income from low-earners than from high-earners.
+                        <sup>20</sup>
                     </p>
 
                     <h3>
@@ -628,102 +793,510 @@
                     <p>
                         Empirical data consistently demonstrates an inverse
                         relationship between socioeconomic status and lottery
-                        spending. Households earning less than $20,000 annually
-                        spend an average of $46 per month on lottery tickets.
-                        This is nearly double the amount spent by households in
-                        higher income brackets.<sup>21</sup>
+                        spending. The poorest households spend the highest
+                        proportion of their income on lottery products.
                     </p>
+
+                    <div class="callout">
+                        <h4>The Desperation Index:</h4>
+                        <ul>
+                            <li>
+                                Households earning less than $20,000 annually
+                                spend an average of $46 per month on lottery
+                                tickets. This is nearly double the amount spent
+                                by households in higher income brackets.
+                                <sup>21</sup>
+                            </li>
+                            <li>
+                                <strong>Relative Burden:</strong> For a wealthy
+                                individual, $500 a year on tickets is
+                                negligible. For a low-income family, that same
+                                $500 represents substantial purchasing
+                                power—enough for emergency savings, medical
+                                co-pays, or utility bills.<sup>20</sup>
+                            </li>
+                            <li>
+                                <strong>Targeted Marketing:</strong> Research
+                                indicates that lottery outlets are
+                                disproportionately concentrated in low-income
+                                neighborhoods, ensuring that the "tax" is
+                                collected primarily from those least able to
+                                afford it.<sup>20</sup>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <h3>4.2 The "Education Funding" Shell Game</h3>
                     <p>
-                        For a wealthy individual, $500 a year on tickets is
-                        negligible. For a low-income family, that same $500
-                        represents substantial purchasing power—enough for
-                        emergency savings, medical co-pays, or utility
-                        bills.<sup>20</sup> Research indicates that lottery
-                        outlets are disproportionately concentrated in
-                        low-income neighborhoods.<sup>20</sup>
+                        State governments justify lotteries by earmarking
+                        revenue for public goods, most commonly education. This
+                        creates a moral license for players ("I'm losing, but at
+                        least it helps the schools"). However, fiscal analysis
+                        reveals this to be a shell game.
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Fungibility of Funds:</strong> Money is
+                            fungible. When a state allocates $100 million of
+                            lottery revenue to education, legislatures often
+                            reduce the general tax fund allocation to education
+                            by an equivalent amount, shifting that tax money to
+                            other projects.<sup>20</sup>
+                        </li>
+                        <li>
+                            <strong>Net Zero Gain:</strong> The result is that
+                            education budgets do not necessarily increase;
+                            rather, the source of the funding shifts. We replace
+                            stable, progressive tax revenue (income/property
+                            tax) with volatile, regressive revenue (lottery
+                            sales), effectively funding schools on the backs of
+                            the poor.<sup>20</sup>
+                        </li>
+                    </ul>
+
+                    <h3>4.3 Exploiting the Lack of Mobility</h3>
+                    <p>
+                        The lottery thrives on the lack of economic mobility.
+                        For many Americans living paycheck to paycheck, the
+                        traditional paths to wealth—saving, investing,
+                        education—feel inaccessible or too slow. The lottery
+                        offers a "magic bullet" solution—an instant exit from
+                        poverty.
+                    </p>
+                    <ul>
+                        <li>
+                            This "Pathology of Hope" is cynically exploited by
+                            state advertising. Slogans like "All it takes is a
+                            dollar and a dream" explicitly frame the lottery not
+                            as a game, but as a valid vehicle for social
+                            mobility.<sup>14</sup>
+                        </li>
+                        <li>
+                            By selling this fantasy, the state discourages
+                            rational financial behaviors (saving/investing) that
+                            could actually improve the user's condition over
+                            time.<sup>20</sup>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Section 5 -->
+                <section class="section" id="modeling">
+                    <span class="section-number">Section 05</span>
+                    <h2>The Opportunity Cost of Hope: Financial Modeling</h2>
+                    <p>
+                        The true cost of the lottery is not just the $2 ticket
+                        price; it is the Opportunity Cost—the forfeiture of the
+                        future growth that money could have generated if
+                        invested prudently. Using the principle of the Time
+                        Value of Money (TVM), we can model the wealth destroyed
+                        by habitual lottery play.
+                    </p>
+
+                    <h3>5.1 The Investment Alternative: S&P 500</h3>
+                    <p>
+                        The S&P 500 index has historically returned
+                        approximately 10% annually (or roughly 6-7%
+                        inflation-adjusted) over long periods.<sup>22</sup> By
+                        redirecting lottery expenditures into a low-cost index
+                        fund, players can transform a guaranteed loss into a
+                        substantial asset.
+                    </p>
+
+                    <h3>5.2 Scenario A: The "Casual" Player ($20/Month)</h3>
+                    <p>
+                        Consider a player who buys a few tickets a week,
+                        totaling roughly $25 per month.
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Lottery Path:</strong> Over 30 years, they
+                            spend $9,000. Given the -84% ROI, they likely have
+                            $0.
+                        </li>
+                        <li>
+                            <strong>Investment Path:</strong> Investing
+                            $25/month in the S&P 500 (10% return) for 30 years
+                            results in a portfolio worth approximately
+                            $56,000.<sup>22</sup>
+                        </li>
+                        <li>
+                            <strong>Insight:</strong> The "entertainment" of
+                            playing the lottery cost this individual $56,000 in
+                            retirement assets.
+                        </li>
+                    </ul>
+
+                    <h3>5.3 Scenario B: The "Habitual" Player ($730/Year)</h3>
+                    <p>
+                        Consider a player who buys one ticket every day ($2/day
+                        = $730/year).
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Lottery Path:</strong> The probability of
+                            winning the jackpot remains statistically zero
+                            (0.000125% chance of winning in any given year).<sup
+                                >25</sup
+                            >
+                            The capital is gone.
+                        </li>
+                        <li>
+                            <strong>Investment Path:</strong> If $730 per year
+                            had been invested in the S&P 500 over a working
+                            lifetime (e.g., 40 years), the account would grow to
+                            over $350,000 (calculated based on compound interest
+                            formulas: FV = P × ((1+r)^n - 1)/r). Even using the
+                            specific data from snippet<sup>25</sup>, investing
+                            that amount "at inception" would yield ~$90,000
+                            today.<sup>25</sup>
+                        </li>
+                    </ul>
+
+                    <table>
+                        <caption>
+                            Table 2: Lottery Spending vs. Investment Growth
+                            (Assumed 10% Annual Return)
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Monthly Spend</th>
+                                <th>10-Year Lottery Value</th>
+                                <th>10-Year Investment Value</th>
+                                <th>30-Year Lottery Value</th>
+                                <th>30-Year Investment Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>$25</td>
+                                <td>~$0</td>
+                                <td>~$5,000</td>
+                                <td>~$0</td>
+                                <td>~$56,000<sup>22</sup></td>
+                            </tr>
+                            <tr>
+                                <td>$60 ($2/day)</td>
+                                <td>~$0</td>
+                                <td>~$12,000</td>
+                                <td>~$0</td>
+                                <td>~$135,000</td>
+                            </tr>
+                            <tr>
+                                <td>$200</td>
+                                <td>~$0</td>
+                                <td>~$40,000</td>
+                                <td>~$0</td>
+                                <td>~$452,000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p>
+                        This data illustrates that for low-income households,
+                        the lottery is a wealth-destruction machine. The
+                        cumulative effect of these small purchases is often the
+                        difference between a precarious old age and a secure
+                        retirement.<sup>26</sup>
                     </p>
                 </section>
 
-                <!-- Works Cited -->
-                <section class="works-cited" id="works-cited">
-                    <div class="works-cited-inner">
-                        <h2>Selected Works Cited</h2>
-                        <ol class="citation-list">
-                            <li class="citation-item" id="cite-1">
-                                <span class="citation-number">1.</span
-                                ><span class="citation-text"
-                                    >Expected Value of Lottery Tickets -
-                                    YouTube, accessed December 19, 2025.</span
+                <!-- Section 6 -->
+                <section class="section" id="psychology">
+                    <span class="section-number">Section 06</span>
+                    <h2>The "Lottery Curse" and the Risks of Winning</h2>
+                    <p>
+                        The final, and perhaps most compelling, argument against
+                        playing the lottery is that "winning" is often a
+                        traumatic and destructive event. The cultural trope of
+                        the "Lottery Curse" is backed by significant
+                        sociological and financial research. Winners frequently
+                        encounter bankruptcy, social isolation, family
+                        disintegration, and even violent crime.
+                    </p>
+
+                    <h3>6.1 The Bankruptcy Paradox</h3>
+                    <p>
+                        Winning a fortune does not confer financial literacy. In
+                        fact, it often amplifies existing poor financial habits.
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>The Florida Study:</strong> A landmark study
+                            linking Florida Lottery winners to bankruptcy
+                            records found that winning a large cash prize
+                            ($50,000 to $150,000) did not prevent bankruptcy.
+                            Instead, it merely postponed it. Within three to
+                            five years, winners were just as likely to file for
+                            bankruptcy as non-winners.<sup>27</sup>
+                        </li>
+                        <li>
+                            <strong>Rates of Insolvency:</strong> Some estimates
+                            suggest that up to 70% of lottery winners end up
+                            broke within seven years, though more conservative
+                            academic estimates place the figure around 33%—still
+                            a shockingly high rate of failure for individuals
+                            who have been handed "life-changing" wealth.<sup
+                                >29</sup
+                            >
+                        </li>
+                        <li>
+                            <strong>Mental Accounting:</strong> Behavioral
+                            economists attribute this to "mental accounting,"
+                            where winners view the money as "house money" or a
+                            windfall rather than earned capital, leading to
+                            reckless spending on depreciating assets like luxury
+                            cars and vacations.<sup>32</sup>
+                        </li>
+                    </ul>
+
+                    <h3>6.2 The Neighborhood Effect: Financial Contagion</h3>
+                    <p>
+                        The destructive impact of a lottery win is not confined
+                        to the winner. A study by the Federal Reserve Bank of
+                        Philadelphia identified a "financial contagion" effect
+                        in the neighborhoods of lottery winners.
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>The Findings:</strong> A lottery win causes
+                            a statistically significant increase in bankruptcies
+                            among the winner's neighbors.<sup>33</sup>
+                        </li>
+                        <li>
+                            <strong>The Mechanism:</strong> This is driven by
+                            the "Keeping up with the Joneses" phenomenon
+                            (conspicuous consumption). When a winner upgrades
+                            their lifestyle (new cars, home renovations),
+                            neighbors feel pressure to match this visible
+                            consumption, often financing it through debt.
+                        </li>
+                        <li>
+                            <strong>Magnitude:</strong> A C$1,000 increase in a
+                            lottery prize was associated with a 2.4% rise in
+                            subsequent bankruptcies among close neighbors.<sup
+                                >33</sup
+                            >
+                            The larger the jackpot, the wider the blast radius
+                            of financial ruin in the community.
+                        </li>
+                    </ul>
+
+                    <h3>6.3 Security Risks and the Loss of Anonymity</h3>
+                    <p>
+                        In many jurisdictions, anonymity is legally impossible.
+                        This transparency, designed to ensure the integrity of
+                        the game, exposes winners to severe security risks.
+                    </p>
+                    <ul>
+                        <li>
+                            <strong>Public Disclosure:</strong> States like
+                            Colorado, New York, and California require the
+                            public release of the winner's name, hometown, and
+                            prize amount.<sup>35</sup> This information is
+                            published online and provided to the media.
+                        </li>
+                        <li>
+                            <strong>Trust Loopholes (and closures):</strong>
+                            While some winners attempt to claim prizes via
+                            trusts to maintain privacy, states are closing these
+                            loopholes. In Colorado, for example, even if a trust
+                            claims the prize, the lottery may still require the
+                            disclosure of the underlying beneficiaries.<sup
+                                >37</sup
+                            >
+                        </li>
+                        <li>
+                            <strong>The Target:</strong> Once identified,
+                            winners become immediate targets for scammers,
+                            frivolous lawsuits from strangers, and harassment
+                            from estranged family members. They are often forced
+                            to change phone numbers, move houses, and hire
+                            security details, fundamentally degrading their
+                            quality of life.<sup>35</sup>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Section 7 -->
+                <section class="section" id="case-studies">
+                    <span class="section-number">Section 07</span>
+                    <h2>Case Studies in Ruin</h2>
+                    <p>
+                        The abstract risks of the "Lottery Curse" are best
+                        understood through the harrowing narratives of those who
+                        actually won. These case studies serve as cautionary
+                        tales that wealth without preparation is a liability.
+                    </p>
+
+                    <div class="case-study">
+                        <h4>
+                            7.1 The Tragedy of Jack Whittaker ($315 Million)
+                        </h4>
+                        <p>
+                            Jack Whittaker was already a successful businessman
+                            worth $17 million when he won a record $315 million
+                            Powerball jackpot in West Virginia in 2002.<sup
+                                >39</sup
+                            >
+                            He believed his existing wealth would insulate him
+                            from the curse. He was wrong.
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>Criminal Targeting:</strong> Whittaker
+                                was repeatedly drugged and robbed. In one
+                                incident, thieves broke into his car at a strip
+                                club and stole a suitcase containing $545,000 in
+                                cash.<sup>40</sup>
+                            </li>
+                            <li>
+                                <strong>Family Destruction:</strong> He showered
+                                his granddaughter, Brandi Bragg, with money.
+                                This largesse fueled a drug addiction. Brandi
+                                was found dead of an overdose, her body wrapped
+                                in a plastic tarp and dumped behind a van.
+                                Whittaker's daughter also died young.<sup
+                                    >39</sup
                                 >
                             </li>
-                            <li class="citation-item" id="cite-2">
-                                <span class="citation-number">2.</span
-                                ><span class="citation-text"
-                                    >What are the Odds? Is Playing the Mega
-                                    Millions or Powerball Lottery Ever Worth It?
-                                    - Wealthtender.</span
-                                >
+                            <li>
+                                <strong>The Aftermath:</strong> Whittaker lost
+                                his fortune, his family, and his reputation. He
+                                famously stated, "I wish I'd torn that ticket
+                                up".<sup>39</sup>
                             </li>
-                            <li class="citation-item" id="cite-5">
-                                <span class="citation-number">5.</span
-                                ><span class="citation-text"
-                                    >Odds of Winning the Lottery - Statistics
-                                    How To.</span
-                                >
+                        </ul>
+                    </div>
+
+                    <div class="case-study">
+                        <h4>
+                            7.2 The Murder of Abraham Shakespeare ($30 Million)
+                        </h4>
+                        <p>
+                            Abraham Shakespeare was a casual laborer with low
+                            literacy who won $30 million in the Florida Lotto in
+                            2006. He was generous to a fault, paying off
+                            mortgages for friends and giving cash to
+                            strangers.<sup>41</sup>
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>The Predator:</strong> In 2008, he was
+                                befriended by Dorice "Dee Dee" Moore, who
+                                claimed she wanted to write a book about his
+                                life and help him manage his money. She isolated
+                                him from his family and took control of his
+                                assets.<sup>41</sup>
                             </li>
-                            <li class="citation-item" id="cite-8">
-                                <span class="citation-number">8.</span
-                                ><span class="citation-text"
-                                    >Is it worth the gamble? MIT professor
-                                    explains when Powerball Jackpots actually
-                                    favor players - The Economic Times.</span
-                                >
+                            <li>
+                                <strong>The Crime:</strong> Shakespeare
+                                disappeared in 2009. His family hoped he was on
+                                a beach in the Caribbean. In reality, he had
+                                been shot twice in the chest. His body was found
+                                buried under a concrete slab in Moore's
+                                backyard. Moore was convicted of his murder and
+                                sentenced to life in prison.<sup>41</sup>
                             </li>
-                            <li class="citation-item" id="cite-13">
-                                <span class="citation-number">13.</span
-                                ><span class="citation-text"
-                                    >Powerball Expected Value - Statistics How
-                                    To.</span
-                                >
+                            <li>
+                                <strong>The Lesson:</strong> The money made
+                                Shakespeare a target for a predator he lacked
+                                the sophistication to identify.
                             </li>
-                            <li class="citation-item" id="cite-14">
-                                <span class="citation-number">14.</span
-                                ><span class="citation-text"
-                                    >Lottery Advertising: The Pathology of Hope
-                                    | Stop Predatory Gambling.</span
-                                >
+                        </ul>
+                    </div>
+
+                    <div class="case-study">
+                        <h4>
+                            7.3 The Betrayal of Jeffrey Dampier ($20 Million)
+                        </h4>
+                        <p>
+                            Jeffrey Dampier won $20 million in the Illinois
+                            Lottery and moved to Tampa to open a gourmet popcorn
+                            business. He was generous with his family, moving
+                            his sister-in-law, Victoria Jackson, to Florida.<sup
+                                >44</sup
+                            >
+                        </p>
+                        <ul>
+                            <li>
+                                <strong>The Plot:</strong> In 2005, Victoria and
+                                her boyfriend kidnapped Dampier. They bound his
+                                hands and feet and shot him in the back of the
+                                head. Their motive was solely to acquire his
+                                lottery fortune.<sup>44</sup>
                             </li>
-                            <li class="citation-item" id="cite-15">
-                                <span class="citation-number">15.</span
-                                ><span class="citation-text"
-                                    >What is the Near-Miss Effect? - Cache Creek
-                                    Casino Resort.</span
-                                >
+                            <li>
+                                <strong>Outcome:</strong> Both were convicted
+                                and sentenced to life in prison. The lottery win
+                                directly precipitated a familial betrayal that
+                                ended in a brutal execution.
                             </li>
-                            <li class="citation-item" id="cite-16">
-                                <span class="citation-number">16.</span
-                                ><span class="citation-text"
-                                    >Gambling Severity Predicts Midbrain
-                                    Response to Near-Miss Outcomes - PubMed
-                                    Central.</span
-                                >
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Section 8 -->
+                <section class="section" id="conclusions">
+                    <span class="section-number">Section 08</span>
+                    <h2>Conclusion: The Only Winning Move</h2>
+                    <p>
+                        The comprehensive analysis of the multi-state lottery
+                        system leads to a singular, irrefutable conclusion:
+                        buying a ticket is an irrational act that degrades the
+                        financial and personal well-being of the participant.
+                    </p>
+
+                    <div class="conclusion-box">
+                        <h3>Key Findings:</h3>
+                        <ol>
+                            <li>
+                                <strong>Mathematical Futility:</strong> The odds
+                                of 1 in 292 million are effectively zero. The
+                                game is designed to ensure you lose.
                             </li>
-                            <li class="citation-item" id="cite-20">
-                                <span class="citation-number">20.</span
-                                ><span class="citation-text"
-                                    >The Lottery is Worse Than You Think |
-                                    DataDrivenInvestor.</span
-                                >
+                            <li>
+                                <strong>Economic Ruin:</strong> The Expected
+                                Value is persistently negative due to taxes,
+                                split-pot risks, and cash-value discounts. The
+                                "investment" return is -84%.
                             </li>
-                            <li class="citation-item" id="cite-21">
-                                <span class="citation-number">21.</span
-                                ><span class="citation-text"
-                                    >State lotteries are an exploitative tax on
-                                    the poor - ERLC.</span
-                                >
+                            <li>
+                                <strong>Opportunity Cost:</strong> The money
+                                spent on tickets, if invested in standard market
+                                indices, generates reliable, life-changing
+                                wealth over time. The lottery is a thief of
+                                retirement.
+                            </li>
+                            <li>
+                                <strong>Predatory Structure:</strong> The system
+                                functions as a regressive tax, exploiting the
+                                cognitive biases and financial desperation of
+                                the poor.
+                            </li>
+                            <li>
+                                <strong>Existential Risk:</strong> For the
+                                infinitesimal fraction who do win, the prize is
+                                often a poisoned chalice, leading to bankruptcy,
+                                litigation, and tragedy.
                             </li>
                         </ol>
                     </div>
+
+                    <p>
+                        The allure of the lottery is the "Pathology of Hope"—a
+                        fleeting dopamine hit purchased at the expense of one's
+                        future. The data demands a rejection of this fantasy.
+                        The rational path to wealth is not found in a random
+                        draw of numbered balls, but in the disciplined
+                        accumulation of assets and the avoidance of
+                        negative-expectancy wagers.
+                    </p>
+                    <p>
+                        To borrow from the strategic insights of game theory: in
+                        the game of the lottery,
+                        <strong>the only winning move is not to play</strong>.
+                    </p>
                 </section>
             </main>
 
@@ -750,6 +1323,540 @@
                 </div>
             </aside>
         </div>
+
+        <!-- Works Cited -->
+        <section class="works-cited" id="works-cited">
+            <div class="works-cited-inner">
+                <h2>Works Cited</h2>
+                <ol class="citation-list">
+                    <li class="citation-item" id="cite-1">
+                        <span class="citation-number">1.</span>
+                        <span class="citation-text"
+                            >Expected Value of Lottery Tickets - YouTube,
+                            accessed December 19, 2025,
+                            https://www.youtube.com/watch?v=IfhxVdSNdmA</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-2">
+                        <span class="citation-number">2.</span>
+                        <span class="citation-text"
+                            >What are the Odds? Is Playing the Mega Millions or
+                            Powerball Lottery Ever Worth It? - Wealthtender,
+                            accessed December 19, 2025,
+                            https://wealthtender.com/insights/odds-of-winning-powerball-mega-millions/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-3">
+                        <span class="citation-number">3.</span>
+                        <span class="citation-text"
+                            >Discover PA Lottery Powerball Prizes & Chances
+                            Today, accessed December 19, 2025,
+                            https://www.palottery.pa.gov/Draw-Games/Powerball/Prizes-Chances.aspx</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-4">
+                        <span class="citation-number">4.</span>
+                        <span class="citation-text"
+                            >What Are Your Odds of Winning Mega Millions? -
+                            TheLotter US, accessed December 19, 2025,
+                            https://www.thelotter.us/mega-millions/odds/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-5">
+                        <span class="citation-number">5.</span>
+                        <span class="citation-text"
+                            >Odds of Winning the Lottery - Statistics How To,
+                            accessed December 19, 2025,
+                            https://www.statisticshowto.com/odds-of-winning-the-lottery/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-6">
+                        <span class="citation-number">6.</span>
+                        <span class="citation-text"
+                            >Comparing Winning Mega Millions to Other Unlikely
+                            Events - Step by Step Calculations, accessed
+                            December 19, 2025,
+                            https://www.youtube.com/watch?v=qgE0OWjDdeU</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-7">
+                        <span class="citation-number">7.</span>
+                        <span class="citation-text"
+                            >Magic Numbers: How to Tilt the Odds of Winning the
+                            Lottery, or Powerball Jackpot, in Your Favor |
+                            Davidson, accessed December 19, 2025,
+                            https://www.davidson.edu/news/2025/09/05/magic-numbers-how-tilt-odds-winning-lottery-or-powerball-jackpot-your-favor</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-8">
+                        <span class="citation-number">8.</span>
+                        <span class="citation-text"
+                            >Is it worth the gamble? MIT professor explains when
+                            Powerball Jackpots actually favor players - The
+                            Economic Times, accessed December 19, 2025,
+                            https://m.economictimes.com/news/international/us/is-it-worth-the-gamble-mit-professor-explains-when-powerball-jackpots-actually-favor-players/articleshow/123703495.cms</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-9">
+                        <span class="citation-number">9.</span>
+                        <span class="citation-text"
+                            >Lottery Tax Calculator - How Lottery Winnings Are
+                            Taxed | TaxAct, accessed December 19, 2025,
+                            https://www.taxact.com/tax-resources/tax-calculators/lottery-calculator</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-10">
+                        <span class="citation-number">10.</span>
+                        <span class="citation-text"
+                            >Claiming Prizes - Colorado Lottery, accessed
+                            December 19, 2025,
+                            https://www.coloradolottery.com/en/winners/claiming-prizes/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-11">
+                        <span class="citation-number">11.</span>
+                        <span class="citation-text"
+                            >Colorado State Taxes: What You'll Pay in 2025,
+                            accessed December 19, 2025,
+                            https://states.aarp.org/colorado/state-taxes-guide</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-12">
+                        <span class="citation-number">12.</span>
+                        <span class="citation-text"
+                            >Lottery Jackpot Ticket Sales Calculator - Wizard of
+                            Odds, accessed December 19, 2025,
+                            https://wizardofodds.com/games/lottery/ticket-sales-calculator/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-13">
+                        <span class="citation-number">13.</span>
+                        <span class="citation-text"
+                            >Powerball Expected Value - Statistics How To,
+                            accessed December 19, 2025,
+                            https://www.statisticshowto.com/powerball-expected-value/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-14">
+                        <span class="citation-number">14.</span>
+                        <span class="citation-text"
+                            >Lottery Advertising: The Pathology of Hope | Stop
+                            Predatory Gambling Staging, accessed December 19,
+                            2025,
+                            https://www.stoppredatorygambling.org/state-lottery-advertising/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-15">
+                        <span class="citation-number">15.</span>
+                        <span class="citation-text"
+                            >What is the Near-Miss Effect? - Cache Creek Casino
+                            Resort, accessed December 19, 2025,
+                            https://www.cachecreek.com/near-miss-effect</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-16">
+                        <span class="citation-number">16.</span>
+                        <span class="citation-text"
+                            >Gambling Severity Predicts Midbrain Response to
+                            Near-Miss Outcomes - PubMed Central, accessed
+                            December 19, 2025,
+                            https://pmc.ncbi.nlm.nih.gov/articles/PMC2929454/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-17">
+                        <span class="citation-number">17.</span>
+                        <span class="citation-text"
+                            >The psychology of the near miss - UC Berkeley
+                            Department of Statistics, accessed December 19,
+                            2025,
+                            https://www.stat.berkeley.edu/~aldous/157/Papers/near_miss.pdf</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-18">
+                        <span class="citation-number">18.</span>
+                        <span class="citation-text"
+                            >Neurobehavioral Evidence for the "Near-Miss" Effect
+                            in Pathological Gamblers - PMC - NIH, accessed
+                            December 19, 2025,
+                            https://pmc.ncbi.nlm.nih.gov/articles/PMC2861872/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-19">
+                        <span class="citation-number">19.</span>
+                        <span class="citation-text"
+                            >Near-miss effect - Wikipedia, accessed December 19,
+                            2025,
+                            https://en.wikipedia.org/wiki/Near-miss_effect</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-20">
+                        <span class="citation-number">20.</span>
+                        <span class="citation-text"
+                            >The Lottery is Worse Than You Think |
+                            DataDrivenInvestor, accessed December 19, 2025,
+                            https://www.datadriveninvestor.com/2025/02/19/the-lottery-is-worse-than-you-think/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-21">
+                        <span class="citation-number">21.</span>
+                        <span class="citation-text"
+                            >State lotteries are an exploitative tax on the poor
+                            - ERLC, accessed December 19, 2025,
+                            https://erlc.com/resource/state-lotteries-are-an-exploitative-tax-on-the-poor/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-22">
+                        <span class="citation-number">22.</span>
+                        <span class="citation-text"
+                            >Lottery or Investing: Which One Really Builds
+                            Wealth? | The Motley Fool, accessed December 19,
+                            2025,
+                            https://www.fool.com/investing/2025/08/30/lottery-or-investing-which-one-really-builds-wealt/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-23">
+                        <span class="citation-number">23.</span>
+                        <span class="citation-text"
+                            >Playing the Lottery vs. Investing: Which is Better?
+                            | The Motley Fool, accessed December 19, 2025,
+                            https://www.fool.com/investing/how-to-invest/lottery-vs-investing/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-24">
+                        <span class="citation-number">24.</span>
+                        <span class="citation-text"
+                            >What's the Smarter Play for Your Money: Powerball
+                            or the Market? - Nasdaq, accessed December 19, 2025,
+                            https://www.nasdaq.com/articles/whats-smarter-play-your-money-powerball-or-market</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-25">
+                        <span class="citation-number">25.</span>
+                        <span class="citation-text"
+                            >Winning the Lottery vs Investing: What Are Your
+                            Odds? - Sweet Financial Partners, accessed December
+                            19, 2025,
+                            https://www.sweetfinancial.com/insights/blog/winning-lottery-vs-investing-odds/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-26">
+                        <span class="citation-number">26.</span>
+                        <span class="citation-text"
+                            >The Lottery: Is It Ever Worth Playing? -
+                            Investopedia, accessed December 19, 2025,
+                            https://www.investopedia.com/managing-wealth/worth-playing-lottery/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-27">
+                        <span class="citation-number">27.</span>
+                        <span class="citation-text"
+                            >The Ticket to Easy Street? The Financial
+                            Consequences of Winning the Lottery - Vanderbilt
+                            Law, accessed December 19, 2025,
+                            https://scholarship.law.vanderbilt.edu/cgi/viewcontent.cgi?article=2488&context=faculty-publications</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-28">
+                        <span class="citation-number">28.</span>
+                        <span class="citation-text"
+                            >The Ticket to Easy Street? The Financial
+                            Consequences of Winning the Lottery, accessed
+                            December 19, 2025,
+                            https://eml.berkeley.edu/~cle/laborlunch/hoekstra.pdf</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-29">
+                        <span class="citation-number">29.</span>
+                        <span class="citation-text"
+                            >Why Winning the Lottery Isn't the Answer - Becoming
+                            Minimalist, accessed December 19, 2025,
+                            https://www.becomingminimalist.com/lottery/comment-page-2/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-30">
+                        <span class="citation-number">30.</span>
+                        <span class="citation-text"
+                            >What Life Is Like After Winning the Lottery—From
+                            Real Winners, accessed December 19, 2025,
+                            https://www.rd.com/list/13-things-lottery-winners/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-31">
+                        <span class="citation-number">31.</span>
+                        <span class="citation-text"
+                            >What percent of lottery winners eventually go
+                            bankrupt? - Blog - Next Gen Personal Finance,
+                            accessed December 19, 2025,
+                            https://www.ngpf.org/blog/question-of-the-day/question-of-the-day-what-percent-of-lottery-winners-eventually-go-bankrupt/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-32">
+                        <span class="citation-number">32.</span>
+                        <span class="citation-text"
+                            >Are people who win the lottery more likely to go
+                            bankrupt? - Skeptics Stack Exchange, accessed
+                            December 19, 2025,
+                            https://skeptics.stackexchange.com/questions/5561/are-people-who-win-the-lottery-more-likely-to-go-bankrupt</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-33">
+                        <span class="citation-number">33.</span>
+                        <span class="citation-text"
+                            >Does inequality cause financial distress? Evidence
+                            from lottery winners and neighboring bankruptcies -
+                            IDEAS/RePEc, accessed December 19, 2025,
+                            https://ideas.repec.org/p/fip/fedpwp/16-4.html</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-34">
+                        <span class="citation-number">34.</span>
+                        <span class="citation-text"
+                            >Peers' Income and Financial Distress: Evidence from
+                            Lottery Winners - Philadelphia Fed, accessed
+                            December 19, 2025,
+                            https://www.philadelphiafed.org/-/media/frbp/assets/working-papers/2018/wp18-22.pdf</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-35">
+                        <span class="citation-number">35.</span>
+                        <span class="citation-text"
+                            >Can You Remain Anonymous When Winning the Colorado
+                            Lottery? - Jackpot.com, accessed December 19, 2025,
+                            https://www.jackpot.com/blog/lottery-tips/can-you-remain-anonymous-co-lottery</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-36">
+                        <span class="citation-number">36.</span>
+                        <span class="citation-text"
+                            >In Colorado And Other States, Lottery Winners Can
+                            Keep Names Secret - CBS News, accessed December 19,
+                            2025,
+                            https://www.cbsnews.com/colorado/news/in-colorado-and-other-states-lottery-winners-can-keep-names-secret/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-37">
+                        <span class="citation-number">37.</span>
+                        <span class="citation-text"
+                            >Colorado Lotto winner isn't changing a thing -
+                            Reddit, accessed December 19, 2025,
+                            https://www.reddit.com/r/Colorado/comments/14dmzd4/colorado_lotto_winner_isnt_changing_a_thing/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-38">
+                        <span class="citation-number">38.</span>
+                        <span class="citation-text"
+                            >Protect Yourself - Colorado Lottery, accessed
+                            December 19, 2025,
+                            https://www.coloradolottery.com/en/about/protect-yourself/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-39">
+                        <span class="citation-number">39.</span>
+                        <span class="citation-text"
+                            >Jack Whittaker - e-WV, accessed December 19, 2025,
+                            https://www.wvencyclopedia.org/entries/1198</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-40">
+                        <span class="citation-number">40.</span>
+                        <span class="citation-text"
+                            >Jack Whittaker (lottery winner) - Wikipedia,
+                            accessed December 19, 2025,
+                            https://en.wikipedia.org/wiki/Jack_Whittaker_(lottery_winner)</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-41">
+                        <span class="citation-number">41.</span>
+                        <span class="citation-text"
+                            >Murder of Abraham Shakespeare - Wikipedia, accessed
+                            December 19, 2025,
+                            https://en.wikipedia.org/wiki/Murder_of_Abraham_Shakespeare</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-42">
+                        <span class="citation-number">42.</span>
+                        <span class="citation-text"
+                            >Information Released In Lotto Winner's Death -
+                            WFTV, accessed December 19, 2025,
+                            https://www.wftv.com/news/information-released-in-lotto-winners-death/286694015/</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-43">
+                        <span class="citation-number">43.</span>
+                        <span class="citation-text"
+                            >Lottery Winner Trusted Her to Write a Book About
+                            Him. Instead, She Killed Him and Took the Money -
+                            People.com, accessed December 19, 2025,
+                            https://people.com/abraham-shakespeare-murder-lottery-winner-featured-2020-11717517</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-44">
+                        <span class="citation-number">44.</span>
+                        <span class="citation-text"
+                            >Jeffrey Dampier - Wikipedia, accessed December 19,
+                            2025,
+                            https://en.wikipedia.org/wiki/Jeffrey_Dampier</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-45">
+                        <span class="citation-number">45.</span>
+                        <span class="citation-text"
+                            >Suspects In Murder Of Tampa Millionaire Caught In
+                            Jacksonville - News4JAX, accessed December 19, 2025,
+                            https://www.news4jax.com/news/suspects-in-murder-of-tampa-millionaire-caught-in-jacksonville/?view=print</span
+                        >
+                    </li>
+                    <li class="citation-item" id="cite-46">
+                        <span class="citation-number">46.</span>
+                        <span class="citation-text"
+                            >Powerball® Prize Structure and Probability -
+                            Maryland Lottery, accessed December 19, 2025,
+                            https://www.mdlottery.com/games/powerball/prize-structure/</span
+                        >
+                    </li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Appendix A -->
+        <section class="section">
+            <span class="section-number">Appendix A</span>
+            <h2>Data Tables and Reference Calculations</h2>
+
+            <table>
+                <caption>
+                    Table 3: Powerball Prize Structure and Odds
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Prize</th>
+                        <th>Odds</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>5 White + Powerball</td>
+                        <td>Jackpot</td>
+                        <td>1 in 292,201,338</td>
+                    </tr>
+                    <tr>
+                        <td>5 White</td>
+                        <td>$1,000,000</td>
+                        <td>1 in 11,688,054</td>
+                    </tr>
+                    <tr>
+                        <td>4 White + Powerball</td>
+                        <td>$50,000</td>
+                        <td>1 in 913,129</td>
+                    </tr>
+                    <tr>
+                        <td>4 White</td>
+                        <td>$100</td>
+                        <td>1 in 36,525</td>
+                    </tr>
+                    <tr>
+                        <td>3 White + Powerball</td>
+                        <td>$100</td>
+                        <td>1 in 14,494</td>
+                    </tr>
+                    <tr>
+                        <td>3 White</td>
+                        <td>$7</td>
+                        <td>1 in 580</td>
+                    </tr>
+                    <tr>
+                        <td>2 White + Powerball</td>
+                        <td>$7</td>
+                        <td>1 in 701</td>
+                    </tr>
+                    <tr>
+                        <td>1 White + Powerball</td>
+                        <td>$4</td>
+                        <td>1 in 92</td>
+                    </tr>
+                    <tr>
+                        <td>Powerball Only</td>
+                        <td>$4</td>
+                        <td>1 in 38</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <strong>Overall Odds (Any Prize)</strong>
+                        </td>
+                        <td>—</td>
+                        <td><strong>1 in 24.87</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.875rem; color: var(--color-text-muted)">
+                Source: Powerball Official Prize Chart.<sup>3</sup> Note the
+                steep drop-off in probability for meaningful prizes.
+            </p>
+
+            <table>
+                <caption>
+                    Table 4: Tax Impact on a Hypothetical $1 Billion Jackpot
+                </caption>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Amount</th>
+                        <th>Percentage of Headline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Headline Annuity</td>
+                        <td>$1,000,000,000</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>Cash Option Reduction</td>
+                        <td>-$450,000,000</td>
+                        <td>-45%</td>
+                    </tr>
+                    <tr>
+                        <td>Gross Cash Value</td>
+                        <td>$550,000,000</td>
+                        <td>55%</td>
+                    </tr>
+                    <tr>
+                        <td>Federal Tax (37%)</td>
+                        <td>-$203,500,000</td>
+                        <td>-20.3%</td>
+                    </tr>
+                    <tr>
+                        <td>State Tax (Est. 5%)</td>
+                        <td>-$27,500,000</td>
+                        <td>-2.7%</td>
+                    </tr>
+                    <tr
+                        style="
+                            background: var(--citation-highlight-bg);
+                            font-weight: 600;
+                        "
+                    >
+                        <td>Net Take-Home</td>
+                        <td>$319,000,000</td>
+                        <td>31.9%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="font-size: 0.875rem; color: var(--color-text-muted)">
+                Calculations based on standard federal rates and average state
+                tax burdens.<sup>8</sup> Demonstrating the difference between
+                "Headline" and "Take-home".
+            </p>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                Democratic Health Diagnostic Framework • Baseline Assessment •
+                July 2025
+            </p>
+        </footer>
 
         <!-- Mobile TOC Button -->
         <button

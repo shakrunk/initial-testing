@@ -1,69 +1,69 @@
-(function() {
-    "use strict";
+(function () {
+  "use strict";
 
-    function createGlobalNav() {
-        // Create Nav Element
-        const nav = document.createElement("nav");
-        nav.id = "global-nav";
-        nav.setAttribute("aria-label", "Global Site Navigation");
+  function createGlobalNav() {
+    // Create Nav Element
+    const nav = document.createElement("nav");
+    nav.id = "global-nav";
+    nav.setAttribute("aria-label", "Global Site Navigation");
 
-        // Create Container
-        const container = document.createElement("div");
-        container.className = "global-nav-inner";
+    // Create Container
+    const container = document.createElement("div");
+    container.className = "global-nav-inner";
 
-        // Create Home Link/Logo
-        const homeLink = document.createElement("a");
-        homeLink.href = "index.html";
-        homeLink.className = "global-nav-logo";
-        homeLink.textContent = "The Archive";
+    // Create Home Link/Logo
+    const homeLink = document.createElement("a");
+    homeLink.href = "../index.html";
+    homeLink.className = "global-nav-logo";
+    homeLink.textContent = "Let's Double Check";
 
-        // Create Links Group
-        const linksGroup = document.createElement("div");
-        linksGroup.className = "global-nav-links";
+    // Create Links Group
+    const linksGroup = document.createElement("div");
+    linksGroup.className = "global-nav-links";
 
-        // Article Links
-        const links = [
-            { text: "Part I: Flawed Democracy", href: "flawed-democracy.html" },
-            { text: "Part II: Grey Zone", href: "twilight-of-the-grey-zone.html" },
-            { text: "Lottery Analysis", href: "lottery-ticket-analysis.html" }
-        ];
+    // Article Links
+    const links = [
+      { text: "Part I: Flawed Democracy", href: "flawed-democracy.html" },
+      { text: "Part II: Grey Zone", href: "twilight-of-the-grey-zone.html" },
+      { text: "Lottery Analysis", href: "lottery-ticket-analysis.html" },
+    ];
 
-        links.forEach(link => {
-            const a = document.createElement("a");
-            a.href = link.href;
-            a.textContent = link.text;
-            a.className = "global-nav-link";
+    links.forEach((link) => {
+      const a = document.createElement("a");
+      a.href = link.href;
+      a.textContent = link.text;
+      a.className = "global-nav-link";
 
-            // Check active state
-            const currentPath = window.location.pathname.split("/").pop();
-            if (currentPath === link.href) {
-                a.classList.add("active");
-            }
+      // Check active state
+      const currentPath = window.location.pathname.split("/").pop();
+      if (currentPath === link.href) {
+        a.classList.add("active");
+      }
 
-            linksGroup.appendChild(a);
-        });
+      linksGroup.appendChild(a);
+    });
 
-        // Assemble
-        container.appendChild(homeLink);
-        container.appendChild(linksGroup);
-        nav.appendChild(container);
+    // Assemble
+    container.appendChild(homeLink);
+    container.appendChild(linksGroup);
+    nav.appendChild(container);
 
-        // Inject
-        // Ensure skip-link stays first if it exists
-        const skipLink = document.querySelector(".skip-to-content");
-        if (skipLink) {
-            // Insert after skip link
-            skipLink.insertAdjacentElement("afterend", nav);
-        } else {
-            // Fallback
-            document.body.prepend(nav);
-        }
-    }
-
-    // Run on load
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", createGlobalNav);
+    // Inject
+    // Ensure skip-link stays first if it exists
+    const skipLink = document.querySelector(".skip-to-content");
+    if (skipLink) {
+      // Insert after skip link
+      skipLink.insertAdjacentElement("afterend", nav);
     } else {
-        createGlobalNav();
+      // Fallback
+      document.body.prepend(nav);
     }
+  }
+
+  // Run on load
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", createGlobalNav);
+  } else {
+    createGlobalNav();
+  }
 })();
