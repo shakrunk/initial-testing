@@ -2000,9 +2000,9 @@ footer p {
 
 @media (max-width: 768px) {
     .mini-player {
-        bottom: 1.5rem;
+        bottom: 6rem; /* Raised to avoid Return to Reading button */
         left: 1.5rem;
-        max-width: calc(100vw - 8rem); /* Avoid TOC button */
+        max-width: calc(100vw - 3rem);
     }
 }
 
