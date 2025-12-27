@@ -1,5 +1,6 @@
 // ===== UI COMPONENTS =====
 import { showToast } from "./utils.js";
+import { createSvgIcon } from "./icons.js";
 
 export function setupHeadingLinks() {
   const content = document.querySelector(".content");
@@ -19,12 +20,7 @@ export function setupHeadingLinks() {
     const anchor = document.createElement("a");
     anchor.href = `#${id}`;
     anchor.className = "heading-anchor";
-    anchor.innerHTML = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-      </svg>
-    `;
+    anchor.appendChild(createSvgIcon("link"));
     anchor.ariaLabel = "Link to this section";
     heading.appendChild(anchor);
   }
@@ -53,7 +49,7 @@ export function setupSelectionMenu() {
       id: "btnCopyText",
       label: "Copy",
       ariaLabel: "Copy Text",
-      icon: '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>',
+      iconName: "copy",
       handler: () => {
         const selection = window.getSelection();
         const text = selection.toString();
@@ -70,7 +66,7 @@ export function setupSelectionMenu() {
       id: "btnCopyLink",
       label: "Link",
       ariaLabel: "Copy Link to Highlight",
-      icon: '<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>',
+      iconName: "link",
       handler: () => {
         const selection = window.getSelection();
         const text = selection.toString();
@@ -92,7 +88,9 @@ export function setupSelectionMenu() {
     btn.className = "selection-btn";
     btn.id = action.id;
     btn.setAttribute("aria-label", action.ariaLabel);
-    btn.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${action.icon}</svg> ${action.label}`;
+
+    btn.appendChild(createSvgIcon(action.iconName));
+    btn.appendChild(document.createTextNode(" " + action.label));
 
     btn.addEventListener("click", action.handler);
     menu.appendChild(btn);
