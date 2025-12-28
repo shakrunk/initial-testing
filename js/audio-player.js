@@ -386,7 +386,7 @@ function initAudioPlayers() {
         };
 
         // Update UI on Play/Pause/Waiting
-        audio.addEventListener('play', showLoading);
+        // audio.addEventListener('play', showLoading); // Avoid immediate loading state on click
         audio.addEventListener('waiting', showLoading);
         audio.addEventListener('playing', showPause);
         audio.addEventListener('pause', showPlay);
