@@ -201,9 +201,15 @@ export function setupScrollIndicator() {
   const indicator = document.querySelector(".scroll-indicator");
   if (!indicator) return;
 
-  indicator.addEventListener("click", function () {
+  // Enhance accessibility
+  if (!indicator.hasAttribute("role")) indicator.setAttribute("role", "button");
+  if (!indicator.hasAttribute("tabindex")) indicator.setAttribute("tabindex", "0");
+  if (!indicator.hasAttribute("aria-label"))
+    indicator.setAttribute("aria-label", "Scroll to next section");
+
+  const scrollToNext = () => {
     const hero = document.querySelector(".hero");
-    let nextSection = hero.nextElementSibling;
+    const nextSection = hero.nextElementSibling;
 
     if (nextSection) {
       const offset = 80;
@@ -211,6 +217,16 @@ export function setupScrollIndicator() {
         top: nextSection.offsetTop - offset,
         behavior: "smooth",
       });
+    }
+  };
+
+  indicator.addEventListener("click", scrollToNext);
+
+  // Keyboard accessibility
+  indicator.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      scrollToNext();
     }
   });
 }
