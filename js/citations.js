@@ -14,7 +14,11 @@ export function setupCitations() {
     if (match) {
       const num = match[1];
       const citationId = `cite-${num}`;
-      const inlineId = `ref-${num}-${Math.random().toString(36).substr(2, 9)}`;
+      // Use crypto for better randomness
+      const randomValues = new Uint32Array(1);
+      window.crypto.getRandomValues(randomValues);
+      const randomId = randomValues[0].toString(36);
+      const inlineId = `ref-${num}-${randomId}`;
 
       sup.id = inlineId;
 
