@@ -22,6 +22,7 @@ export function setupHeadingLinks() {
     anchor.className = "heading-anchor";
     anchor.appendChild(createSvgIcon("link"));
     anchor.ariaLabel = "Link to this section";
+    anchor.title = "Link to this section";
     heading.appendChild(anchor);
   }
 
