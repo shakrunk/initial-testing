@@ -17,3 +17,8 @@
 **Vulnerability:** Usage of `innerHTML` to update SVG icons in the audio player. While the content was static, this pattern increases the attack surface and can mask accidental introduction of dynamic, untrusted content in the future.
 **Learning:** Consistent use of DOM APIs (`createElementNS`, `setAttribute`) for SVG manipulation eliminates the need for `innerHTML` entirely in UI components, enforcing a stricter security posture.
 **Prevention:** Refactored `audio-player.js` to use `createElementNS` for all SVG icon updates.
+
+## 2025-12-26 - [Add Referrer Policy]
+**Vulnerability:** Missing Referrer-Policy header allows the browser to send the full URL (including path and query parameters) as the Referer header when navigating to external links (e.g., citations). This can leak user activity and specific article context to third-party sites.
+**Learning:** Privacy and security are intertwined. While not a direct exploit, leaking browsing history via Referer headers increases the attack surface for users.
+**Prevention:** Added `<meta name="referrer" content="strict-origin-when-cross-origin" />` to all HTML pages to ensure only the origin is sent to cross-origin destinations.
