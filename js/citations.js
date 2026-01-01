@@ -36,9 +36,9 @@ export function setupCitations() {
     }
   });
 
-  // Setup hover tooltips
+  // Setup hover and focus tooltips
   document.querySelectorAll("sup a[data-citation]").forEach((link) => {
-    link.addEventListener("mouseenter", function () {
+    const showTooltip = () => {
       clearTimeout(hoverTimeout);
 
       hoverTimeout = setTimeout(() => {
@@ -78,17 +78,22 @@ export function setupCitations() {
         citationTooltip.style.top = `${rect.bottom + 8}px`;
         citationTooltip.classList.add("visible");
       }, 500);
-    });
+    };
 
-    link.addEventListener("mouseleave", function () {
+    const hideTooltip = () => {
       clearTimeout(hoverTimeout);
       citationTooltip.classList.remove("visible");
-    });
+    };
+
+    link.addEventListener("mouseenter", showTooltip);
+    link.addEventListener("focus", showTooltip);
+
+    link.addEventListener("mouseleave", hideTooltip);
+    link.addEventListener("blur", hideTooltip);
 
     link.addEventListener("click", function (e) {
       e.preventDefault();
-      clearTimeout(hoverTimeout);
-      citationTooltip.classList.remove("visible");
+      hideTooltip();
 
       // We need to store lastClickedCitation somewhere accessible or manage return button here
       // For modularity, we can attach it to the return button or a global state object
