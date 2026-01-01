@@ -22,3 +22,8 @@
 **Vulnerability:** Missing Referrer-Policy header allows the browser to send the full URL (including path and query parameters) as the Referer header when navigating to external links (e.g., citations). This can leak user activity and specific article context to third-party sites.
 **Learning:** Privacy and security are intertwined. While not a direct exploit, leaking browsing history via Referer headers increases the attack surface for users.
 **Prevention:** Added `<meta name="referrer" content="strict-origin-when-cross-origin" />` to all HTML pages to ensure only the origin is sent to cross-origin destinations.
+
+## 2025-12-31 - [Implement Strict Referrer Policy]
+**Vulnerability:** The absence of a Referrer Policy allows browsers to send the full URL (including path and query parameters) in the `Referer` header to cross-origin destinations. This can leak sensitive path information or user activity patterns to third-party analytics or external links.
+**Learning:** For static sites with no backend to strip headers, the `<meta name="referrer">` tag is the primary defense for controlling information leakage.
+**Prevention:** Added `<meta name="referrer" content="strict-origin-when-cross-origin" />` to all HTML files. This ensures that cross-origin requests only receive the origin (e.g., `https://example.com/`) while same-origin requests maintain full context.
