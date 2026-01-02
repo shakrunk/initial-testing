@@ -127,8 +127,7 @@ export function setupCitations() {
           if (isVisible) {
             target.classList.add("highlighted");
             if (returnToReading) {
-              // We set the href just for semantic reasons, the click handler uses dataset
-              returnToReading.href = `#${link.dataset.return}`;
+              returnToReading.dataset.lastReturnId = link.dataset.return;
               returnToReading.classList.add("visible");
             }
           } else {
