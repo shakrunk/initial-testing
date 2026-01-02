@@ -11,11 +11,24 @@
     const container = document.createElement("div");
     container.className = "global-nav-inner";
 
+    // Determine Path Context
+    const path = window.location.pathname;
+    const isArticlePage = path.includes("/articles/");
+
+    // Define prefixes based on context
+    const homePrefix = isArticlePage ? "../" : "./";
+    const articlePrefix = isArticlePage ? "" : "articles/";
+
     // Create Home Link/Logo
     const homeLink = document.createElement("a");
-    homeLink.href = "../index.html";
+    homeLink.href = `${homePrefix}index.html`;
     homeLink.className = "global-nav-logo";
     homeLink.textContent = "Let's Double Check";
+
+    // Check if Home is active
+    if (path.endsWith("index.html") || path.endsWith("/")) {
+        homeLink.setAttribute("aria-current", "page");
+    }
 
     // Create Links Group
     const linksGroup = document.createElement("div");
@@ -23,21 +36,22 @@
 
     // Article Links
     const links = [
-      { text: "Part I: Flawed Democracy", href: "flawed-democracy.html" },
-      { text: "Part II: Grey Zone", href: "twilight-of-the-grey-zone.html" },
-      { text: "Lottery Analysis", href: "lottery-ticket-analysis.html" },
+      { text: "Part I: Flawed Democracy", filename: "flawed-democracy.html" },
+      { text: "Part II: Grey Zone", filename: "twilight-of-the-grey-zone.html" },
+      { text: "Lottery Analysis", filename: "lottery-ticket-analysis.html" },
     ];
 
     links.forEach((link) => {
       const a = document.createElement("a");
-      a.href = link.href;
+      a.href = `${articlePrefix}${link.filename}`;
       a.textContent = link.text;
       a.className = "global-nav-link";
 
       // Check active state
-      const currentPath = window.location.pathname.split("/").pop();
-      if (currentPath === link.href) {
+      // We check if the current path ends with the filename
+      if (path.endsWith(link.filename)) {
         a.classList.add("active");
+        a.setAttribute("aria-current", "page");
       }
 
       linksGroup.appendChild(a);
