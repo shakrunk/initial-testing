@@ -82,7 +82,10 @@ export function setupCitations() {
 
     const hideTooltip = () => {
       clearTimeout(hoverTimeout);
-      citationTooltip.classList.remove("visible");
+      // Add delay to allow moving mouse to tooltip
+      hoverTimeout = setTimeout(() => {
+        citationTooltip.classList.remove("visible");
+      }, 300);
     };
 
     link.addEventListener("mouseenter", showTooltip);
@@ -90,6 +93,15 @@ export function setupCitations() {
 
     link.addEventListener("mouseleave", hideTooltip);
     link.addEventListener("blur", hideTooltip);
+
+    // Keep tooltip open when hovering over it
+    citationTooltip.addEventListener("mouseenter", () => {
+      clearTimeout(hoverTimeout);
+    });
+
+    citationTooltip.addEventListener("mouseleave", () => {
+      hideTooltip();
+    });
 
     link.addEventListener("click", function (e) {
       e.preventDefault();
