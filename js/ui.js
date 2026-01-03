@@ -72,6 +72,14 @@ export function setupSelectionMenu() {
         const selection = window.getSelection();
         const text = selection.toString();
         if (text) {
+          // Limit length to prevent DoS/URL overflow
+          if (text.length > 500) {
+            showToast("Selection too long for text link");
+            menu.classList.remove("visible");
+            selection.removeAllRanges();
+            return;
+          }
+
           const encodedText = encodeURIComponent(text).replace(/-/g, "%2D");
           const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
           navigator.clipboard.writeText(url).then(() => {
