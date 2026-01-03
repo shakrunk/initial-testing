@@ -1055,16 +1055,19 @@ sup:hover {
     font-size: 0.85rem;
     line-height: 1.5;
     color: var(--color-text-muted);
-    pointer-events: none;
+    pointer-events: auto;
     opacity: 0;
+    visibility: hidden;
     transform: translateY(8px);
     transition:
         opacity 0.25s ease,
-        transform 0.25s ease;
+        transform 0.25s ease,
+        visibility 0.25s ease;
 }
 
 .citation-tooltip.visible {
     opacity: 1;
+    visibility: visible;
     transform: translateY(0);
 }
 
