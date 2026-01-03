@@ -19,113 +19,123 @@ import {
   setupTocNavigation,
 } from "./ui.js";
 
-function init() {
-  console.log("Initializing application...");
+// Security: Add rel="noopener noreferrer" to external links
+function secureExternalLinks() {
+  const links = document.querySelectorAll("a[href^='http']");
+  links.forEach((link) => {
+    try {
+      const url = new URL(link.href);
+      if (url.hostname !== window.location.hostname) {
+        // Preserve existing rel values if any
+        const existingRel = link.getAttribute("rel") || "";
+        const requiredRel = "noopener noreferrer";
 
+        if (!existingRel.includes("noopener") || !existingRel.includes("noreferrer")) {
+            const newRel = existingRel ? `${existingRel} ${requiredRel}` : requiredRel;
+            link.setAttribute("rel", newRel.trim());
+        }
+      }
+    } catch (e) {
+      // Ignore invalid URLs
+    }
+  });
+}
+
+function init() {
   try {
     setupTheme();
-    console.log("   Theme setup completed");
   } catch (e) {
-    console.error("Theme setup failed:", e);
+    console.error("Theme setup failed");
   }
 
   try {
     initMinimap();
-    console.log("   Minimap setup completed");
   } catch (e) {
-    console.error("Minimap setup failed:", e);
+    console.error("Minimap setup failed");
   }
 
   try {
     setupHeadingLinks();
-    console.log("   Heading links setup completed");
   } catch (e) {
-    console.error("Heading links setup failed:", e);
+    console.error("Heading links setup failed");
   }
 
   try {
     setupSelectionMenu();
-    console.log("   Selection menu setup completed");
   } catch (e) {
-    console.error("Selection menu setup failed:", e);
+    console.error("Selection menu setup failed");
   }
 
   try {
     setupCitations();
-    console.log("   Citations setup completed");
   } catch (e) {
-    console.error("Citations setup failed:", e);
+    console.error("Citations setup failed");
   }
 
   try {
     setupReturnToReading();
-    console.log("   'Return to reading' setup completed");
   } catch (e) {
-    console.error("Return to reading setup failed:", e);
+    console.error("Return to reading setup failed");
   }
 
   try {
     setupMinimapNavigation();
-    console.log("   Minimap navigation setup completed");
   } catch (e) {
-    console.error("Minimap nav setup failed:", e);
+    console.error("Minimap nav setup failed");
   }
 
   try {
     setupTocNavigation();
-    console.log("   TOC navigation setup completed");
   } catch (e) {
-    console.error("TOC nav setup failed:", e);
+    console.error("TOC nav setup failed");
   }
 
   try {
     setupMetaToggle();
-    console.log("   Meta toggle setup completed");
   } catch (e) {
-    console.error("Meta toggle setup failed:", e);
+    console.error("Meta toggle setup failed");
   }
 
   try {
     setupScrollIndicator();
-    console.log("   Scroll indicator setup completed");
   } catch (e) {
-    console.error("Scroll indicator setup failed:", e);
+    console.error("Scroll indicator setup failed");
   }
 
   try {
     setupMobileToc();
-    console.log("   Mobile TOC setup completed");
   } catch (e) {
-    console.error("Mobile TOC setup failed:", e);
+    console.error("Mobile TOC setup failed");
+  }
+
+  try {
+    secureExternalLinks();
+  } catch (e) {
+    console.error("Link security setup failed");
   }
 
   // Event Listeners
   window.addEventListener("scroll", function () {
     try {
       updateViewportIndicator();
-      console.log("Viewport indicator updated");
     } catch (e) {
-      console.error("Viewport update failed:", e);
+      // Silent fail on scroll to prevent log flooding
     }
 
     try {
       checkReturnButtonVisibility();
-      console.log("Return button visibility checked");
     } catch (e) {
-      console.error("Return button check failed:", e);
+      // Silent fail on scroll
     }
-  });
+  }, { passive: true }); // Add passive listener for performance
 
   window.addEventListener("resize", function () {
     try {
       initMinimap();
-      console.log("Minimap resized");
     } catch (e) {
-      console.error("Minimap resize failed:", e);
+      console.error("Minimap resize failed");
     }
   });
-
-  console.log("Application initialized");
 }
 
 // Run on DOM ready
@@ -140,6 +150,6 @@ window.addEventListener("load", function () {
   try {
     initMinimap();
   } catch (e) {
-    console.error("Minimap load failed:", e);
+    console.error("Minimap load failed");
   }
 });
