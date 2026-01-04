@@ -20,25 +20,52 @@ import {
 } from "./ui.js";
 
 // Security: Add rel="noopener noreferrer" to external links
-function secureExternalLinks() {
-  const links = document.querySelectorAll("a[href^='http']");
-  links.forEach((link) => {
-    try {
-      const url = new URL(link.href);
-      if (url.hostname !== window.location.hostname) {
-        // Preserve existing rel values if any
-        const existingRel = link.getAttribute("rel") || "";
-        const requiredRel = "noopener noreferrer";
+function secureLink(link) {
+  try {
+    const url = new URL(link.href);
+    if (url.hostname !== window.location.hostname) {
+      // Preserve existing rel values if any
+      const existingRel = link.getAttribute("rel") || "";
+      const requiredRel = "noopener noreferrer";
 
-        if (!existingRel.includes("noopener") || !existingRel.includes("noreferrer")) {
-            const newRel = existingRel ? `${existingRel} ${requiredRel}` : requiredRel;
-            link.setAttribute("rel", newRel.trim());
-        }
+      if (
+        !existingRel.includes("noopener") ||
+        !existingRel.includes("noreferrer")
+      ) {
+        const newRel = existingRel
+          ? `${existingRel} ${requiredRel}`
+          : requiredRel;
+        link.setAttribute("rel", newRel.trim());
       }
-    } catch (e) {
-      // Ignore invalid URLs
     }
+  } catch (e) {
+    // Ignore invalid URLs
+  }
+}
+
+function secureExternalLinks() {
+  // Initial check for existing links
+  document.querySelectorAll("a[href^='http']").forEach(secureLink);
+
+  // Watch for new links added dynamically
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) {
+          // ELEMENT_NODE
+          if (node.tagName === "A" && node.href.startsWith("http")) {
+            secureLink(node);
+          }
+          // Check children of added node
+          if (node.querySelectorAll) {
+            node.querySelectorAll("a[href^='http']").forEach(secureLink);
+          }
+        }
+      });
+    });
   });
+
+  observer.observe(document.body, { childList: true, subtree: true });
 }
 
 function init() {
@@ -115,19 +142,23 @@ function init() {
   }
 
   // Event Listeners
-  window.addEventListener("scroll", function () {
-    try {
-      updateViewportIndicator();
-    } catch (e) {
-      // Silent fail on scroll to prevent log flooding
-    }
+  window.addEventListener(
+    "scroll",
+    function () {
+      try {
+        updateViewportIndicator();
+      } catch (e) {
+        // Silent fail on scroll to prevent log flooding
+      }
 
-    try {
-      checkReturnButtonVisibility();
-    } catch (e) {
-      // Silent fail on scroll
-    }
-  }, { passive: true }); // Add passive listener for performance
+      try {
+        checkReturnButtonVisibility();
+      } catch (e) {
+        // Silent fail on scroll
+      }
+    },
+    { passive: true },
+  ); // Add passive listener for performance
 
   window.addEventListener("resize", function () {
     try {
