@@ -450,6 +450,13 @@ function initAudioPlayers() {
 
         // Keyboard controls
         controlsContainer.addEventListener('keydown', (e) => {
+            const tag = e.target.tagName.toLowerCase();
+            const isInput = tag === 'input' || tag === 'button';
+
+            // Prevent shortcuts from hijacking native input interactions
+            if (e.key === ' ' && isInput) return;
+            if ((e.key.startsWith('Arrow') || e.key === 'Home' || e.key === 'End') && tag === 'input') return;
+
             switch(e.key) {
                 case ' ':
                 case 'k':
