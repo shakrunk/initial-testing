@@ -170,6 +170,16 @@ export function setupReturnToReading() {
       if (returnTarget) {
         returnTarget.scrollIntoView({ behavior: "smooth", block: "center" });
 
+        // Highlight the target citation superscript to help re-orientation
+        returnTarget.classList.add("return-highlight");
+        returnTarget.addEventListener(
+          "animationend",
+          () => {
+            returnTarget.classList.remove("return-highlight");
+          },
+          { once: true },
+        );
+
         setTimeout(() => {
           returnToReading.classList.remove("visible");
           document
