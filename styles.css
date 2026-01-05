@@ -1187,6 +1187,25 @@ sup:hover {
     }
 }
 
+/* Return to Reading Highlight */
+sup.return-highlight {
+    animation: return-pulse 2s ease-out;
+    border-radius: 4px;
+    z-index: 10;
+}
+
+@keyframes return-pulse {
+    0% {
+        background-color: var(--color-highlight);
+        box-shadow: 0 0 0 4px var(--color-highlight);
+        color: var(--color-text);
+    }
+    100% {
+        background-color: transparent;
+        box-shadow: 0 0 0 0 transparent;
+    }
+}
+
 .citation-number {
     font-family: var(--font-mono);
     font-size: 0.75rem;
