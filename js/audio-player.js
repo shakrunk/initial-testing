@@ -523,21 +523,29 @@ function initAudioPlayers() {
 
         // Save position to localStorage
         function savePosition(clear = false) {
-            if (clear) {
-                localStorage.removeItem(storageKey);
-            } else if (audio.currentTime > 0 && audio.currentTime < audio.duration - 3) {
-                localStorage.setItem(storageKey, audio.currentTime.toString());
+            try {
+                if (clear) {
+                    localStorage.removeItem(storageKey);
+                } else if (audio.currentTime > 0 && audio.currentTime < audio.duration - 3) {
+                    localStorage.setItem(storageKey, audio.currentTime.toString());
+                }
+            } catch (e) {
+                // Ignore localStorage errors (private browsing, quota exceeded)
             }
         }
 
         // Load position from localStorage
         function loadPosition() {
-            const savedPosition = localStorage.getItem(storageKey);
-            if (savedPosition) {
-                const position = parseFloat(savedPosition);
-                if (position > 0 && position < audio.duration - 3) {
-                    audio.currentTime = position;
+            try {
+                const savedPosition = localStorage.getItem(storageKey);
+                if (savedPosition) {
+                    const position = parseFloat(savedPosition);
+                    if (position > 0 && position < audio.duration - 3) {
+                        audio.currentTime = position;
+                    }
                 }
+            } catch (e) {
+                // Ignore localStorage errors
             }
         }
 
