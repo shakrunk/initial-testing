@@ -23,6 +23,10 @@ import {
 function secureLink(link) {
   try {
     const url = new URL(link.href);
+
+    // Skip non-HTTP protocols (e.g., mailto:, tel:, javascript:)
+    if (!url.protocol.startsWith("http")) return;
+
     if (url.hostname !== window.location.hostname) {
       // Preserve existing rel values if any
       const existingRel = link.getAttribute("rel") || "";
@@ -44,8 +48,8 @@ function secureLink(link) {
 }
 
 function secureExternalLinks() {
-  // Initial check for existing links
-  document.querySelectorAll("a[href^='http']").forEach(secureLink);
+  // Initial check for existing links - select ALL links to catch protocol-relative URLs
+  document.querySelectorAll("a[href]").forEach(secureLink);
 
   // Watch for new links added dynamically
   const observer = new MutationObserver((mutations) => {
@@ -53,12 +57,13 @@ function secureExternalLinks() {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === 1) {
           // ELEMENT_NODE
-          if (node.tagName === "A" && node.href.startsWith("http")) {
+          // Check if the node itself is a link
+          if (node.tagName === "A") {
             secureLink(node);
           }
           // Check children of added node
           if (node.querySelectorAll) {
-            node.querySelectorAll("a[href^='http']").forEach(secureLink);
+            node.querySelectorAll("a[href]").forEach(secureLink);
           }
         }
       });
