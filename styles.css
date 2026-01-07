@@ -820,7 +820,8 @@ body {
     pointer-events: none;
 }
 
-.minimap-sidebar:hover .minimap-item-label {
+.minimap-sidebar:hover .minimap-item-label,
+.minimap-item:focus-visible .minimap-item-label {
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
