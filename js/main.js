@@ -18,6 +18,7 @@ import {
   setupMobileToc,
   setupTocNavigation,
 } from "./ui.js";
+import { createSvgIcon } from "./icons.js";
 
 // Security: Add rel="noopener noreferrer" to external links
 function secureLink(link) {
@@ -36,6 +37,14 @@ function secureLink(link) {
           ? `${existingRel} ${requiredRel}`
           : requiredRel;
         link.setAttribute("rel", newRel.trim());
+      }
+
+      // Add external link icon if not already present
+      if (!link.querySelector(".external-link-icon")) {
+        const icon = createSvgIcon("external-link");
+        icon.classList.add("external-link-icon");
+        icon.setAttribute("aria-hidden", "true"); // Decorative, as the context or text usually implies it
+        link.appendChild(icon);
       }
     }
   } catch (e) {
