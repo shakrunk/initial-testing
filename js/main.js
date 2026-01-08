@@ -45,7 +45,7 @@ function secureLink(link) {
 
 function secureExternalLinks() {
   // Initial check for existing links
-  document.querySelectorAll("a[href^='http']").forEach(secureLink);
+  document.querySelectorAll("a[href]").forEach(secureLink);
 
   // Watch for new links added dynamically
   const observer = new MutationObserver((mutations) => {
@@ -53,12 +53,12 @@ function secureExternalLinks() {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === 1) {
           // ELEMENT_NODE
-          if (node.tagName === "A" && node.href.startsWith("http")) {
+          if (node.tagName === "A" && node.href) {
             secureLink(node);
           }
           // Check children of added node
           if (node.querySelectorAll) {
-            node.querySelectorAll("a[href^='http']").forEach(secureLink);
+            node.querySelectorAll("a[href]").forEach(secureLink);
           }
         }
       });
