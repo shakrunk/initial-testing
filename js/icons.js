@@ -30,6 +30,22 @@ export function createSvgIcon(name) {
     const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
     path.setAttribute("d", "M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1");
     svg.appendChild(path);
+  } else if (name === "external-link") {
+    // Used for external links
+    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    path.setAttribute("d", "M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6");
+    svg.appendChild(path);
+
+    const polyline = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+    polyline.setAttribute("points", "15 3 21 3 21 9");
+    svg.appendChild(polyline);
+
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", "10");
+    line.setAttribute("y1", "14");
+    line.setAttribute("x2", "21");
+    line.setAttribute("y2", "3");
+    svg.appendChild(line);
   }
 
   return svg;

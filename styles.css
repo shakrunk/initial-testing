@@ -2182,3 +2182,18 @@ h3:hover .heading-anchor,
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
+
+/* External Link Icon */
+.external-link-icon {
+    display: inline-block;
+    width: 0.8em;
+    height: 0.8em;
+    margin-left: 0.25rem;
+    vertical-align: middle;
+    color: var(--color-text-muted);
+    transition: color 0.2s;
+}
+
+a:hover .external-link-icon {
+    color: var(--color-accent);
+}
