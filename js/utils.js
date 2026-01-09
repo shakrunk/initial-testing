@@ -19,3 +19,30 @@ export function showToast(message) {
     toast.classList.remove("visible");
   }, 2500);
 }
+
+// ===== SAFE STORAGE =====
+
+export const safeStorage = {
+  getItem(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      // Fail securely - do not expose storage errors
+      return null;
+    }
+  },
+  setItem(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      // Fail securely - ignore quota or security errors
+    }
+  },
+  removeItem(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      // Fail securely
+    }
+  },
+};

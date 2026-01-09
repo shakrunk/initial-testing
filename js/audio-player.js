@@ -1,7 +1,12 @@
 
-document.addEventListener('DOMContentLoaded', () => {
-    initAudioPlayers();
-});
+import { safeStorage } from "./utils.js";
+
+// Run on DOM ready
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initAudioPlayers);
+} else {
+  initAudioPlayers();
+}
 
 // Helper to create and set SVG icon
 function setButtonIcon(button, iconType) {
@@ -524,15 +529,15 @@ function initAudioPlayers() {
         // Save position to localStorage
         function savePosition(clear = false) {
             if (clear) {
-                localStorage.removeItem(storageKey);
+                safeStorage.removeItem(storageKey);
             } else if (audio.currentTime > 0 && audio.currentTime < audio.duration - 3) {
-                localStorage.setItem(storageKey, audio.currentTime.toString());
+                safeStorage.setItem(storageKey, audio.currentTime.toString());
             }
         }
 
         // Load position from localStorage
         function loadPosition() {
-            const savedPosition = localStorage.getItem(storageKey);
+            const savedPosition = safeStorage.getItem(storageKey);
             if (savedPosition) {
                 const position = parseFloat(savedPosition);
                 if (position > 0 && position < audio.duration - 3) {
