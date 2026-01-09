@@ -132,6 +132,18 @@ export function setupSelectionMenu() {
       menu.style.left = `${left + window.scrollX}px`;
       menu.style.top = `${top + window.scrollY}px`;
       menu.classList.add("visible");
+
+      // Update Link button state based on length
+      const linkBtn = menu.querySelector("#btnCopyLink");
+      if (linkBtn) {
+        if (text.length > 500) {
+          linkBtn.disabled = true;
+          linkBtn.title = "Selection too long for text link (max 500 chars)";
+        } else {
+          linkBtn.disabled = false;
+          linkBtn.title = "Copy Link to Highlight";
+        }
+      }
     } else {
       menu.classList.remove("visible");
     }
