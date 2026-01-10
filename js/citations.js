@@ -5,7 +5,27 @@ export function setupCitations() {
   const returnToReading = document.getElementById("returnToReading");
   if (!citationTooltip) return;
 
+  // Enhance accessibility
+  if (!citationTooltip.hasAttribute("role")) {
+    citationTooltip.setAttribute("role", "tooltip");
+  }
+  if (!citationTooltip.hasAttribute("aria-hidden")) {
+    citationTooltip.setAttribute("aria-hidden", "true");
+  }
+
   let hoverTimeout = null;
+  let activeLink = null;
+
+  const handleEscape = (e) => {
+    if (e.key === "Escape") {
+      citationTooltip.classList.remove("visible");
+      citationTooltip.setAttribute("aria-hidden", "true");
+      if (activeLink) {
+        activeLink.removeAttribute("aria-describedby");
+        activeLink.focus(); // Ensure focus returns/stays
+      }
+    }
+  };
 
   // Find all sup elements and wrap content in links
   document.querySelectorAll("sup").forEach((sup) => {
@@ -77,6 +97,12 @@ export function setupCitations() {
         citationTooltip.style.left = `${left}px`;
         citationTooltip.style.top = `${rect.bottom + 8}px`;
         citationTooltip.classList.add("visible");
+        citationTooltip.setAttribute("aria-hidden", "false");
+
+        // Link accessibility
+        link.setAttribute("aria-describedby", "citationTooltip");
+        activeLink = link;
+        document.addEventListener("keydown", handleEscape);
       }, 500);
     };
 
@@ -85,6 +111,10 @@ export function setupCitations() {
       // Add delay to allow moving mouse to tooltip
       hoverTimeout = setTimeout(() => {
         citationTooltip.classList.remove("visible");
+        citationTooltip.setAttribute("aria-hidden", "true");
+        link.removeAttribute("aria-describedby");
+        activeLink = null;
+        document.removeEventListener("keydown", handleEscape);
       }, 300);
     };
 
