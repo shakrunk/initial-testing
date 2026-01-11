@@ -118,6 +118,20 @@ export function setupSelectionMenu() {
     const text = selection.toString().trim();
 
     if (text.length > 0) {
+      // Disable "Link" button if selection is too long
+      const btnLink = document.getElementById("btnCopyLink");
+      if (btnLink) {
+        const isTooLong = text.length > 500;
+        btnLink.disabled = isTooLong;
+        if (isTooLong) {
+          btnLink.title = "Selection too long for text link (>500 chars)";
+          btnLink.setAttribute("aria-label", "Copy Link (Disabled: Selection too long)");
+        } else {
+          btnLink.title = "Copy Link to Highlight";
+          btnLink.setAttribute("aria-label", "Copy Link to Highlight");
+        }
+      }
+
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
 
