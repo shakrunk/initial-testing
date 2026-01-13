@@ -1,5 +1,30 @@
 // ===== UTILITIES =====
 
+export const safeStorage = {
+  getItem(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      console.warn(`Access to localStorage denied for key: ${key}`);
+      return null;
+    }
+  },
+  setItem(key, value) {
+    try {
+      localStorage.setItem(key, value);
+    } catch (e) {
+      console.warn(`Access to localStorage denied for key: ${key}`);
+    }
+  },
+  removeItem(key) {
+    try {
+      localStorage.removeItem(key);
+    } catch (e) {
+      console.warn(`Access to localStorage denied for key: ${key}`);
+    }
+  },
+};
+
 export function showToast(message) {
   let toast = document.getElementById("toastNotification");
   if (!toast) {
