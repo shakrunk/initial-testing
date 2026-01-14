@@ -27,3 +27,8 @@
 **Vulnerability:** The absence of a Referrer Policy allows browsers to send the full URL (including path and query parameters) in the `Referer` header to cross-origin destinations. This can leak sensitive path information or user activity patterns to third-party analytics or external links.
 **Learning:** For static sites with no backend to strip headers, the `<meta name="referrer">` tag is the primary defense for controlling information leakage.
 **Prevention:** Added `<meta name="referrer" content="strict-origin-when-cross-origin" />` to all HTML files. This ensures that cross-origin requests only receive the origin (e.g., `https://example.com/`) while same-origin requests maintain full context.
+
+## 2026-01-01 - [Resilient Storage Access]
+**Vulnerability:** Direct access to `localStorage` in `audio-player.js` could cause application crashes in environments where storage is disabled or quota is exceeded (e.g., private browsing modes, strict security settings).
+**Learning:** Browser APIs like `localStorage` are not guaranteed to be available. Assuming availability violates the principle of "fail securely" and compromises availability.
+**Prevention:** Implemented a `safeStorage` wrapper in `utils.js` that encapsulates storage operations in try-catch blocks, ensuring the application degrades gracefully rather than crashing.
