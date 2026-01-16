@@ -1,5 +1,6 @@
 // ===== DEMOCRATIC HEALTH SERIES - MAIN =====
 import { setupTheme } from "./theme.js";
+import { createSvgIcon } from "./icons.js";
 import {
   initMinimap,
   setupMinimapNavigation,
@@ -36,6 +37,14 @@ function secureLink(link) {
           ? `${existingRel} ${requiredRel}`
           : requiredRel;
         link.setAttribute("rel", newRel.trim());
+      }
+
+      // Add external link icon if not present
+      if (!link.querySelector(".external-link-icon") && !link.classList.contains("no-external-icon")) {
+        const icon = createSvgIcon("external-link");
+        icon.classList.add("external-link-icon");
+        icon.setAttribute("aria-hidden", "true");
+        link.appendChild(icon);
       }
     }
   } catch (e) {
