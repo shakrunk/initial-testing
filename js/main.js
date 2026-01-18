@@ -19,33 +19,38 @@ import {
   setupTocNavigation,
 } from "./ui.js";
 
-// Security: Add rel="noopener noreferrer" to external links
+// Security: Enforce safe rel attributes for external and target="_blank" links
 function secureLink(link) {
   try {
-    const url = new URL(link.href);
-    if (url.hostname !== window.location.hostname) {
-      // Preserve existing rel values if any
-      const existingRel = link.getAttribute("rel") || "";
-      const requiredRel = "noopener noreferrer";
+    if (!link.href) return;
 
-      if (
-        !existingRel.includes("noopener") ||
-        !existingRel.includes("noreferrer")
-      ) {
-        const newRel = existingRel
-          ? `${existingRel} ${requiredRel}`
-          : requiredRel;
-        link.setAttribute("rel", newRel.trim());
+    // Use link.href (resolved absolute URL)
+    const url = new URL(link.href);
+    const isExternal = url.hostname !== window.location.hostname;
+    const isTargetBlank = link.target === "_blank";
+
+    if (isExternal || isTargetBlank) {
+      const currentRel = link.getAttribute("rel") || "";
+      const rels = new Set(currentRel.split(/\s+/).filter(Boolean));
+
+      if (isExternal) {
+        rels.add("noopener");
+        rels.add("noreferrer");
+      } else if (isTargetBlank) {
+        // Internal target="_blank" requires noopener to prevent reverse tabnapping
+        rels.add("noopener");
       }
+
+      link.setAttribute("rel", Array.from(rels).join(" "));
     }
   } catch (e) {
-    // Ignore invalid URLs
+    // Ignore invalid URLs or other errors
   }
 }
 
-function secureExternalLinks() {
-  // Initial check for existing links
-  document.querySelectorAll("a[href^='http']").forEach(secureLink);
+function initLinkSecurity() {
+  // Initial check for all links
+  document.querySelectorAll("a").forEach(secureLink);
 
   // Watch for new links added dynamically
   const observer = new MutationObserver((mutations) => {
@@ -53,12 +58,12 @@ function secureExternalLinks() {
       mutation.addedNodes.forEach((node) => {
         if (node.nodeType === 1) {
           // ELEMENT_NODE
-          if (node.tagName === "A" && node.href.startsWith("http")) {
+          if (node.tagName === "A") {
             secureLink(node);
           }
           // Check children of added node
           if (node.querySelectorAll) {
-            node.querySelectorAll("a[href^='http']").forEach(secureLink);
+            node.querySelectorAll("a").forEach(secureLink);
           }
         }
       });
@@ -136,7 +141,7 @@ function init() {
   }
 
   try {
-    secureExternalLinks();
+    initLinkSecurity();
   } catch (e) {
     console.error("Link security setup failed");
   }
