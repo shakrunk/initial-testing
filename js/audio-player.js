@@ -554,6 +554,8 @@ function createMiniPlayer(audio, mainPlayBtn, controlsContainer) {
 
     const miniPlayBtn = document.createElement('button');
     miniPlayBtn.className = 'mini-player-btn';
+    miniPlayBtn.setAttribute('aria-label', 'Play');
+    miniPlayBtn.setAttribute('title', 'Play');
     setButtonIcon(miniPlayBtn, 'play');
     miniPlayBtn.onclick = (e) => {
         e.stopPropagation();
@@ -572,6 +574,8 @@ function createMiniPlayer(audio, mainPlayBtn, controlsContainer) {
 
     const closeBtn = document.createElement('button');
     closeBtn.className = 'mini-player-close';
+    closeBtn.setAttribute('aria-label', 'Close Mini Player');
+    closeBtn.setAttribute('title', 'Close');
     setButtonIcon(closeBtn, 'close');
     closeBtn.onclick = (e) => {
         e.stopPropagation();
@@ -588,10 +592,14 @@ function createMiniPlayer(audio, mainPlayBtn, controlsContainer) {
     // Sync State
     audio.addEventListener('play', () => {
         setButtonIcon(miniPlayBtn, 'pause');
+        miniPlayBtn.setAttribute('aria-label', 'Pause');
+        miniPlayBtn.setAttribute('title', 'Pause');
         miniPlayer.classList.add('playing');
     });
     audio.addEventListener('pause', () => {
         setButtonIcon(miniPlayBtn, 'play');
+        miniPlayBtn.setAttribute('aria-label', 'Play');
+        miniPlayBtn.setAttribute('title', 'Play');
         miniPlayer.classList.remove('playing');
     });
 
