@@ -27,3 +27,7 @@
 **Vulnerability:** The absence of a Referrer Policy allows browsers to send the full URL (including path and query parameters) in the `Referer` header to cross-origin destinations. This can leak sensitive path information or user activity patterns to third-party analytics or external links.
 **Learning:** For static sites with no backend to strip headers, the `<meta name="referrer">` tag is the primary defense for controlling information leakage.
 **Prevention:** Added `<meta name="referrer" content="strict-origin-when-cross-origin" />` to all HTML files. This ensures that cross-origin requests only receive the origin (e.g., `https://example.com/`) while same-origin requests maintain full context.
+## 2025-01-01 - [Prevent Sensitive File Exposure]
+**Vulnerability:** The repository lacked a `.gitignore` file, and `server.log` (a runtime artifact containing access logs) was committed to version control. This risks exposing internal paths, IP addresses, or other sensitive runtime data.
+**Learning:** Even in simple projects, the absence of standard exclusion rules (`.gitignore`) inevitably leads to the accidental commitment of sensitive artifacts. Security configuration files are as critical as application code.
+**Prevention:** Created a standard `.gitignore` and removed `server.log` from the git index.
