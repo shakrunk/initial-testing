@@ -56,8 +56,27 @@ function initAudioPlayers() {
     const audioElements = document.querySelectorAll('audio.audio-player');
 
     audioElements.forEach(audio => {
+      try {
         const audioId = audio.src || 'audio-player';
-        const storageKey = `audio-position-${btoa(audioId)}`;
+
+        // Use encodeURIComponent for safer key generation (btoa fails on unicode)
+        const storageKey = `audio-position-${encodeURIComponent(audioId)}`;
+
+        // Migration: Check if we have a legacy key using btoa and migrate it
+        try {
+            // btoa might fail if audioId has unescaped unicode, so we wrap in try/catch
+            const legacyKey = `audio-position-${btoa(audioId)}`;
+            // Only migrate if new key doesn't exist yet but old one does
+            if (!localStorage.getItem(storageKey)) {
+                const legacyValue = localStorage.getItem(legacyKey);
+                if (legacyValue) {
+                    localStorage.setItem(storageKey, legacyValue);
+                    localStorage.removeItem(legacyKey);
+                }
+            }
+        } catch (e) {
+            // Ignore btoa errors, it means we couldn't have a legacy key anyway
+        }
 
         // Disable default controls and hide the original element
         audio.controls = false;
@@ -321,6 +340,7 @@ function initAudioPlayers() {
             const link = document.createElement('a');
             link.href = audio.src;
             link.download = audio.src.split('/').pop() || 'audio.mp3';
+            link.rel = 'noopener noreferrer'; // Security: prevent tab-nabbing
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -543,6 +563,9 @@ function initAudioPlayers() {
 
         // Initialize background
         updateProgressBackground(progressInput, 0);
+      } catch (e) {
+        console.error('Failed to initialize audio player:', e);
+      }
     });
 }
 

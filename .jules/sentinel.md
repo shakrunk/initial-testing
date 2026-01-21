@@ -27,3 +27,8 @@
 **Vulnerability:** The absence of a Referrer Policy allows browsers to send the full URL (including path and query parameters) in the `Referer` header to cross-origin destinations. This can leak sensitive path information or user activity patterns to third-party analytics or external links.
 **Learning:** For static sites with no backend to strip headers, the `<meta name="referrer">` tag is the primary defense for controlling information leakage.
 **Prevention:** Added `<meta name="referrer" content="strict-origin-when-cross-origin" />` to all HTML files. This ensures that cross-origin requests only receive the origin (e.g., `https://example.com/`) while same-origin requests maintain full context.
+
+## 2025-01-01 - [Secure Storage Key Generation]
+**Vulnerability:** Usage of `btoa` on `audio.src` to generate localStorage keys. `btoa` throws an exception if the input string contains characters outside the Latin1 range (e.g., Unicode filenames), causing the script to crash (DoS) for that user/page.
+**Learning:** Relying on `btoa` for hashing or encoding arbitrary strings (like URLs) is fragile. Even if browsers typically percent-encode properties like `.src`, implicit assumptions can lead to catastrophic failure on edge cases (e.g., file protocol, direct JS assignment).
+**Prevention:** Replaced `btoa` with `encodeURIComponent` which handles full Unicode range safely. Implemented a migration strategy to preserve existing user preferences where possible.
