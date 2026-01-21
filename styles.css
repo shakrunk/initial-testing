@@ -2138,6 +2138,13 @@ h3:hover .heading-anchor,
     color: var(--color-accent);
 }
 
+.selection-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: transparent;
+    color: var(--color-text-muted);
+}
+
 .selection-btn:active {
     transform: scale(0.96);
 }

@@ -70,16 +70,8 @@ export function setupSelectionMenu() {
       iconName: "link",
       handler: () => {
         const selection = window.getSelection();
-        const text = selection.toString();
-        if (text) {
-          // Limit length to prevent DoS/URL overflow
-          if (text.length > 500) {
-            showToast("Selection too long for text link");
-            menu.classList.remove("visible");
-            selection.removeAllRanges();
-            return;
-          }
-
+        const text = selection.toString().trim();
+        if (text && text.length <= 500) {
           const encodedText = encodeURIComponent(text).replace(/-/g, "%2D");
           const url = `${window.location.origin}${window.location.pathname}#:~:text=${encodedText}`;
           navigator.clipboard.writeText(url).then(() => {
@@ -118,6 +110,18 @@ export function setupSelectionMenu() {
     const text = selection.toString().trim();
 
     if (text.length > 0) {
+      // Proactively disable link button if too long
+      const btnLink = menu.querySelector("#btnCopyLink");
+      if (btnLink) {
+        if (text.length > 500) {
+          btnLink.disabled = true;
+          btnLink.title = "Selection too long for link (max 500 chars)";
+        } else {
+          btnLink.disabled = false;
+          btnLink.title = "";
+        }
+      }
+
       const range = selection.getRangeAt(0);
       const rect = range.getBoundingClientRect();
 
